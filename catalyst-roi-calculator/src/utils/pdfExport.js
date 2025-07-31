@@ -1,5 +1,6 @@
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import { generateResearchSummary } from '../data/researchData.js';
 
 // Generate and download PDF report
 export const exportToPDF = async (results, chartElement) => {
@@ -48,6 +49,9 @@ export const exportToPDF = async (results, chartElement) => {
     
     // Add scenario details
     yPosition = addScenarioDetails(pdf, results, margin, contentWidth, yPosition);
+    
+    // Add research sources section
+    yPosition = addResearchSources(pdf, results, margin, contentWidth, yPosition);
 
     // Check if we need a new page for charts
     if (yPosition > pageHeight - 100) {
@@ -290,4 +294,149 @@ const addFooter = (pdf, pageWidth, pageHeight) => {
   // Footer line
   pdf.setDrawColor(226, 232, 240);
   pdf.line(20, footerY - 5, pageWidth - 20, footerY - 5);
+};
+
+// Add research sources section
+const addResearchSources = (pdf, results, margin, contentWidth, yPosition) => {
+  // Get research data for this specific scenario
+  const scenarioId = Object.keys(results.scenario).find(key => 
+    results.scenario === results.scenario || 
+    results.scenario.name === results.scenario.name
+  );
+  
+  // For now, let's extract scenario ID from the scenario object
+  let actualScenarioId = null;
+  if (results.scenario.name.includes('Chatbot')) actualScenarioId = 'ai-chatbot';
+  else if (results.scenario.name.includes('Predictive')) actualScenarioId = 'ai-predictive';
+  else if (results.scenario.name.includes('E-commerce') || results.scenario.name.includes('eCommerce')) actualScenarioId = 'ecommerce-platform';
+  else if (results.scenario.name.includes('Social Media')) actualScenarioId = 'social-media';
+  else if (results.scenario.name.includes('Google Ads')) actualScenarioId = 'google-ads';
+  else if (results.scenario.name.includes('CRM')) actualScenarioId = 'crm-implementation';
+  
+  const researchData = generateResearchSummary(actualScenarioId, results.inputs.industry);
+  
+  if (!researchData) return yPosition;
+
+  // Check if we need a new page
+  if (yPosition > 200) {
+    pdf.addPage();
+    yPosition = 20;
+  }
+
+  pdf.setFontSize(14);
+  pdf.setFont('helvetica', 'bold');
+  pdf.setTextColor(45, 55, 72);
+  pdf.text('Research & Sources', margin, yPosition);
+  yPosition += 15;
+
+  pdf.setFontSize(10);
+  pdf.setFont('helvetica', 'normal');
+  
+  // Add methodology
+  pdf.setFont('helvetica', 'bold');
+  pdf.text('Data Sources:', margin, yPosition);
+  yPosition += 8;
+  
+  pdf.setFont('helvetica', 'normal');
+  if (researchData.sources && researchData.sources.length > 0) {
+    researchData.sources.forEach(source => {
+      pdf.text(`• ${source.name}`, margin + 5, yPosition);
+      yPosition += 6;
+      pdf.setTextColor(128, 128, 128);
+      const description = pdf.splitTextToSize(`  ${source.description}`, contentWidth - 10);
+      pdf.text(description, margin + 5, yPosition);
+      yPosition += description.length * 4 + 3;
+      pdf.setTextColor(45, 55, 72);
+    });
+  }
+  
+  yPosition += 5;
+  
+  // Add case study if available
+  if (researchData.scenario && researchData.scenario.caseStudies && researchData.scenario.caseStudies.length > 0) {
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('Similar Case Study:', margin, yPosition);
+    yPosition += 8;
+    
+    const caseStudy = researchData.scenario.caseStudies[0];
+    pdf.setFont('helvetica', 'normal');
+    pdf.text(`• Company: ${caseStudy.company} (${caseStudy.industry})`, margin + 5, yPosition);
+    yPosition += 6;
+    pdf.text(`• Investment: $${caseStudy.investment.toLocaleString()} | ROI: ${caseStudy.roi}% | Time: ${caseStudy.timeframe} months`, margin + 5, yPosition);
+    yPosition += 6;
+    const description = pdf.splitTextToSize(`  ${caseStudy.description}`, contentWidth - 10);
+    pdf.text(description, margin + 5, yPosition);
+    yPosition += description.length * 4 + 8;
+  }
+  
+  // Add success rate
+  const successRate = calculateSuccessRate(results.scenario.riskLevel, results.inputs.industry, results.inputs.companySize);
+  pdf.setFont('helvetica', 'bold');
+  pdf.text('Success Rate:', margin, yPosition);
+  yPosition += 8;
+  
+  pdf.setFont('helvetica', 'normal');
+  pdf.text(`• Estimated Success Probability: ${successRate.probability}%`, margin + 5, yPosition);
+  yPosition += 6;
+  pdf.text(`• Success Factors: ${successRate.factors.join(', ')}`, margin + 5, yPosition);
+  yPosition += 6;
+  pdf.text(`• Risk Mitigation: ${successRate.mitigation}`, margin + 5, yPosition);
+  yPosition += 10;
+
+  return yPosition;
+};
+
+// Calculate realistic success rate based on scenario factors
+const calculateSuccessRate = (riskLevel, industry, companySize) => {
+  let baseSuccessRate = 75; // Base 75% success rate
+  
+  // Adjust for risk level
+  switch (riskLevel) {
+    case 'low': baseSuccessRate += 15; break;
+    case 'medium': baseSuccessRate += 0; break;
+    case 'high': baseSuccessRate -= 10; break;
+  }
+  
+  // Adjust for industry
+  const industryAdjustments = {
+    'retail': 5,
+    'saas': 10,
+    'manufacturing': -5,
+    'financial': 0,
+    'healthcare': -10,
+    'professional': 8
+  };
+  baseSuccessRate += industryAdjustments[industry] || 0;
+  
+  // Adjust for company size
+  const sizeAdjustments = {
+    'startup': -5,
+    'small': 0,
+    'medium': 5,
+    'large': 10,
+    'enterprise': 8
+  };
+  baseSuccessRate += sizeAdjustments[companySize] || 0;
+  
+  // Cap between 60% and 95%
+  const finalRate = Math.max(60, Math.min(95, baseSuccessRate));
+  
+  // Determine success factors based on scenario
+  const successFactors = [];
+  if (riskLevel === 'low') successFactors.push('Proven technology');
+  if (industry === 'saas' || industry === 'retail') successFactors.push('High adoption rates');
+  if (companySize === 'large' || companySize === 'enterprise') successFactors.push('Strong resources');
+  if (finalRate > 85) successFactors.push('Executive support');
+  successFactors.push('Proper planning', 'Staff training');
+  
+  // Risk mitigation advice
+  let mitigation = 'Phased implementation recommended';
+  if (riskLevel === 'high') mitigation = 'Pilot program strongly recommended';
+  if (industry === 'healthcare' || industry === 'financial') mitigation += ', compliance review required';
+  
+  return {
+    probability: finalRate,
+    factors: successFactors.slice(0, 3), // Top 3 factors
+    mitigation: mitigation
+  };
 };

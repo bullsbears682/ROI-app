@@ -402,6 +402,34 @@ body {
   font-size: 2.5rem;
 }
 
+.result-card.success-rate {
+  background: linear-gradient(135deg, var(--success-green), #38a169);
+  color: white;
+}
+
+.result-card.success-rate .result-value {
+  color: white;
+  font-size: 2rem;
+}
+
+.export-buttons {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.research-btn {
+  background: linear-gradient(135deg, var(--accent-pink), var(--accent-red));
+  border: none;
+  color: white;
+  font-weight: 600;
+}
+
+.research-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(240, 147, 251, 0.3);
+}
+
 .investment-breakdown {
   margin: 2rem 0;
   padding: 1.5rem;

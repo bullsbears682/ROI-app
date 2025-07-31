@@ -5,6 +5,61 @@ import Results from './components/Results'
 import CookieConsent from './components/CookieConsent'
 import { roiCategories, roiScenarios } from './data/roiScenarios'
 
+// Calculate realistic success rate based on scenario factors
+const calculateSuccessRate = (riskLevel, industry, companySize) => {
+  let baseSuccessRate = 75; // Base 75% success rate
+  
+  // Adjust for risk level
+  switch (riskLevel) {
+    case 'low': baseSuccessRate += 15; break;
+    case 'medium': baseSuccessRate += 0; break;
+    case 'high': baseSuccessRate -= 10; break;
+  }
+  
+  // Adjust for industry
+  const industryAdjustments = {
+    'retail': 5,
+    'saas': 10,
+    'manufacturing': -5,
+    'financial': 0,
+    'healthcare': -10,
+    'professional': 8
+  };
+  baseSuccessRate += industryAdjustments[industry] || 0;
+  
+  // Adjust for company size
+  const sizeAdjustments = {
+    'startup': -5,
+    'small': 0,
+    'medium': 5,
+    'large': 10,
+    'enterprise': 8
+  };
+  baseSuccessRate += sizeAdjustments[companySize] || 0;
+  
+  // Cap between 60% and 95%
+  const finalRate = Math.max(60, Math.min(95, baseSuccessRate));
+  
+  // Determine success factors based on scenario
+  const successFactors = [];
+  if (riskLevel === 'low') successFactors.push('Proven technology');
+  if (industry === 'saas' || industry === 'retail') successFactors.push('High adoption rates');
+  if (companySize === 'large' || companySize === 'enterprise') successFactors.push('Strong resources');
+  if (finalRate > 85) successFactors.push('Executive support');
+  successFactors.push('Proper planning', 'Staff training');
+  
+  // Risk mitigation advice
+  let mitigation = 'Phased implementation recommended';
+  if (riskLevel === 'high') mitigation = 'Pilot program strongly recommended';
+  if (industry === 'healthcare' || industry === 'financial') mitigation += ', compliance review required';
+  
+  return {
+    probability: finalRate,
+    factors: successFactors.slice(0, 3), // Top 3 factors
+    mitigation: mitigation
+  };
+};
+
 function App() {
   // Main application state
   const [selectedCategory, setSelectedCategory] = useState('ai');
@@ -68,6 +123,9 @@ function App() {
     const roiPercentage = (adjustedReturns / investment) * 100;
     const annualizedROI = (roiPercentage / timeframe) * 12;
 
+    // Calculate success rate
+    const successRate = calculateSuccessRate(scenario.riskLevel, calculationInputs.industry, calculationInputs.companySize);
+
     const calculatedResults = {
       investment: investment,
       expectedReturns: adjustedReturns,
@@ -77,6 +135,7 @@ function App() {
       paybackPeriod: paybackMonths,
       monthlyReturn: adjustedReturns / timeframe,
       netProfit: adjustedReturns,
+      successRate: successRate,
       scenario: scenario,
       inputs: calculationInputs
     };

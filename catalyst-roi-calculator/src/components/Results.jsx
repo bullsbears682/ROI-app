@@ -2,8 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, BarElement } from 'chart.js';
 import { Line, Bar } from 'react-chartjs-2';
 import { exportToPDF } from '../utils/pdfExport';
-
-// Register Chart.js components
+import { exportDetailedResearch } from '../utils/researchReport';
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -124,6 +123,18 @@ const Results = ({ results, showResults, onExportPDF }) => {
     }
   };
 
+  // Handle research export
+  const handleResearchExport = async () => {
+    if (results) {
+      try {
+        await exportDetailedResearch(results);
+      } catch (error) {
+        console.error('Error exporting research:', error);
+        alert('Error generating research report. Please try again.');
+      }
+    }
+  };
+
   if (!showResults || !results) {
     return (
       <div className="card results-placeholder">
@@ -140,12 +151,20 @@ const Results = ({ results, showResults, onExportPDF }) => {
     <div className="card results-card" ref={chartRef}>
       <div className="results-header">
         <h2>Investment Analysis</h2>
-        <button 
-          className="btn btn-secondary export-btn"
-          onClick={handlePDFExport}
-        >
-          📄 Export PDF
-        </button>
+        <div className="export-buttons">
+          <button 
+            className="btn btn-secondary export-btn"
+            onClick={handlePDFExport}
+          >
+            📄 Export Report
+          </button>
+          <button 
+            className="btn btn-primary research-btn"
+            onClick={handleResearchExport}
+          >
+            📊 Download Research
+          </button>
+        </div>
       </div>
 
       {/* Key Metrics */}
@@ -168,6 +187,11 @@ const Results = ({ results, showResults, onExportPDF }) => {
         <div className="result-card">
           <div className="result-value">{formatPercent(results.annualizedROI)}</div>
           <div className="result-label">Annualized ROI</div>
+        </div>
+
+        <div className="result-card success-rate">
+          <div className="result-value">{results.successRate?.probability || 0}%</div>
+          <div className="result-label">Success Rate</div>
         </div>
       </div>
 
