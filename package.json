@@ -1,0 +1,26 @@
+{
+  "name": "catalyst-roi-calculator",
+  "version": "1.0.0",
+  "description": "Professional ROI Calculator for Business Investments - Catalyst Analytics Platform",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["roi", "calculator", "business", "analytics", "investment", "catalyst"],
+  "author": "Catalyst Analytics",
+  "license": "MIT",
+  "dependencies": {
+    "chart.js": "^4.4.1",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^2.5.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.2.1",
+    "vite": "^5.1.4"
+  }
+}
