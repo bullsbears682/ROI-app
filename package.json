@@ -1,6 +1,7 @@
 {
   "name": "catalyst-roi-calculator",
   "version": "1.0.0",
+  "type": "module",
   "description": "Professional ROI Calculator for Business Investments - Catalyst Analytics Platform",
   "main": "index.js",
   "scripts": {
