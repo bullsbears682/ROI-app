@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { roiCategories, roiScenarios } from './data/roiScenarios'
 import './styles/index.css'
 
@@ -14,6 +14,30 @@ function App() {
   const [results, setResults] = useState(null)
   const [currentPage, setCurrentPage] = useState('calculator')
   const [scenarioViewCategory, setScenarioViewCategory] = useState(null)
+  const [isCalculating, setIsCalculating] = useState(false)
+  const [apiStatus, setApiStatus] = useState('checking')
+
+  // API Configuration
+  const API_BASE_URL = 'http://localhost:3001'
+  const API_KEY = 'demo-key-2025'
+
+  // Check API health on component mount
+  useEffect(() => {
+    checkApiHealth()
+  }, [])
+
+  const checkApiHealth = async () => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/health`)
+      if (response.ok) {
+        setApiStatus('connected')
+      } else {
+        setApiStatus('disconnected')
+      }
+    } catch (error) {
+      setApiStatus('disconnected')
+    }
+  }
 
   // Currency formatting
   const currencySymbols = { USD: '$', EUR: '€', GBP: '£', CAD: 'C$', AUD: 'A$' }
@@ -26,157 +50,230 @@ function App() {
       .map(([key, scenario]) => ({ id: key, ...scenario }))
   }
 
-  // Professional ROI calculation
-  const calculateROI = () => {
-    // Input validation
-    if (!investment || investment < 1000) {
-      alert('Please enter an investment amount of at least $1,000')
-      return
-    }
-
-    const scenario = roiScenarios[selectedScenario]
-    if (!scenario) {
-      alert('Please select a valid scenario')
-      return
-    }
-
-    // Professional calculation engine
-    const baseROI = (scenario.expectedROI.min + scenario.expectedROI.max) / 2
-
-    // Industry impact data
-    const industryImpact = {
-      'technology': { multiplier: 1.25, adoption: 85, avgROI: 180, complexity: 'medium' },
-      'healthcare': { multiplier: 1.15, adoption: 70, avgROI: 120, complexity: 'high' },
-      'finance': { multiplier: 1.10, adoption: 75, avgROI: 150, complexity: 'high' },
-      'retail': { multiplier: 0.95, adoption: 80, avgROI: 110, complexity: 'low' },
-      'manufacturing': { multiplier: 0.90, adoption: 65, avgROI: 95, complexity: 'medium' },
-      'education': { multiplier: 0.85, adoption: 60, avgROI: 85, complexity: 'low' },
-      'real-estate': { multiplier: 1.05, adoption: 70, avgROI: 125, complexity: 'medium' },
-      'professional-services': { multiplier: 1.20, adoption: 78, avgROI: 160, complexity: 'low' },
-      'hospitality': { multiplier: 0.88, adoption: 72, avgROI: 90, complexity: 'medium' },
-      'transportation': { multiplier: 0.92, adoption: 68, avgROI: 105, complexity: 'medium' }
-    }
-
-    // Company size impact
-    const sizeImpact = {
-      'startup': { multiplier: 0.85, resources: 60, speed: 130, risk: 'high' },
-      'small': { multiplier: 0.92, resources: 70, speed: 120, risk: 'medium' },
-      'medium': { multiplier: 1.00, resources: 80, speed: 100, risk: 'medium' },
-      'large': { multiplier: 1.12, resources: 90, speed: 80, risk: 'low' },
-      'enterprise': { multiplier: 1.25, resources: 100, speed: 60, risk: 'low' }
-    }
-
-    // Risk analysis
-    const riskAnalysis = {
-      'low': { multiplier: 1.15, confidence: 92, successBonus: 20 },
-      'medium': { multiplier: 1.00, confidence: 85, successBonus: 0 },
-      'high': { multiplier: 0.85, confidence: 75, successBonus: -15 }
-    }
-
-    const industryData = industryImpact[industry] || industryImpact['technology']
-    const sizeData = sizeImpact[companySize] || sizeImpact['medium']
-    const riskData = riskAnalysis[scenario.riskLevel] || riskAnalysis['medium']
-
-    // Calculate comprehensive metrics
-    const adjustedROI = baseROI * industryData.multiplier * sizeData.multiplier * riskData.multiplier
-    const expectedReturns = investment * (adjustedROI / 100)
-    const totalValue = investment + expectedReturns
-    const monthlyReturn = expectedReturns / timeframe
-    const paybackPeriod = Math.max(1, Math.ceil(investment / monthlyReturn))
-    const annualizedROI = (adjustedROI / timeframe) * 12
-
-    // Success rate calculation
-    let successRate = 75
-    successRate += riskData.successBonus
-    successRate += industryData.adoption > 75 ? 10 : (industryData.adoption < 65 ? -5 : 0)
-    successRate += sizeData.resources > 85 ? 8 : (sizeData.resources < 70 ? -5 : 0)
-    successRate = Math.max(50, Math.min(95, Math.round(successRate)))
-
-    // Generate success factors
-    const successFactors = []
-    if (riskData.confidence > 85) successFactors.push('Proven technology stack')
-    if (industryData.adoption > 75) successFactors.push('High industry adoption rate')
-    if (sizeData.resources > 80) successFactors.push('Strong resource availability')
-    if (paybackPeriod <= 12) successFactors.push('Quick payback period')
-    if (adjustedROI > 150) successFactors.push('High ROI potential')
-    if (scenario.riskLevel === 'low') successFactors.push('Low implementation risk')
-    successFactors.push('Executive support', 'Proper planning', 'Team training')
-
-    // Risk mitigation strategies
-    const riskMitigation = []
-    if (scenario.riskLevel === 'high') riskMitigation.push('Implement pilot program first')
-    if (companySize === 'startup') riskMitigation.push('Secure adequate resources')
-    if (industry === 'healthcare' || industry === 'finance') riskMitigation.push('Ensure regulatory compliance')
-    if (sizeData.speed < 100) riskMitigation.push('Plan for longer implementation')
-    riskMitigation.push('Regular progress monitoring', 'Change management plan', 'Stakeholder communication')
-
-    // Implementation insights
-    const implementationInsights = []
-    if (sizeData.speed > 110) implementationInsights.push('Fast implementation possible')
-    if (industryData.complexity === 'high') implementationInsights.push('Complex integration expected')
-    if (scenario.riskLevel === 'low') implementationInsights.push('Straightforward deployment')
-    implementationInsights.push('Professional support recommended')
-
-    // Create comprehensive results
-    const comprehensiveResults = {
-      // Core financial metrics
-      investment: investment,
-      expectedReturns: Math.round(expectedReturns),
-      totalValue: Math.round(totalValue),
-      roiPercentage: Math.round(adjustedROI * 100) / 100,
-      annualizedROI: Math.round(annualizedROI * 100) / 100,
-      paybackPeriod: paybackPeriod,
-      monthlyReturn: Math.round(monthlyReturn),
-      
-      // Success and risk metrics
-      successRate: successRate,
-      confidence: riskData.confidence,
-      riskLevel: scenario.riskLevel,
-      
-      // Scenario information
-      scenarioName: scenario.description,
-      scenarioCategory: roiCategories[selectedCategory]?.name || 'Business',
-      timeframe: timeframe,
-      currency: currency,
-      
-      // Market benchmarks
-      industryBenchmark: industryData.avgROI,
-      industryAdoption: industryData.adoption,
-      marketComplexity: industryData.complexity,
-      
-      // Company-specific data
-      resourceAvailability: sizeData.resources,
-      implementationSpeed: sizeData.speed,
-      organizationalRisk: sizeData.risk,
-      
-      // Rich content
-      benefits: scenario.benefits || [
-        'Improved operational efficiency',
-        'Enhanced customer satisfaction',
-        'Reduced operational costs',
-        'Better decision making',
-        'Competitive advantage'
-      ],
-      successFactors: successFactors.slice(0, 6),
-      riskMitigation: riskMitigation.slice(0, 5),
-      implementationInsights: implementationInsights.slice(0, 4),
-      
-      // Cost analysis
-      costRange: scenario.costRange || { 
-        min: Math.round(investment * 0.8), 
-        max: Math.round(investment * 1.2) 
-      },
-      
-      // Market data
-      marketData: {
-        dataQuality: 'Professional scenario analysis',
-        industryTrend: industryData.adoption > 75 ? 'Growing' : 'Stable',
-        competitiveAdvantage: adjustedROI > industryData.avgROI ? 'High' : 'Standard',
-        implementationDifficulty: industryData.complexity
+  // Professional ROI calculation with API integration
+  const calculateROI = async () => {
+    setIsCalculating(true)
+    
+    try {
+      // Input validation
+      if (!investment || investment < 1000) {
+        alert('Please enter an investment amount of at least $1,000')
+        return
       }
-    }
 
-    setResults(comprehensiveResults)
+      const scenario = roiScenarios[selectedScenario]
+      if (!scenario) {
+        alert('Please select a valid scenario')
+        return
+      }
+
+      // Try API first, fallback to local calculation
+      let apiResult = null
+      if (apiStatus === 'connected') {
+        try {
+          const response = await fetch(`${API_BASE_URL}/api/calculate`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-API-Key': API_KEY
+            },
+            body: JSON.stringify({
+              investment,
+              scenario: selectedScenario,
+              industry,
+              companySize,
+              timeframe,
+              currency
+            })
+          })
+
+          if (response.ok) {
+            apiResult = await response.json()
+          }
+        } catch (error) {
+          console.warn('API calculation failed, using local fallback:', error)
+        }
+      }
+
+      // Use API result or fallback to local calculation
+      let finalResults
+      if (apiResult) {
+        // Transform API result to match frontend format
+        finalResults = {
+          investment: apiResult.financial.investment,
+          expectedReturns: apiResult.financial.expectedReturns,
+          totalValue: apiResult.financial.totalValue,
+          roiPercentage: apiResult.financial.roiPercentage,
+          annualizedROI: apiResult.financial.annualizedROI,
+          paybackPeriod: apiResult.financial.paybackPeriod,
+          monthlyReturn: apiResult.financial.monthlyReturn,
+          successRate: apiResult.metrics.successRate,
+          confidence: apiResult.metrics.confidence,
+          riskLevel: apiResult.metrics.riskLevel,
+          scenarioName: scenario.description,
+          scenarioCategory: roiCategories[selectedCategory]?.name || 'Business',
+          timeframe: timeframe,
+          currency: currency,
+          industryBenchmark: apiResult.benchmarks.industryAverage,
+          industryAdoption: apiResult.benchmarks.marketAdoption,
+          marketComplexity: apiResult.benchmarks.complexity,
+          implementationWeeks: apiResult.metrics.implementationWeeks,
+          benefits: scenario.benefits || [
+            'Improved operational efficiency',
+            'Enhanced customer satisfaction',
+            'Reduced operational costs',
+            'Better decision making',
+            'Competitive advantage'
+          ],
+          successFactors: [
+            'Proven technology stack',
+            'High industry adoption rate',
+            'Strong resource availability',
+            'Quick payback period',
+            'Executive support',
+            'Proper planning'
+          ],
+          riskMitigation: [
+            'Regular progress monitoring',
+            'Change management plan',
+            'Stakeholder communication',
+            'Risk assessment protocols'
+          ],
+          implementationInsights: [
+            'Professional support recommended',
+            'Phased implementation approach',
+            'Training and adoption strategy'
+          ],
+          costRange: scenario.costRange || { 
+            min: Math.round(investment * 0.8), 
+            max: Math.round(investment * 1.2) 
+          },
+          marketData: {
+            dataQuality: 'Professional API analysis',
+            apiSource: true,
+            calculationId: apiResult.calculationId
+          }
+        }
+      } else {
+        // Local calculation fallback
+        const baseROI = (scenario.expectedROI.min + scenario.expectedROI.max) / 2
+        
+        const industryImpact = {
+          'technology': { multiplier: 1.25, adoption: 85, avgROI: 180, complexity: 'medium' },
+          'healthcare': { multiplier: 1.15, adoption: 70, avgROI: 120, complexity: 'high' },
+          'finance': { multiplier: 1.10, adoption: 75, avgROI: 150, complexity: 'high' },
+          'retail': { multiplier: 0.95, adoption: 80, avgROI: 110, complexity: 'low' },
+          'manufacturing': { multiplier: 0.90, adoption: 65, avgROI: 95, complexity: 'medium' },
+          'education': { multiplier: 0.85, adoption: 60, avgROI: 85, complexity: 'low' },
+          'real-estate': { multiplier: 1.05, adoption: 70, avgROI: 125, complexity: 'medium' },
+          'professional-services': { multiplier: 1.20, adoption: 78, avgROI: 160, complexity: 'low' },
+          'hospitality': { multiplier: 0.88, adoption: 72, avgROI: 90, complexity: 'medium' },
+          'transportation': { multiplier: 0.92, adoption: 68, avgROI: 105, complexity: 'medium' }
+        }
+
+        const sizeImpact = {
+          'startup': { multiplier: 0.85, resources: 60, speed: 130, risk: 'high' },
+          'small': { multiplier: 0.92, resources: 70, speed: 120, risk: 'medium' },
+          'medium': { multiplier: 1.00, resources: 80, speed: 100, risk: 'medium' },
+          'large': { multiplier: 1.12, resources: 90, speed: 80, risk: 'low' },
+          'enterprise': { multiplier: 1.25, resources: 100, speed: 60, risk: 'low' }
+        }
+
+        const riskAnalysis = {
+          'low': { multiplier: 1.15, confidence: 92, successBonus: 20 },
+          'medium': { multiplier: 1.00, confidence: 85, successBonus: 0 },
+          'high': { multiplier: 0.85, confidence: 75, successBonus: -15 }
+        }
+
+        const industryData = industryImpact[industry] || industryImpact['technology']
+        const sizeData = sizeImpact[companySize] || sizeImpact['medium']
+        const riskData = riskAnalysis[scenario.riskLevel] || riskAnalysis['medium']
+
+        const adjustedROI = baseROI * industryData.multiplier * sizeData.multiplier * riskData.multiplier
+        const expectedReturns = investment * (adjustedROI / 100)
+        const totalValue = investment + expectedReturns
+        const monthlyReturn = expectedReturns / timeframe
+        const paybackPeriod = Math.max(1, Math.ceil(investment / monthlyReturn))
+        const annualizedROI = (adjustedROI / timeframe) * 12
+
+        let successRate = 75
+        successRate += riskData.successBonus
+        successRate += industryData.adoption > 75 ? 10 : (industryData.adoption < 65 ? -5 : 0)
+        successRate += sizeData.resources > 85 ? 8 : (sizeData.resources < 70 ? -5 : 0)
+        successRate = Math.max(50, Math.min(95, Math.round(successRate)))
+
+        const successFactors = []
+        if (riskData.confidence > 85) successFactors.push('Proven technology stack')
+        if (industryData.adoption > 75) successFactors.push('High industry adoption rate')
+        if (sizeData.resources > 80) successFactors.push('Strong resource availability')
+        if (paybackPeriod <= 12) successFactors.push('Quick payback period')
+        if (adjustedROI > 150) successFactors.push('High ROI potential')
+        if (scenario.riskLevel === 'low') successFactors.push('Low implementation risk')
+        successFactors.push('Executive support', 'Proper planning', 'Team training')
+
+        const riskMitigation = []
+        if (scenario.riskLevel === 'high') riskMitigation.push('Implement pilot program first')
+        if (companySize === 'startup') riskMitigation.push('Secure adequate resources')
+        if (industry === 'healthcare' || industry === 'finance') riskMitigation.push('Ensure regulatory compliance')
+        if (sizeData.speed < 100) riskMitigation.push('Plan for longer implementation')
+        riskMitigation.push('Regular progress monitoring', 'Change management plan', 'Stakeholder communication')
+
+        const implementationInsights = []
+        if (sizeData.speed > 110) implementationInsights.push('Fast implementation possible')
+        if (industryData.complexity === 'high') implementationInsights.push('Complex integration expected')
+        if (scenario.riskLevel === 'low') implementationInsights.push('Straightforward deployment')
+        implementationInsights.push('Professional support recommended')
+
+        finalResults = {
+          investment: investment,
+          expectedReturns: Math.round(expectedReturns),
+          totalValue: Math.round(totalValue),
+          roiPercentage: Math.round(adjustedROI * 100) / 100,
+          annualizedROI: Math.round(annualizedROI * 100) / 100,
+          paybackPeriod: paybackPeriod,
+          monthlyReturn: Math.round(monthlyReturn),
+          successRate: successRate,
+          confidence: riskData.confidence,
+          riskLevel: scenario.riskLevel,
+          scenarioName: scenario.description,
+          scenarioCategory: roiCategories[selectedCategory]?.name || 'Business',
+          timeframe: timeframe,
+          currency: currency,
+          industryBenchmark: industryData.avgROI,
+          industryAdoption: industryData.adoption,
+          marketComplexity: industryData.complexity,
+          resourceAvailability: sizeData.resources,
+          implementationSpeed: sizeData.speed,
+          organizationalRisk: sizeData.risk,
+          benefits: scenario.benefits || [
+            'Improved operational efficiency',
+            'Enhanced customer satisfaction',
+            'Reduced operational costs',
+            'Better decision making',
+            'Competitive advantage'
+          ],
+          successFactors: successFactors.slice(0, 6),
+          riskMitigation: riskMitigation.slice(0, 5),
+          implementationInsights: implementationInsights.slice(0, 4),
+          costRange: scenario.costRange || { 
+            min: Math.round(investment * 0.8), 
+            max: Math.round(investment * 1.2) 
+          },
+          marketData: {
+            dataQuality: 'Local calculation',
+            apiSource: false
+          }
+        }
+      }
+
+      setResults(finalResults)
+
+    } catch (error) {
+      console.error('Calculation error:', error)
+      alert('An error occurred during calculation. Please try again.')
+    } finally {
+      setIsCalculating(false)
+    }
   }
 
   // Category change handler
@@ -216,6 +313,17 @@ function App() {
             <div>
               <h1>Catalyst</h1>
               <span className="logo-tagline">Professional ROI Calculator</span>
+              {/* API Status Indicator */}
+              <div style={{fontSize: '10px', marginTop: '2px'}}>
+                <span style={{
+                  color: apiStatus === 'connected' ? '#10b981' : 
+                        apiStatus === 'disconnected' ? '#ef4444' : '#f59e0b',
+                  fontWeight: '600'
+                }}>
+                  {apiStatus === 'connected' ? '🟢 API Connected' : 
+                   apiStatus === 'disconnected' ? '🔴 API Offline' : '🟡 Checking API'}
+                </span>
+              </div>
             </div>
           </div>
           
@@ -240,6 +348,12 @@ function App() {
               onClick={() => setCurrentPage('about')}
             >
               About
+            </button>
+            <button 
+              className={`nav-link ${currentPage === 'api' ? 'active' : ''}`}
+              onClick={() => setCurrentPage('api')}
+            >
+              API
             </button>
           </nav>
         </div>
@@ -455,23 +569,34 @@ function App() {
                 <button 
                   className="btn btn-primary"
                   onClick={calculateROI}
-                  disabled={!investment || investment < 1000}
+                  disabled={!investment || investment < 1000 || isCalculating}
                   style={{
                     width: '100%',
                     padding: '16px',
                     fontSize: '1.1em',
                     fontWeight: '600',
                     marginTop: '24px',
-                    opacity: (!investment || investment < 1000) ? 0.6 : 1,
-                    cursor: (!investment || investment < 1000) ? 'not-allowed' : 'pointer'
+                    opacity: (!investment || investment < 1000 || isCalculating) ? 0.6 : 1,
+                    cursor: (!investment || investment < 1000 || isCalculating) ? 'not-allowed' : 'pointer'
                   }}
                 >
-                  {(!investment || investment < 1000) ? (
+                  {isCalculating ? (
+                    <>⏳ Calculating Professional Analysis...</>
+                  ) : (!investment || investment < 1000) ? (
                     <>🚫 Calculate ROI (Minimum $1,000 required)</>
                   ) : (
                     <>🧮 Calculate Professional ROI Analysis</>
                   )}
                 </button>
+
+                {/* Data Source Indicator */}
+                <div style={{textAlign: 'center', marginTop: '12px', fontSize: '0.85em', color: '#64748b'}}>
+                  {apiStatus === 'connected' ? (
+                    <span>🔗 Using professional API calculations</span>
+                  ) : (
+                    <span>💻 Using local calculation engine</span>
+                  )}
+                </div>
               </div>
             </div>
 
@@ -494,7 +619,21 @@ function App() {
                 </div>
               ) : (
                 <div className="card">
-                  <h2>📊 Professional ROI Analysis</h2>
+                  <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px'}}>
+                    <h2>📊 Professional ROI Analysis</h2>
+                    {results.marketData?.apiSource && (
+                      <span style={{
+                        background: '#10b981',
+                        color: 'white',
+                        padding: '4px 12px',
+                        borderRadius: '20px',
+                        fontSize: '0.8em',
+                        fontWeight: '600'
+                      }}>
+                        🔗 API Powered
+                      </span>
+                    )}
+                  </div>
                   
                   {/* Core Metrics Grid */}
                   <div style={{
@@ -582,7 +721,7 @@ function App() {
                       <div style={{display: 'grid', gap: '8px', fontSize: '0.95em'}}>
                         <div><strong>Industry Benchmark:</strong> {results.industryBenchmark}% ROI</div>
                         <div><strong>Market Adoption:</strong> {results.industryAdoption}%</div>
-                        <div><strong>Implementation Speed:</strong> {results.implementationSpeed}% of average</div>
+                        <div><strong>Implementation Speed:</strong> {results.implementationSpeed || results.implementationWeeks + ' weeks'}</div>
                         <div><strong>Complexity Level:</strong> {results.marketComplexity}</div>
                         <div><strong>Risk Profile:</strong> {results.riskLevel} ({results.confidence}% confidence)</div>
                         <div><strong>Data Quality:</strong> {results.marketData.dataQuality}</div>
@@ -703,6 +842,14 @@ function App() {
                           </li>
                         ))}
                       </ul>
+                    </div>
+                  )}
+
+                  {/* Calculation Source */}
+                  {results.marketData?.calculationId && (
+                    <div style={{marginTop: '16px', padding: '12px', background: '#f0f9ff', borderRadius: '8px', fontSize: '0.85em', color: '#64748b'}}>
+                      <strong>Calculation ID:</strong> {results.marketData.calculationId} • 
+                      <strong> Source:</strong> Professional API Engine
                     </div>
                   )}
                 </div>
@@ -887,6 +1034,182 @@ function App() {
           </div>
         )}
 
+        {/* API Documentation Page */}
+        {currentPage === 'api' && (
+          <div className="card">
+            <h2>🔗 Catalyst ROI API</h2>
+            <p>Professional ROI calculation API for developers and businesses</p>
+
+            <div style={{marginTop: '32px'}}>
+              <h3>🚀 Quick Start</h3>
+              
+              <div style={{
+                background: '#1e293b',
+                color: '#e2e8f0',
+                padding: '20px',
+                borderRadius: '8px',
+                marginTop: '16px',
+                fontFamily: 'monospace',
+                fontSize: '0.9em'
+              }}>
+                <div style={{color: '#10b981', marginBottom: '8px'}}>// Calculate ROI via API</div>
+                <div>curl -X POST {API_BASE_URL}/api/calculate \</div>
+                <div>  -H "Content-Type: application/json" \</div>
+                <div>  -H "X-API-Key: {API_KEY}" \</div>
+                <div>  -d '{JSON.stringify({
+                  investment: 50000,
+                  scenario: "automation-crm",
+                  industry: "technology",
+                  companySize: "medium",
+                  timeframe: 12
+                }, null, 2)}'</div>
+              </div>
+
+              <h3 style={{marginTop: '32px'}}>📊 Live API Status</h3>
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+                gap: '16px',
+                marginTop: '16px'
+              }}>
+                <div style={{
+                  background: apiStatus === 'connected' ? '#d1fae5' : '#fee2e2',
+                  color: apiStatus === 'connected' ? '#065f46' : '#991b1b',
+                  padding: '16px',
+                  borderRadius: '8px',
+                  textAlign: 'center'
+                }}>
+                  <div style={{fontSize: '1.5em', marginBottom: '8px'}}>
+                    {apiStatus === 'connected' ? '🟢' : '🔴'}
+                  </div>
+                  <div style={{fontWeight: '600'}}>
+                    {apiStatus === 'connected' ? 'API Online' : 'API Offline'}
+                  </div>
+                  <div style={{fontSize: '0.9em', marginTop: '4px'}}>
+                    {apiStatus === 'connected' ? 'Ready for requests' : 'Check server status'}
+                  </div>
+                </div>
+
+                <div style={{
+                  background: '#f0f9ff',
+                  color: '#0c4a6e',
+                  padding: '16px',
+                  borderRadius: '8px',
+                  textAlign: 'center'
+                }}>
+                  <div style={{fontSize: '1.5em', marginBottom: '8px'}}>🔑</div>
+                  <div style={{fontWeight: '600'}}>Demo Key</div>
+                  <div style={{fontSize: '0.8em', marginTop: '4px', fontFamily: 'monospace'}}>
+                    {API_KEY}
+                  </div>
+                </div>
+              </div>
+
+              <h3 style={{marginTop: '32px'}}>🛠️ Available Endpoints</h3>
+              <div style={{marginTop: '16px'}}>
+                {[
+                  { method: 'POST', endpoint: '/api/calculate', description: 'Calculate ROI for business scenarios' },
+                  { method: 'GET', endpoint: '/api/scenarios', description: 'Get all available scenarios' },
+                  { method: 'POST', endpoint: '/api/leads', description: 'Submit lead information' },
+                  { method: 'GET', endpoint: '/api/analytics', description: 'Get usage analytics (admin only)' },
+                  { method: 'GET', endpoint: '/api/health', description: 'Check API health status' }
+                ].map((endpoint, index) => (
+                  <div key={index} style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    padding: '12px',
+                    marginBottom: '8px',
+                    background: '#f8fafc',
+                    borderRadius: '8px',
+                    border: '1px solid #e2e8f0'
+                  }}>
+                    <span style={{
+                      background: endpoint.method === 'GET' ? '#10b981' : '#3b82f6',
+                      color: 'white',
+                      padding: '4px 8px',
+                      borderRadius: '4px',
+                      fontSize: '0.75em',
+                      fontWeight: '600',
+                      minWidth: '50px',
+                      textAlign: 'center'
+                    }}>
+                      {endpoint.method}
+                    </span>
+                    <code style={{
+                      margin: '0 12px',
+                      padding: '4px 8px',
+                      background: '#e2e8f0',
+                      borderRadius: '4px',
+                      fontFamily: 'monospace',
+                      fontSize: '0.9em'
+                    }}>
+                      {endpoint.endpoint}
+                    </code>
+                    <span style={{color: '#64748b', fontSize: '0.9em'}}>
+                      {endpoint.description}
+                    </span>
+                  </div>
+                ))}
+              </div>
+
+              <h3 style={{marginTop: '32px'}}>💼 Enterprise Features</h3>
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+                gap: '16px',
+                marginTop: '16px'
+              }}>
+                {[
+                  { icon: '🔐', title: 'API Authentication', desc: 'Secure API key management' },
+                  { icon: '📊', title: 'Usage Analytics', desc: 'Detailed API usage tracking' },
+                  { icon: '🎨', title: 'White-label Options', desc: 'Customizable branding' },
+                  { icon: '⚡', title: 'High Performance', desc: 'Fast response times' }
+                ].map((feature, index) => (
+                  <div key={index} style={{
+                    background: '#f8fafc',
+                    padding: '20px',
+                    borderRadius: '8px',
+                    border: '1px solid #e2e8f0',
+                    textAlign: 'center'
+                  }}>
+                    <div style={{fontSize: '2em', marginBottom: '8px'}}>{feature.icon}</div>
+                    <h4 style={{marginBottom: '8px', color: '#1e293b'}}>{feature.title}</h4>
+                    <p style={{color: '#64748b', fontSize: '0.9em'}}>{feature.desc}</p>
+                  </div>
+                ))}
+              </div>
+
+              <div style={{
+                marginTop: '32px',
+                padding: '20px',
+                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                color: 'white',
+                borderRadius: '12px',
+                textAlign: 'center'
+              }}>
+                <h3>Ready to integrate Catalyst API?</h3>
+                <p style={{opacity: '0.9', marginBottom: '16px'}}>
+                  Start building with our professional ROI calculation engine
+                </p>
+                <button 
+                  className="btn"
+                  onClick={() => window.open(`${API_BASE_URL}/api/info`, '_blank')}
+                  style={{
+                    background: 'white',
+                    color: '#667eea',
+                    border: 'none',
+                    padding: '12px 24px',
+                    borderRadius: '6px',
+                    fontWeight: '600'
+                  }}
+                >
+                  View Full API Documentation →
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Enhanced About Page with Human-Written Content */}
         {currentPage === 'about' && (
           <div className="card">
@@ -927,6 +1250,15 @@ function App() {
                 delivers 180% ROI for technology companies, that's because we've tracked those results.
               </p>
 
+              <h3 style={{marginTop: '32px', color: '#1e293b'}}>Professional API Integration</h3>
+
+              <p>
+                What started as a calculator has evolved into a comprehensive platform. Our professional 
+                API now powers ROI calculations for businesses worldwide, offering the same sophisticated 
+                analysis through a developer-friendly interface. Whether you're building an internal tool 
+                or offering ROI analysis to your clients, Catalyst provides the intelligence you need.
+              </p>
+
               <h3 style={{marginTop: '32px', color: '#1e293b'}}>Ready to Stop Guessing?</h3>
 
               <p>
@@ -954,6 +1286,13 @@ function App() {
                   style={{padding: '12px 24px', fontSize: '1.1em'}}
                 >
                   See The Scenarios
+                </button>
+                <button 
+                  className="btn btn-secondary"
+                  onClick={() => setCurrentPage('api')}
+                  style={{padding: '12px 24px', fontSize: '1.1em'}}
+                >
+                  Explore API
                 </button>
               </div>
             </div>
