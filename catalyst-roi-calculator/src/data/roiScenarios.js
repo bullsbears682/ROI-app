@@ -332,6 +332,62 @@ export const roiScenarios = {
     }
   },
 
+  'ecom-inventory': {
+    category: 'ecommerce',
+    name: 'Inventory Management System',
+    description: 'Advanced inventory tracking and warehouse management',
+    costRange: { min: 15000, max: 75000 },
+    timeframe: { min: 2, max: 6 },
+    expectedROI: { min: 180, max: 400 },
+    paybackPeriod: 8,
+    riskLevel: 'medium',
+    industryBenchmarks: {
+      retail: { roi: 350, implementation: 4 },
+      manufacturing: { roi: 280, implementation: 5 },
+      wholesale: { roi: 400, implementation: 3 }
+    },
+    benefits: [
+      '25-40% reduction in stock-outs',
+      'Improved order fulfillment speed',
+      'Better demand forecasting',
+      'Reduced carrying costs'
+    ],
+    costs: {
+      software: 35000,
+      implementation: 20000,
+      training: 8000,
+      integration: 12000
+    }
+  },
+
+  'ecom-personalization': {
+    category: 'ecommerce',
+    name: 'AI Personalization Engine',
+    description: 'Machine learning-powered product recommendations',
+    costRange: { min: 40000, max: 120000 },
+    timeframe: { min: 3, max: 8 },
+    expectedROI: { min: 200, max: 500 },
+    paybackPeriod: 10,
+    riskLevel: 'medium',
+    industryBenchmarks: {
+      ecommerce: { roi: 450, implementation: 5 },
+      retail: { roi: 350, implementation: 6 },
+      fashion: { roi: 500, implementation: 4 }
+    },
+    benefits: [
+      '20-35% increase in conversion rates',
+      'Higher average order value',
+      'Improved customer retention',
+      'Better cross-selling success'
+    ],
+    costs: {
+      platform: 60000,
+      integration: 25000,
+      training: 15000,
+      optimization: 20000
+    }
+  },
+
   // Marketing Campaign scenarios
   'marketing-ppc': {
     category: 'marketing',
@@ -384,6 +440,118 @@ export const roiScenarios = {
     }
   },
 
+  'marketing-email': {
+    category: 'marketing',
+    name: 'Email Marketing Campaign',
+    description: 'Automated email marketing and nurture sequences',
+    costRange: { min: 2000, max: 25000 },
+    timeframe: { min: 1, max: 6 },
+    expectedROI: { min: 300, max: 800 },
+    paybackPeriod: 3,
+    riskLevel: 'low',
+    industryBenchmarks: {
+      ecommerce: { roi: 600, implementation: 2 },
+      saas: { roi: 450, implementation: 3 },
+      b2b: { roi: 380, implementation: 4 }
+    },
+    benefits: [
+      'High ROI marketing channel',
+      'Automated customer nurturing',
+      'Segmented targeting',
+      'Measurable engagement metrics'
+    ],
+    costs: {
+      platform: 8000,
+      setup: 5000,
+      content: 7000,
+      management: 5000
+    }
+  },
+
+  'marketing-content': {
+    category: 'marketing',
+    name: 'Content Marketing Strategy',
+    description: 'SEO-focused content creation and distribution',
+    costRange: { min: 8000, max: 50000 },
+    timeframe: { min: 3, max: 12 },
+    expectedROI: { min: 200, max: 600 },
+    paybackPeriod: 8,
+    riskLevel: 'medium',
+    industryBenchmarks: {
+      saas: { roi: 500, implementation: 6 },
+      professional: { roi: 400, implementation: 8 },
+      ecommerce: { roi: 350, implementation: 9 }
+    },
+    benefits: [
+      'Long-term organic traffic growth',
+      'Thought leadership positioning',
+      'Lower customer acquisition cost',
+      'Better search engine rankings'
+    ],
+    costs: {
+      strategy: 12000,
+      content: 20000,
+      tools: 8000,
+      promotion: 10000
+    }
+  },
+
+  'marketing-influencer': {
+    category: 'marketing',
+    name: 'Influencer Marketing Campaign',
+    description: 'Partnership with industry influencers and creators',
+    costRange: { min: 10000, max: 100000 },
+    timeframe: { min: 2, max: 8 },
+    expectedROI: { min: 150, max: 450 },
+    paybackPeriod: 6,
+    riskLevel: 'medium',
+    industryBenchmarks: {
+      fashion: { roi: 400, implementation: 3 },
+      beauty: { roi: 450, implementation: 2 },
+      lifestyle: { roi: 350, implementation: 4 }
+    },
+    benefits: [
+      'Authentic brand endorsements',
+      'Access to engaged audiences',
+      'Increased brand credibility',
+      'Viral content potential'
+    ],
+    costs: {
+      influencer_fees: 50000,
+      production: 20000,
+      management: 15000,
+      promotion: 15000
+    }
+  },
+
+  'marketing-retargeting': {
+    category: 'marketing',
+    name: 'Retargeting & Conversion Optimization',
+    description: 'Advanced retargeting campaigns and conversion rate optimization',
+    costRange: { min: 5000, max: 40000 },
+    timeframe: { min: 1, max: 6 },
+    expectedROI: { min: 250, max: 700 },
+    paybackPeriod: 4,
+    riskLevel: 'low',
+    industryBenchmarks: {
+      ecommerce: { roi: 600, implementation: 2 },
+      saas: { roi: 500, implementation: 3 },
+      b2b: { roi: 400, implementation: 4 }
+    },
+    benefits: [
+      '20-40% higher conversion rates',
+      'Reduced customer acquisition cost',
+      'Better qualified traffic',
+      'Improved customer lifetime value'
+    ],
+    costs: {
+      platform: 15000,
+      creative: 8000,
+      optimization: 10000,
+      management: 7000
+    }
+  },
+
   // Software Implementation scenarios
   'software-crm': {
     category: 'software',
@@ -433,6 +601,118 @@ export const roiScenarios = {
       monthly: 5000,
       training: 50000,
       customization: 100000
+    }
+  },
+
+  'software-accounting': {
+    category: 'software',
+    name: 'Accounting Software Upgrade',
+    description: 'Modern cloud-based accounting and financial management',
+    costRange: { min: 8000, max: 40000 },
+    timeframe: { min: 2, max: 6 },
+    expectedROI: { min: 200, max: 500 },
+    paybackPeriod: 7,
+    riskLevel: 'low',
+    industryBenchmarks: {
+      small_business: { roi: 450, implementation: 3 },
+      professional: { roi: 380, implementation: 4 },
+      nonprofit: { roi: 320, implementation: 5 }
+    },
+    benefits: [
+      '50-70% faster financial reporting',
+      'Automated bookkeeping processes',
+      'Better tax compliance',
+      'Real-time financial insights'
+    ],
+    costs: {
+      software: 18000,
+      migration: 8000,
+      training: 6000,
+      customization: 8000
+    }
+  },
+
+  'software-project': {
+    category: 'software',
+    name: 'Project Management Platform',
+    description: 'Comprehensive project tracking and collaboration tools',
+    costRange: { min: 12000, max: 60000 },
+    timeframe: { min: 2, max: 8 },
+    expectedROI: { min: 180, max: 400 },
+    paybackPeriod: 9,
+    riskLevel: 'medium',
+    industryBenchmarks: {
+      consulting: { roi: 350, implementation: 4 },
+      construction: { roi: 280, implementation: 6 },
+      creative: { roi: 400, implementation: 3 }
+    },
+    benefits: [
+      '25-40% improvement in project delivery',
+      'Better resource allocation',
+      'Enhanced team collaboration',
+      'Improved client communication'
+    ],
+    costs: {
+      platform: 25000,
+      setup: 15000,
+      training: 12000,
+      integration: 8000
+    }
+  },
+
+  'software-helpdesk': {
+    category: 'software',
+    name: 'Customer Support Platform',
+    description: 'Integrated helpdesk and customer service management',
+    costRange: { min: 15000, max: 75000 },
+    timeframe: { min: 3, max: 8 },
+    expectedROI: { min: 200, max: 450 },
+    paybackPeriod: 8,
+    riskLevel: 'medium',
+    industryBenchmarks: {
+      saas: { roi: 400, implementation: 4 },
+      ecommerce: { roi: 350, implementation: 5 },
+      services: { roi: 320, implementation: 6 }
+    },
+    benefits: [
+      '30-50% faster ticket resolution',
+      'Improved customer satisfaction',
+      'Better agent productivity',
+      'Comprehensive reporting'
+    ],
+    costs: {
+      platform: 35000,
+      implementation: 18000,
+      training: 12000,
+      integration: 10000
+    }
+  },
+
+  'software-inventory': {
+    category: 'software',
+    name: 'Enterprise Inventory System',
+    description: 'Advanced inventory and supply chain management',
+    costRange: { min: 25000, max: 120000 },
+    timeframe: { min: 4, max: 12 },
+    expectedROI: { min: 160, max: 380 },
+    paybackPeriod: 12,
+    riskLevel: 'medium',
+    industryBenchmarks: {
+      manufacturing: { roi: 320, implementation: 8 },
+      retail: { roi: 380, implementation: 6 },
+      wholesale: { roi: 280, implementation: 10 }
+    },
+    benefits: [
+      '20-35% reduction in inventory costs',
+      'Improved demand forecasting',
+      'Better supplier management',
+      'Reduced stock-outs'
+    ],
+    costs: {
+      software: 55000,
+      implementation: 30000,
+      training: 15000,
+      integration: 20000
     }
   },
 
@@ -914,6 +1194,344 @@ export const roiScenarios = {
       algorithms: 60000,
       compliance: 40000,
       integration: 30000
+    }
+  },
+
+  // Employee Training scenarios
+  'training-leadership': {
+    category: 'training',
+    name: 'Leadership Development Program',
+    description: 'Comprehensive management and leadership training',
+    costRange: { min: 15000, max: 80000 },
+    timeframe: { min: 3, max: 12 },
+    expectedROI: { min: 200, max: 500 },
+    paybackPeriod: 8,
+    riskLevel: 'low',
+    industryBenchmarks: {
+      corporate: { roi: 420, implementation: 6 },
+      healthcare: { roi: 380, implementation: 8 },
+      financial: { roi: 350, implementation: 7 }
+    },
+    benefits: [
+      '25-40% improvement in team productivity',
+      'Better employee retention',
+      'Enhanced decision-making skills',
+      'Improved organizational culture'
+    ],
+    costs: {
+      program: 35000,
+      materials: 12000,
+      facilitator: 20000,
+      assessment: 8000
+    }
+  },
+
+  'training-technical': {
+    category: 'training',
+    name: 'Technical Skills Training',
+    description: 'Technology and software proficiency development',
+    costRange: { min: 8000, max: 50000 },
+    timeframe: { min: 2, max: 8 },
+    expectedROI: { min: 250, max: 600 },
+    paybackPeriod: 6,
+    riskLevel: 'low',
+    industryBenchmarks: {
+      technology: { roi: 550, implementation: 4 },
+      manufacturing: { roi: 400, implementation: 6 },
+      services: { roi: 350, implementation: 5 }
+    },
+    benefits: [
+      '30-50% increase in technical efficiency',
+      'Reduced error rates',
+      'Better software adoption',
+      'Enhanced innovation capacity'
+    ],
+    costs: {
+      courses: 25000,
+      certification: 8000,
+      materials: 6000,
+      time_investment: 12000
+    }
+  },
+
+  'training-sales': {
+    category: 'training',
+    name: 'Sales Training Program',
+    description: 'Advanced sales techniques and customer relationship skills',
+    costRange: { min: 12000, max: 60000 },
+    timeframe: { min: 2, max: 6 },
+    expectedROI: { min: 300, max: 800 },
+    paybackPeriod: 4,
+    riskLevel: 'low',
+    industryBenchmarks: {
+      b2b_sales: { roi: 650, implementation: 3 },
+      retail: { roi: 450, implementation: 4 },
+      real_estate: { roi: 750, implementation: 2 }
+    },
+    benefits: [
+      '20-45% increase in sales conversion',
+      'Higher average deal size',
+      'Better customer relationships',
+      'Reduced sales cycle time'
+    ],
+    costs: {
+      training: 28000,
+      materials: 8000,
+      coaching: 15000,
+      tools: 6000
+    }
+  },
+
+  'training-compliance': {
+    category: 'training',
+    name: 'Compliance Training Program',
+    description: 'Regulatory compliance and risk management education',
+    costRange: { min: 10000, max: 45000 },
+    timeframe: { min: 2, max: 6 },
+    expectedROI: { min: 180, max: 400 },
+    paybackPeriod: 7,
+    riskLevel: 'low',
+    industryBenchmarks: {
+      financial: { roi: 350, implementation: 4 },
+      healthcare: { roi: 380, implementation: 3 },
+      manufacturing: { roi: 280, implementation: 5 }
+    },
+    benefits: [
+      'Reduced compliance violations',
+      'Lower regulatory risk',
+      'Improved audit results',
+      'Better risk awareness'
+    ],
+    costs: {
+      program: 22000,
+      assessment: 8000,
+      certification: 10000,
+      updates: 5000
+    }
+  },
+
+  'training-customer': {
+    category: 'training',
+    name: 'Customer Service Excellence',
+    description: 'Customer service skills and satisfaction improvement',
+    costRange: { min: 6000, max: 35000 },
+    timeframe: { min: 1, max: 4 },
+    expectedROI: { min: 250, max: 550 },
+    paybackPeriod: 5,
+    riskLevel: 'low',
+    industryBenchmarks: {
+      retail: { roi: 480, implementation: 2 },
+      hospitality: { roi: 520, implementation: 2 },
+      services: { roi: 420, implementation: 3 }
+    },
+    benefits: [
+      '15-30% improvement in customer satisfaction',
+      'Reduced customer churn',
+      'Better online reviews',
+      'Increased repeat business'
+    ],
+    costs: {
+      training: 18000,
+      materials: 5000,
+      assessment: 6000,
+      follow_up: 4000
+    }
+  },
+
+  'training-safety': {
+    category: 'training',
+    name: 'Workplace Safety Training',
+    description: 'Comprehensive safety protocols and accident prevention',
+    costRange: { min: 8000, max: 40000 },
+    timeframe: { min: 1, max: 6 },
+    expectedROI: { min: 200, max: 600 },
+    paybackPeriod: 6,
+    riskLevel: 'low',
+    industryBenchmarks: {
+      manufacturing: { roi: 500, implementation: 3 },
+      construction: { roi: 550, implementation: 2 },
+      healthcare: { roi: 400, implementation: 4 }
+    },
+    benefits: [
+      '40-70% reduction in workplace accidents',
+      'Lower insurance premiums',
+      'Reduced downtime',
+      'Improved employee confidence'
+    ],
+    costs: {
+      program: 20000,
+      equipment: 8000,
+      certification: 6000,
+      ongoing: 5000
+    }
+  },
+
+  // Digital Marketing scenarios
+  'digital-seo': {
+    category: 'digital',
+    name: 'SEO & Organic Traffic Strategy',
+    description: 'Search engine optimization and organic growth',
+    costRange: { min: 8000, max: 60000 },
+    timeframe: { min: 6, max: 18 },
+    expectedROI: { min: 300, max: 800 },
+    paybackPeriod: 12,
+    riskLevel: 'medium',
+    industryBenchmarks: {
+      ecommerce: { roi: 650, implementation: 12 },
+      saas: { roi: 550, implementation: 9 },
+      local_business: { roi: 450, implementation: 6 }
+    },
+    benefits: [
+      'Long-term organic traffic growth',
+      'Reduced paid advertising dependency',
+      'Better brand authority',
+      'Higher conversion rates'
+    ],
+    costs: {
+      strategy: 20000,
+      tools: 8000,
+      content: 25000,
+      optimization: 15000
+    }
+  },
+
+  'digital-website': {
+    category: 'digital',
+    name: 'Website Redesign & Optimization',
+    description: 'Modern, conversion-focused website development',
+    costRange: { min: 15000, max: 100000 },
+    timeframe: { min: 3, max: 8 },
+    expectedROI: { min: 200, max: 600 },
+    paybackPeriod: 8,
+    riskLevel: 'medium',
+    industryBenchmarks: {
+      ecommerce: { roi: 550, implementation: 5 },
+      b2b: { roi: 400, implementation: 6 },
+      services: { roi: 450, implementation: 4 }
+    },
+    benefits: [
+      '25-50% increase in conversion rates',
+      'Better user experience',
+      'Mobile-responsive design',
+      'Improved search rankings'
+    ],
+    costs: {
+      design: 35000,
+      development: 40000,
+      optimization: 15000,
+      testing: 10000
+    }
+  },
+
+  'digital-automation': {
+    category: 'digital',
+    name: 'Marketing Automation & CRM',
+    description: 'Automated lead nurturing and customer journey',
+    costRange: { min: 20000, max: 80000 },
+    timeframe: { min: 3, max: 9 },
+    expectedROI: { min: 250, max: 500 },
+    paybackPeriod: 7,
+    riskLevel: 'medium',
+    industryBenchmarks: {
+      b2b: { roi: 450, implementation: 6 },
+      saas: { roi: 500, implementation: 5 },
+      ecommerce: { roi: 380, implementation: 7 }
+    },
+    benefits: [
+      '30-60% increase in qualified leads',
+      'Automated customer nurturing',
+      'Better lead scoring',
+      'Improved sales conversion'
+    ],
+    costs: {
+      platform: 35000,
+      setup: 20000,
+      integration: 15000,
+      training: 10000
+    }
+  },
+
+  'digital-analytics': {
+    category: 'digital',
+    name: 'Digital Analytics & Tracking',
+    description: 'Advanced analytics and performance measurement',
+    costRange: { min: 5000, max: 35000 },
+    timeframe: { min: 2, max: 6 },
+    expectedROI: { min: 300, max: 700 },
+    paybackPeriod: 5,
+    riskLevel: 'low',
+    industryBenchmarks: {
+      ecommerce: { roi: 600, implementation: 3 },
+      saas: { roi: 550, implementation: 4 },
+      media: { roi: 500, implementation: 2 }
+    },
+    benefits: [
+      'Data-driven marketing decisions',
+      'Better campaign optimization',
+      'Improved customer insights',
+      'Higher marketing ROI'
+    ],
+    costs: {
+      tools: 15000,
+      setup: 8000,
+      training: 7000,
+      consulting: 10000
+    }
+  },
+
+  'digital-social': {
+    category: 'digital',
+    name: 'Social Media Strategy',
+    description: 'Comprehensive social media presence and engagement',
+    costRange: { min: 10000, max: 50000 },
+    timeframe: { min: 3, max: 12 },
+    expectedROI: { min: 200, max: 500 },
+    paybackPeriod: 8,
+    riskLevel: 'medium',
+    industryBenchmarks: {
+      b2c: { roi: 450, implementation: 6 },
+      retail: { roi: 400, implementation: 4 },
+      hospitality: { roi: 380, implementation: 5 }
+    },
+    benefits: [
+      'Increased brand awareness',
+      'Better customer engagement',
+      'Social proof and credibility',
+      'Community building'
+    ],
+    costs: {
+      strategy: 15000,
+      content: 20000,
+      tools: 8000,
+      management: 12000
+    }
+  },
+
+  'digital-video': {
+    category: 'digital',
+    name: 'Video Marketing Campaign',
+    description: 'Professional video content for digital channels',
+    costRange: { min: 12000, max: 80000 },
+    timeframe: { min: 2, max: 8 },
+    expectedROI: { min: 250, max: 600 },
+    paybackPeriod: 6,
+    riskLevel: 'medium',
+    industryBenchmarks: {
+      b2c: { roi: 520, implementation: 4 },
+      education: { roi: 450, implementation: 6 },
+      entertainment: { roi: 600, implementation: 3 }
+    },
+    benefits: [
+      'Higher engagement rates',
+      'Better brand storytelling',
+      'Improved conversion rates',
+      'Viral potential'
+    ],
+    costs: {
+      production: 35000,
+      equipment: 15000,
+      editing: 12000,
+      distribution: 8000
     }
   }
 };
