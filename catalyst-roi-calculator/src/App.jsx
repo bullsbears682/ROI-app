@@ -3,7 +3,10 @@ import Header from './components/Header'
 import Calculator from './components/Calculator'
 import Results from './components/Results'
 import CookieConsent from './components/CookieConsent'
+import LeadCapture from './components/LeadCapture'
 import { roiCategories, roiScenarios } from './data/roiScenarios'
+import { detectUserCurrency, convertToUSD, formatCurrencyCustom } from './utils/currency'
+import { initAnalytics, trackROICalculation, trackUserInteraction } from './utils/analytics'
 
 // Calculate realistic success rate based on scenario factors
 const calculateSuccessRate = (riskLevel, industry, companySize) => {
@@ -72,15 +75,26 @@ function App() {
   });
   const [results, setResults] = useState(null);
   const [showResults, setShowResults] = useState(false);
+  const [showLeadCapture, setShowLeadCapture] = useState(false);
+  const [currency, setCurrency] = useState('USD');
 
   // Cookie consent state
   const [cookieConsent, setCookieConsent] = useState(null);
 
-  // Check for saved cookie consent on load
+  // Check for saved cookie consent and detect currency on load
   useEffect(() => {
     const savedConsent = localStorage.getItem('catalyst-cookie-consent');
     if (savedConsent) {
       setCookieConsent(JSON.parse(savedConsent));
+    }
+    
+    // Detect user's likely currency
+    const detectedCurrency = detectUserCurrency();
+    setCurrency(detectedCurrency);
+    
+    // Initialize analytics if consent exists
+    if (savedConsent) {
+      initAnalytics(JSON.parse(savedConsent));
     }
   }, []);
 
@@ -99,17 +113,20 @@ function App() {
     const scenario = roiScenarios[selectedScenario];
     if (!scenario) return;
 
-    const { investment, timeframe } = calculationInputs;
-    
+        const { investment, timeframe } = calculationInputs;
+
+    // Convert investment to USD for calculations (scenarios are in USD)
+    const investmentUSD = convertToUSD(investment, currency);
+
     // Get expected returns based on scenario and industry
     const industryData = scenario.industryBenchmarks?.[calculationInputs.industry];
     const baseROI = industryData?.roi || (scenario.expectedROI.min + scenario.expectedROI.max) / 2;
     
-    // Calculate returns
-    const expectedReturns = investment * (baseROI / 100);
-    const totalReturns = investment + expectedReturns;
-    const monthlyReturn = expectedReturns / timeframe;
-    const paybackMonths = investment / monthlyReturn;
+    // Calculate returns (in USD)
+    const expectedReturnsUSD = investmentUSD * (baseROI / 100);
+    const totalReturnsUSD = investmentUSD + expectedReturnsUSD;
+    const monthlyReturnUSD = expectedReturnsUSD / timeframe;
+    const paybackMonths = investmentUSD / monthlyReturnUSD;
 
     // Risk adjustment based on scenario
     let riskMultiplier = 1;
@@ -119,29 +136,39 @@ function App() {
       case 'high': riskMultiplier = 1.1; break;
     }
 
-    const adjustedReturns = expectedReturns * riskMultiplier;
-    const roiPercentage = (adjustedReturns / investment) * 100;
+    const adjustedReturnsUSD = expectedReturnsUSD * riskMultiplier;
+    const roiPercentage = (adjustedReturnsUSD / investmentUSD) * 100;
     const annualizedROI = (roiPercentage / timeframe) * 12;
 
     // Calculate success rate
     const successRate = calculateSuccessRate(scenario.riskLevel, calculationInputs.industry, calculationInputs.companySize);
 
     const calculatedResults = {
-      investment: investment,
-      expectedReturns: adjustedReturns,
-      totalReturns: investment + adjustedReturns,
+      investment: investment, // In display currency
+      expectedReturns: adjustedReturnsUSD, // Keep in USD for consistency
+      totalReturns: investmentUSD + adjustedReturnsUSD, // In USD
       roiPercentage: roiPercentage,
       annualizedROI: annualizedROI,
       paybackPeriod: paybackMonths,
-      monthlyReturn: adjustedReturns / timeframe,
-      netProfit: adjustedReturns,
+      monthlyReturn: adjustedReturnsUSD / timeframe, // In USD
+      netProfit: adjustedReturnsUSD, // In USD
       successRate: successRate,
       scenario: scenario,
-      inputs: calculationInputs
+      inputs: calculationInputs,
+      currency: currency, // Store currency for display
+      investmentUSD: investmentUSD // Store USD amount for calculations
     };
 
-    setResults(calculatedResults);
+              setResults(calculatedResults);
     setShowResults(true);
+
+    // Track ROI calculation analytics
+    trackROICalculation(scenario, calculationInputs, calculatedResults);
+
+    // Show lead capture modal after a delay
+    setTimeout(() => {
+      setShowLeadCapture(true);
+    }, 2000);
 
     // Save calculation to localStorage if consent given
     if (cookieConsent?.analytics) {
@@ -167,10 +194,57 @@ function App() {
     }));
   };
 
+  const handleLeadCapture = (leadData) => {
+    // Lead captured successfully
+    console.log('Lead captured:', leadData);
+    
+    // Track lead capture analytics
+    if (cookieConsent?.analytics) {
+      const leadEvent = {
+        type: 'lead_capture',
+        timestamp: new Date().toISOString(),
+        leadScore: leadData.leadScore,
+        source: 'roi_calculator',
+        scenario: selectedScenario,
+        roiPercentage: results?.roiPercentage
+      };
+      
+      const events = JSON.parse(localStorage.getItem('catalyst-analytics') || '[]');
+      events.push(leadEvent);
+      localStorage.setItem('catalyst-analytics', JSON.stringify(events));
+    }
+  };
+
+  const handleLeadCaptureClose = () => {
+    setShowLeadCapture(false);
+  };
+
+  const handleCurrencyChange = (newCurrency) => {
+    setCurrency(newCurrency);
+    
+    // Track currency change analytics
+    if (cookieConsent?.analytics) {
+      const currencyEvent = {
+        type: 'currency_change',
+        timestamp: new Date().toISOString(),
+        from: currency,
+        to: newCurrency,
+        scenario: selectedScenario
+      };
+      
+      const events = JSON.parse(localStorage.getItem('catalyst-analytics') || '[]');
+      events.push(currencyEvent);
+      localStorage.setItem('catalyst-analytics', JSON.stringify(events));
+    }
+  };
+
   // Handle cookie consent
   const handleCookieConsent = (consent) => {
     setCookieConsent(consent);
     localStorage.setItem('catalyst-cookie-consent', JSON.stringify(consent));
+    
+    // Initialize analytics with new consent
+    initAnalytics(consent);
   };
 
   return (
@@ -185,9 +259,11 @@ function App() {
             selectedCategory={selectedCategory}
             selectedScenario={selectedScenario}
             inputs={calculationInputs}
+            currency={currency}
             onCategoryChange={setSelectedCategory}
             onScenarioChange={setSelectedScenario}
             onInputChange={handleInputChange}
+            onCurrencyChange={handleCurrencyChange}
             onCalculate={calculateROI}
           />
         </div>
@@ -208,6 +284,14 @@ function App() {
       {cookieConsent === null && (
         <CookieConsent onConsent={handleCookieConsent} />
       )}
+
+      {/* Lead Capture Modal */}
+      <LeadCapture
+        isOpen={showLeadCapture}
+        onClose={handleLeadCaptureClose}
+        onSubmit={handleLeadCapture}
+        calculationData={results}
+      />
     </div>
   );
 }

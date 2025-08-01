@@ -73,6 +73,18 @@ export const roiCategories = {
     name: 'Sustainability',
     icon: '🌱',
     description: 'Green initiatives and environmental programs'
+  },
+  saas: {
+    id: 'saas',
+    name: 'SaaS Platforms',
+    icon: '📱',
+    description: 'Software-as-a-Service tools and platforms'
+  },
+  fintech: {
+    id: 'fintech',
+    name: 'Financial Services',
+    icon: '💳',
+    description: 'Banking, payments, and financial technology solutions'
   }
 };
 
@@ -562,6 +574,176 @@ export const roiScenarios = {
       monthly: 1500,
       training: 12000,
       customization: 18000
+    }
+  },
+
+  // SaaS Platform scenarios
+  'saas-crm': {
+    category: 'saas',
+    name: 'CRM Platform Implementation',
+    description: 'Deploy customer relationship management SaaS solution',
+    costRange: { min: 20000, max: 80000 },
+    timeframe: { min: 3, max: 8 },
+    expectedROI: { min: 200, max: 400 },
+    paybackPeriod: 9,
+    riskLevel: 'medium',
+    industryBenchmarks: {
+      saas: { roi: 380, implementation: 4 },
+      retail: { roi: 320, implementation: 6 },
+      professional: { roi: 350, implementation: 5 }
+    },
+    benefits: [
+      '30-45% increase in sales productivity',
+      'Improved customer retention rates',
+      'Automated lead nurturing',
+      'Better sales forecasting'
+    ],
+    costs: {
+      licensing: 45000,
+      implementation: 25000,
+      training: 8000,
+      customization: 12000
+    }
+  },
+
+  'saas-marketing': {
+    category: 'saas',
+    name: 'Marketing Automation Platform',
+    description: 'Implement comprehensive marketing automation SaaS',
+    costRange: { min: 35000, max: 120000 },
+    timeframe: { min: 4, max: 10 },
+    expectedROI: { min: 250, max: 450 },
+    paybackPeriod: 8,
+    riskLevel: 'medium',
+    industryBenchmarks: {
+      saas: { roi: 420, implementation: 5 },
+      ecommerce: { roi: 380, implementation: 6 },
+      professional: { roi: 340, implementation: 7 }
+    },
+    benefits: [
+      '40-60% increase in qualified leads',
+      'Improved campaign ROI tracking',
+      'Automated nurture sequences',
+      'Better customer segmentation'
+    ],
+    costs: {
+      platform: 65000,
+      setup: 30000,
+      training: 15000,
+      integration: 20000
+    }
+  },
+
+  'saas-analytics': {
+    category: 'saas',
+    name: 'Business Intelligence Platform',
+    description: 'Deploy advanced analytics and BI SaaS solution',
+    costRange: { min: 25000, max: 90000 },
+    timeframe: { min: 3, max: 7 },
+    expectedROI: { min: 180, max: 380 },
+    paybackPeriod: 10,
+    riskLevel: 'medium',
+    industryBenchmarks: {
+      saas: { roi: 350, implementation: 4 },
+      manufacturing: { roi: 280, implementation: 6 },
+      financial: { roi: 320, implementation: 5 }
+    },
+    benefits: [
+      'Data-driven decision making',
+      '25-40% faster reporting',
+      'Improved operational efficiency',
+      'Better KPI tracking'
+    ],
+    costs: {
+      software: 50000,
+      implementation: 25000,
+      training: 10000,
+      integration: 15000
+    }
+  },
+
+  // Financial Services scenarios
+  'fintech-payments': {
+    category: 'fintech',
+    name: 'Payment Processing System',
+    description: 'Implement modern payment processing and gateway',
+    costRange: { min: 40000, max: 150000 },
+    timeframe: { min: 4, max: 12 },
+    expectedROI: { min: 150, max: 320 },
+    paybackPeriod: 12,
+    riskLevel: 'medium',
+    industryBenchmarks: {
+      financial: { roi: 280, implementation: 8 },
+      ecommerce: { roi: 320, implementation: 6 },
+      retail: { roi: 250, implementation: 9 }
+    },
+    benefits: [
+      'Reduced payment processing fees',
+      'Faster transaction processing',
+      'Enhanced security compliance',
+      'Multi-currency support'
+    ],
+    costs: {
+      platform: 80000,
+      integration: 35000,
+      compliance: 25000,
+      training: 10000
+    }
+  },
+
+  'fintech-fraud': {
+    category: 'fintech',
+    name: 'Fraud Detection System',
+    description: 'Deploy AI-powered fraud prevention and detection',
+    costRange: { min: 60000, max: 200000 },
+    timeframe: { min: 6, max: 14 },
+    expectedROI: { min: 200, max: 500 },
+    paybackPeriod: 10,
+    riskLevel: 'medium',
+    industryBenchmarks: {
+      financial: { roi: 450, implementation: 10 },
+      insurance: { roi: 380, implementation: 12 },
+      ecommerce: { roi: 300, implementation: 8 }
+    },
+    benefits: [
+      '70-90% reduction in fraud losses',
+      'Improved customer trust',
+      'Regulatory compliance',
+      'Real-time risk assessment'
+    ],
+    costs: {
+      software: 120000,
+      implementation: 50000,
+      training: 15000,
+      ongoing: 25000
+    }
+  },
+
+  'fintech-lending': {
+    category: 'fintech',
+    name: 'Digital Lending Platform',
+    description: 'Implement automated loan origination and management',
+    costRange: { min: 80000, max: 250000 },
+    timeframe: { min: 8, max: 16 },
+    expectedROI: { min: 180, max: 400 },
+    paybackPeriod: 14,
+    riskLevel: 'high',
+    industryBenchmarks: {
+      financial: { roi: 350, implementation: 12 },
+      fintech: { roi: 400, implementation: 10 },
+      credit: { roi: 280, implementation: 14 }
+    },
+    benefits: [
+      'Faster loan approval times',
+      'Reduced operational costs',
+      'Better risk assessment',
+      'Improved customer experience'
+    ],
+    costs: {
+      platform: 150000,
+      integration: 60000,
+      compliance: 40000,
+      training: 20000
     }
   }
 };

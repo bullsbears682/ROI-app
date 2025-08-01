@@ -1,4 +1,5 @@
 import React from 'react';
+import { getCurrencyOptions, formatCurrencyCustom, convertROIScenario } from '../utils/currency';
 
 const Calculator = ({ 
   categories, 
@@ -6,9 +7,11 @@ const Calculator = ({
   selectedCategory, 
   selectedScenario, 
   inputs, 
+  currency,
   onCategoryChange, 
   onScenarioChange, 
   onInputChange, 
+  onCurrencyChange,
   onCalculate 
 }) => {
   // Get scenarios for selected category
@@ -72,11 +75,27 @@ const Calculator = ({
         )}
       </div>
 
+      {/* Currency Selection */}
+      <div className="form-group">
+        <label className="form-label">Currency</label>
+        <select 
+          className="form-select"
+          value={currency}
+          onChange={(e) => onCurrencyChange(e.target.value)}
+        >
+          {getCurrencyOptions().map(option => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+      </div>
+
       {/* Investment Amount */}
       <div className="form-group">
         <label className="form-label">Investment Amount</label>
         <div className="input-group">
-          <span className="input-prefix">$</span>
+          <span className="input-prefix">{formatCurrencyCustom(0, currency).replace(/\d/g, '').replace(',', '')}</span>
           <input
             type="number"
             className="form-input"

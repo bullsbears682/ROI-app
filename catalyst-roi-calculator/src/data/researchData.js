@@ -222,6 +222,82 @@ export const scenarioResearch = {
       paybackPeriod: "8-12 months"
     },
     methodology: "Salesforce ROI Research 2023 and Gartner CRM Implementation Studies"
+  },
+  'saas-crm': {
+    sources: ['salesforce', 'gartner', 'forrester'],
+    caseStudies: [
+      {
+        company: "Growing SaaS Company",
+        industry: "Technology",
+        investment: 55000,
+        roi: 380,
+        timeframe: 4,
+        description: "45% increase in sales productivity, improved customer retention"
+      }
+    ],
+    benchmarks: {
+      averageROI: "200-400%",
+      implementationTime: "3-8 months",
+      paybackPeriod: "9-12 months"
+    },
+    methodology: "Salesforce State of Sales Report 2023 and Gartner CRM Magic Quadrant"
+  },
+  'saas-marketing': {
+    sources: ['hubspot', 'forrester', 'salesforce'],
+    caseStudies: [
+      {
+        company: "B2B Software Company",
+        industry: "Technology",
+        investment: 85000,
+        roi: 420,
+        timeframe: 5,
+        description: "60% increase in qualified leads, 40% improvement in campaign ROI"
+      }
+    ],
+    benchmarks: {
+      averageROI: "250-450%",
+      implementationTime: "4-10 months",
+      paybackPeriod: "8-12 months"
+    },
+    methodology: "HubSpot Marketing Automation Report 2023 and Forrester Marketing Technology Study"
+  },
+  'fintech-payments': {
+    sources: ['forrester', 'mckinsey', 'aws'],
+    caseStudies: [
+      {
+        company: "Online Retailer",
+        industry: "E-commerce",
+        investment: 95000,
+        roi: 320,
+        timeframe: 6,
+        description: "15% reduction in processing fees, 30% faster transaction times"
+      }
+    ],
+    benchmarks: {
+      averageROI: "150-320%",
+      implementationTime: "4-12 months",
+      paybackPeriod: "12-18 months"
+    },
+    methodology: "McKinsey Global Payments Report 2023 and Forrester Payment Processing Study"
+  },
+  'fintech-fraud': {
+    sources: ['gartner', 'forrester', 'mckinsey'],
+    caseStudies: [
+      {
+        company: "Regional Bank",
+        industry: "Financial Services",
+        investment: 130000,
+        roi: 450,
+        timeframe: 10,
+        description: "85% reduction in fraud losses, improved regulatory compliance"
+      }
+    ],
+    benchmarks: {
+      averageROI: "200-500%",
+      implementationTime: "6-14 months",
+      paybackPeriod: "10-15 months"
+    },
+    methodology: "Gartner Fraud Detection Study 2023 and McKinsey Financial Crime Prevention Report"
   }
 };
 
