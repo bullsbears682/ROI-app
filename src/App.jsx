@@ -723,11 +723,13 @@ function App() {
                     }}
                   >
                     <option value="">Select a scenario</option>
-                    {roiCategories[selectedCategory]?.scenarios.map((scenario, index) => (
-                      <option key={scenario.id} value={scenario.id}>
-                        {scenario.description}
-                      </option>
-                    ))}
+                    {Object.entries(roiScenarios)
+                      .filter(([key, scenario]) => scenario.category === selectedCategory)
+                      .map(([key, scenario]) => (
+                        <option key={key} value={key}>
+                          {scenario.description}
+                        </option>
+                      ))}
                   </select>
                 </div>
               )}
