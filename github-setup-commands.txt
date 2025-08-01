@@ -1,0 +1,20 @@
+# 📋 GITHUB SETUP COMMANDS
+# Replace YOUR-USERNAME with your actual GitHub username
+
+# 1. Create repository on GitHub:
+#    https://github.com/new
+#    Name: catalyst-roi-calculator
+#    Description: Professional ROI Calculator - Enterprise Ready SPA
+#    Public: ✅ (for buyer transparency)
+#    Don't initialize with README
+
+# 2. Add remote (replace YOUR-USERNAME):
+git remote add origin https://github.com/YOUR-USERNAME/catalyst-roi-calculator.git
+
+# 3. Push to GitHub:
+git push -u origin main
+
+# 🎉 Your repository will be live at:
+# https://github.com/YOUR-USERNAME/catalyst-roi-calculator
+
+# 🔗 Share this URL with potential buyers!
