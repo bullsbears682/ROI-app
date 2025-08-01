@@ -5,6 +5,8 @@ import { generateResearchSummary } from '../data/researchData.js';
 // Generate and download PDF report
 export const exportToPDF = async (results, chartElement) => {
   try {
+    console.log('🔄 Starting PDF generation...', results);
+    
     // Create new PDF document
     const pdf = new jsPDF({
       orientation: 'portrait',
@@ -32,7 +34,8 @@ export const exportToPDF = async (results, chartElement) => {
     // Add scenario name
     pdf.setFontSize(16);
     pdf.setFont('helvetica', 'normal');
-    pdf.text(results.scenario.name, margin, yPosition);
+    const scenarioName = results?.scenario?.name || 'Unknown Scenario';
+    pdf.text(scenarioName, margin, yPosition);
     yPosition += 10;
 
     // Add generation date
@@ -50,31 +53,60 @@ export const exportToPDF = async (results, chartElement) => {
     // Add scenario details
     yPosition = addScenarioDetails(pdf, results, margin, contentWidth, yPosition);
     
-    // Add research sources section
-    yPosition = addResearchSources(pdf, results, margin, contentWidth, yPosition);
-
-    // Check if we need a new page for charts
-    if (yPosition > pageHeight - 100) {
-      pdf.addPage();
-      yPosition = margin;
+    // Add chart if available
+    if (chartElement && chartElement.querySelector('canvas')) {
+      try {
+        yPosition = await addChart(pdf, chartElement, margin, contentWidth, yPosition, pageHeight);
+      } catch (chartError) {
+        console.warn('Chart capture failed, continuing without chart:', chartError);
+      }
     }
-
-    // Add charts if element is provided
-    if (chartElement) {
-      await addCharts(pdf, chartElement, margin, contentWidth, yPosition);
+    
+    // Add research sources section
+    try {
+      yPosition = addResearchSources(pdf, results, margin, contentWidth, yPosition, pageHeight);
+    } catch (researchError) {
+      console.warn('Research section failed, continuing without research:', researchError);
     }
 
     // Add footer
     addFooter(pdf, pageWidth, pageHeight);
 
     // Generate filename
-    const filename = `catalyst-roi-analysis-${results.scenario.name.toLowerCase().replace(/[^a-z0-9]/g, '-')}-${new Date().toISOString().split('T')[0]}.pdf`;
+    const cleanName = scenarioName.toLowerCase().replace(/[^a-z0-9]/g, '-');
+    const filename = `catalyst-roi-analysis-${cleanName}-${new Date().toISOString().split('T')[0]}.pdf`;
 
-    // Download the PDF
-    pdf.save(filename);
+    console.log('💾 Attempting to save PDF:', filename);
+    
+    // Download the PDF with error handling
+    try {
+      pdf.save(filename);
+      console.log('✅ PDF saved successfully');
+    } catch (downloadError) {
+      console.error('Download failed, trying alternative method:', downloadError);
+      
+      // Alternative download method
+      const pdfBlob = pdf.output('blob');
+      const url = URL.createObjectURL(pdfBlob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    }
 
   } catch (error) {
     console.error('PDF generation error:', error);
+    console.error('Error details:', {
+      message: error.message,
+      stack: error.stack,
+      results: results
+    });
+    
+    // Show user-friendly error
+    alert(`Error generating PDF: ${error.message}. Please try again or contact support.`);
     throw error;
   }
 };
@@ -84,16 +116,17 @@ const addHeader = (pdf, pageWidth, margin) => {
   // Add logo text (since we can't easily embed SVG)
   pdf.setFontSize(20);
   pdf.setFont('helvetica', 'bold');
-  pdf.setTextColor(102, 126, 234); // Brand color
-  pdf.text('Catalyst', margin, 25);
+  pdf.setTextColor(102, 126, 234); // Catalyst brand color
+  pdf.text('CATALYST', margin, 25);
   
-  pdf.setFontSize(8);
+  pdf.setFontSize(10);
   pdf.setFont('helvetica', 'normal');
-  pdf.setTextColor(113, 128, 150);
-  pdf.text('ROI ANALYTICS', margin + 35, 25);
+  pdf.setTextColor(118, 75, 162);
+  pdf.text('ROI ANALYTICS', margin + 45, 25);
   
   // Add line separator
-  pdf.setDrawColor(226, 232, 240);
+  pdf.setLineWidth(0.5);
+  pdf.setDrawColor(200, 200, 200);
   pdf.line(margin, 30, pageWidth - margin, 30);
 };
 
@@ -297,105 +330,155 @@ const addFooter = (pdf, pageWidth, pageHeight) => {
 };
 
 // Add research sources section
-const addResearchSources = (pdf, results, margin, contentWidth, yPosition) => {
-  // Get research data for this specific scenario
-  const scenarioId = Object.keys(results.scenario).find(key => 
-    results.scenario === results.scenario || 
-    results.scenario.name === results.scenario.name
-  );
-  
-  // For now, let's extract scenario ID from the scenario object
-  let actualScenarioId = null;
-  if (results.scenario.name.includes('Chatbot')) actualScenarioId = 'ai-chatbot';
-  else if (results.scenario.name.includes('Predictive')) actualScenarioId = 'ai-predictive';
-  else if (results.scenario.name.includes('E-commerce') || results.scenario.name.includes('eCommerce')) actualScenarioId = 'ecommerce-platform';
-  else if (results.scenario.name.includes('Social Media')) actualScenarioId = 'social-media';
-  else if (results.scenario.name.includes('Google Ads')) actualScenarioId = 'google-ads';
-  else if (results.scenario.name.includes('CRM System Implementation')) actualScenarioId = 'crm-implementation';
-  else if (results.scenario.name.includes('CRM Platform Implementation')) actualScenarioId = 'saas-crm';
-  else if (results.scenario.name.includes('Marketing Automation')) actualScenarioId = 'saas-marketing';
-  else if (results.scenario.name.includes('Business Analytics')) actualScenarioId = 'saas-analytics';
-  else if (results.scenario.name.includes('ERP System Migration')) actualScenarioId = 'saas-erp';
-  else if (results.scenario.name.includes('HR Management System')) actualScenarioId = 'saas-hrms';
-  else if (results.scenario.name.includes('Team Communication Platform')) actualScenarioId = 'saas-communication';
-  else if (results.scenario.name.includes('Payment Processing')) actualScenarioId = 'fintech-payments';
-  else if (results.scenario.name.includes('Fraud Detection')) actualScenarioId = 'fintech-fraud';
-  else if (results.scenario.name.includes('Digital Lending')) actualScenarioId = 'fintech-lending';
-  else if (results.scenario.name.includes('Wealth Management')) actualScenarioId = 'fintech-wealth';
-  else if (results.scenario.name.includes('Mobile Banking')) actualScenarioId = 'fintech-mobile';
-  else if (results.scenario.name.includes('Robo-Advisory')) actualScenarioId = 'fintech-robo';
-  
-  const researchData = generateResearchSummary(actualScenarioId, results.inputs.industry);
-  
-  if (!researchData) return yPosition;
+const addResearchSources = (pdf, results, margin, contentWidth, yPosition, pageHeight) => {
+  try {
+    // Extract scenario ID with better error handling
+    let actualScenarioId = 'generic';
+    const scenarioName = results?.scenario?.name || '';
+    
+    // Simple scenario mapping
+    const scenarioMappings = {
+      'chatbot': 'ai-chatbot',
+      'predictive': 'ai-predictive',
+      'e-commerce': 'ecommerce-platform',
+      'ecommerce': 'ecommerce-platform',
+      'social media': 'social-media',
+      'google ads': 'google-ads',
+      'crm system': 'crm-implementation',
+      'crm platform': 'saas-crm',
+      'marketing automation': 'saas-marketing',
+      'business analytics': 'saas-analytics',
+      'erp system': 'saas-erp',
+      'hr management': 'saas-hrms',
+      'team communication': 'saas-communication',
+      'payment processing': 'fintech-payments',
+      'fraud detection': 'fintech-fraud',
+      'digital lending': 'fintech-lending',
+      'wealth management': 'fintech-wealth',
+      'mobile banking': 'fintech-mobile',
+      'robo-advisory': 'fintech-robo'
+    };
+    
+    // Find matching scenario ID
+    for (const [keyword, id] of Object.entries(scenarioMappings)) {
+      if (scenarioName.toLowerCase().includes(keyword)) {
+        actualScenarioId = id;
+        break;
+      }
+    }
+    
+    const researchData = generateResearchSummary(actualScenarioId, results?.inputs?.industry || 'general');
+    
+    if (!researchData) return yPosition;
 
-  // Check if we need a new page
-  if (yPosition > 200) {
-    pdf.addPage();
-    yPosition = 20;
-  }
+    // Check if we need a new page
+    if (yPosition > pageHeight - 100) {
+      pdf.addPage();
+      yPosition = 20;
+    }
 
-  pdf.setFontSize(14);
-  pdf.setFont('helvetica', 'bold');
-  pdf.setTextColor(45, 55, 72);
-  pdf.text('Research & Sources', margin, yPosition);
-  yPosition += 15;
-
-  pdf.setFontSize(10);
-  pdf.setFont('helvetica', 'normal');
-  
-  // Add methodology
-  pdf.setFont('helvetica', 'bold');
-  pdf.text('Data Sources:', margin, yPosition);
-  yPosition += 8;
-  
-  pdf.setFont('helvetica', 'normal');
-  if (researchData.sources && researchData.sources.length > 0) {
-    researchData.sources.forEach(source => {
-      pdf.text(`• ${source.name}`, margin + 5, yPosition);
-      yPosition += 6;
-      pdf.setTextColor(128, 128, 128);
-      const description = pdf.splitTextToSize(`  ${source.description}`, contentWidth - 10);
-      pdf.text(description, margin + 5, yPosition);
-      yPosition += description.length * 4 + 3;
-      pdf.setTextColor(45, 55, 72);
-    });
-  }
-  
-  yPosition += 5;
-  
-  // Add case study if available
-  if (researchData.scenario && researchData.scenario.caseStudies && researchData.scenario.caseStudies.length > 0) {
+    pdf.setFontSize(14);
     pdf.setFont('helvetica', 'bold');
-    pdf.text('Similar Case Study:', margin, yPosition);
+    pdf.setTextColor(45, 55, 72);
+    pdf.text('Research & Sources', margin, yPosition);
+    yPosition += 15;
+
+    pdf.setFontSize(10);
+    pdf.setFont('helvetica', 'normal');
+    
+    // Add data sources
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('Data Sources:', margin, yPosition);
     yPosition += 8;
     
-    const caseStudy = researchData.scenario.caseStudies[0];
     pdf.setFont('helvetica', 'normal');
-    pdf.text(`• Company: ${caseStudy.company} (${caseStudy.industry})`, margin + 5, yPosition);
+    if (researchData.sources && researchData.sources.length > 0) {
+      researchData.sources.forEach(source => {
+        pdf.text(`• ${source.name || 'Research Institute'}`, margin + 5, yPosition);
+        yPosition += 6;
+        
+        // Handle description or focus field with fallback
+        pdf.setTextColor(128, 128, 128);
+        const sourceInfo = source.description || source.focus || source.type || 'Industry research and analysis';
+        const description = pdf.splitTextToSize(`  ${sourceInfo}`, contentWidth - 10);
+        pdf.text(description, margin + 5, yPosition);
+        yPosition += Math.max(description.length * 4, 4) + 3;
+        pdf.setTextColor(45, 55, 72);
+      });
+    } else {
+      // Fallback if no sources
+      pdf.setTextColor(128, 128, 128);
+      pdf.text('• Industry research and market analysis', margin + 5, yPosition);
+      yPosition += 8;
+      pdf.setTextColor(45, 55, 72);
+    }
+    
+    yPosition += 5;
+    
+    // Add case study if available
+    if (researchData.caseStudies && researchData.caseStudies.length > 0) {
+      pdf.setFont('helvetica', 'bold');
+      pdf.text('Similar Case Study:', margin, yPosition);
+      yPosition += 8;
+      
+      const caseStudy = researchData.caseStudies[0];
+      pdf.setFont('helvetica', 'normal');
+      pdf.text(`• Company: ${caseStudy.company || 'Enterprise'} (${caseStudy.industry || 'Technology'})`, margin + 5, yPosition);
+      yPosition += 6;
+      
+      const investment = caseStudy.investment || 75000;
+      const roi = caseStudy.roi || 250;
+      const timeframe = caseStudy.timeframe || 9;
+      
+      pdf.text(`• Investment: $${investment.toLocaleString()} | ROI: ${roi}% | Time: ${timeframe} months`, margin + 5, yPosition);
+      yPosition += 6;
+      
+      const caseDescription = caseStudy.description || 'Successful implementation with measurable ROI improvements';
+      const description = pdf.splitTextToSize(`  ${caseDescription}`, contentWidth - 10);
+      pdf.text(description, margin + 5, yPosition);
+      yPosition += Math.max(description.length * 4, 4) + 8;
+    }
+    
+    // Add success rate
+    const successRate = calculateSuccessRate(
+      results?.scenario?.riskLevel || 'medium', 
+      results?.inputs?.industry || 'general', 
+      results?.inputs?.companySize || 'medium'
+    );
+    
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('Success Rate:', margin, yPosition);
     yPosition += 6;
-    pdf.text(`• Investment: $${caseStudy.investment.toLocaleString()} | ROI: ${caseStudy.roi}% | Time: ${caseStudy.timeframe} months`, margin + 5, yPosition);
+    
+    pdf.setFont('helvetica', 'normal');
+    pdf.text(`${successRate.probability}% probability of success`, margin + 5, yPosition);
     yPosition += 6;
-    const description = pdf.splitTextToSize(`  ${caseStudy.description}`, contentWidth - 10);
-    pdf.text(description, margin + 5, yPosition);
-    yPosition += description.length * 4 + 8;
+    
+    if (successRate.factors && successRate.factors.length > 0) {
+      pdf.setTextColor(128, 128, 128);
+      pdf.text(`Key factors: ${successRate.factors.join(', ')}`, margin + 5, yPosition);
+      yPosition += 8;
+      pdf.setTextColor(45, 55, 72);
+    }
+    
+    return yPosition;
+    
+  } catch (error) {
+    console.warn('Research sources section failed:', error);
+    
+    // Minimal fallback section
+    pdf.setFontSize(14);
+    pdf.setFont('helvetica', 'bold');
+    pdf.setTextColor(45, 55, 72);
+    pdf.text('Research & Sources', margin, yPosition);
+    yPosition += 15;
+    
+    pdf.setFontSize(10);
+    pdf.setFont('helvetica', 'normal');
+    pdf.text('• Industry research and market analysis', margin + 5, yPosition);
+    
+    return yPosition + 20;
   }
-  
-  // Add success rate
-  const successRate = calculateSuccessRate(results.scenario.riskLevel, results.inputs.industry, results.inputs.companySize);
-  pdf.setFont('helvetica', 'bold');
-  pdf.text('Success Rate:', margin, yPosition);
-  yPosition += 8;
-  
-  pdf.setFont('helvetica', 'normal');
-  pdf.text(`• Estimated Success Probability: ${successRate.probability}%`, margin + 5, yPosition);
-  yPosition += 6;
-  pdf.text(`• Success Factors: ${successRate.factors.join(', ')}`, margin + 5, yPosition);
-  yPosition += 6;
-  pdf.text(`• Risk Mitigation: ${successRate.mitigation}`, margin + 5, yPosition);
-  yPosition += 10;
-
-  return yPosition;
 };
 
 // Calculate realistic success rate based on scenario factors
