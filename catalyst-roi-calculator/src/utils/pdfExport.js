@@ -5,6 +5,8 @@ import { generateResearchSummary } from '../data/researchData.js';
 // Generate and download PDF report
 export const exportToPDF = async (results, chartElement) => {
   try {
+    console.log('🔄 Starting PDF generation...', results);
+    
     // Create new PDF document
     const pdf = new jsPDF({
       orientation: 'portrait',
@@ -32,7 +34,8 @@ export const exportToPDF = async (results, chartElement) => {
     // Add scenario name
     pdf.setFontSize(16);
     pdf.setFont('helvetica', 'normal');
-    pdf.text(results.scenario.name, margin, yPosition);
+    const scenarioName = results?.scenario?.name || 'Unknown Scenario';
+    pdf.text(scenarioName, margin, yPosition);
     yPosition += 10;
 
     // Add generation date
@@ -50,31 +53,60 @@ export const exportToPDF = async (results, chartElement) => {
     // Add scenario details
     yPosition = addScenarioDetails(pdf, results, margin, contentWidth, yPosition);
     
-    // Add research sources section
-    yPosition = addResearchSources(pdf, results, margin, contentWidth, yPosition);
-
-    // Check if we need a new page for charts
-    if (yPosition > pageHeight - 100) {
-      pdf.addPage();
-      yPosition = margin;
+    // Add chart if available
+    if (chartElement && chartElement.querySelector('canvas')) {
+      try {
+        yPosition = await addChart(pdf, chartElement, margin, contentWidth, yPosition, pageHeight);
+      } catch (chartError) {
+        console.warn('Chart capture failed, continuing without chart:', chartError);
+      }
     }
-
-    // Add charts if element is provided
-    if (chartElement) {
-      await addCharts(pdf, chartElement, margin, contentWidth, yPosition);
+    
+    // Add research sources section
+    try {
+      yPosition = addResearchSources(pdf, results, margin, contentWidth, yPosition, pageHeight);
+    } catch (researchError) {
+      console.warn('Research section failed, continuing without research:', researchError);
     }
 
     // Add footer
     addFooter(pdf, pageWidth, pageHeight);
 
     // Generate filename
-    const filename = `catalyst-roi-analysis-${results.scenario.name.toLowerCase().replace(/[^a-z0-9]/g, '-')}-${new Date().toISOString().split('T')[0]}.pdf`;
+    const cleanName = scenarioName.toLowerCase().replace(/[^a-z0-9]/g, '-');
+    const filename = `catalyst-roi-analysis-${cleanName}-${new Date().toISOString().split('T')[0]}.pdf`;
 
-    // Download the PDF
-    pdf.save(filename);
+    console.log('💾 Attempting to save PDF:', filename);
+    
+    // Download the PDF with error handling
+    try {
+      pdf.save(filename);
+      console.log('✅ PDF saved successfully');
+    } catch (downloadError) {
+      console.error('Download failed, trying alternative method:', downloadError);
+      
+      // Alternative download method
+      const pdfBlob = pdf.output('blob');
+      const url = URL.createObjectURL(pdfBlob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    }
 
   } catch (error) {
     console.error('PDF generation error:', error);
+    console.error('Error details:', {
+      message: error.message,
+      stack: error.stack,
+      results: results
+    });
+    
+    // Show user-friendly error
+    alert(`Error generating PDF: ${error.message}. Please try again or contact support.`);
     throw error;
   }
 };
@@ -84,16 +116,17 @@ const addHeader = (pdf, pageWidth, margin) => {
   // Add logo text (since we can't easily embed SVG)
   pdf.setFontSize(20);
   pdf.setFont('helvetica', 'bold');
-  pdf.setTextColor(102, 126, 234); // Brand color
-  pdf.text('Catalyst', margin, 25);
+  pdf.setTextColor(102, 126, 234); // Catalyst brand color
+  pdf.text('CATALYST', margin, 25);
   
-  pdf.setFontSize(8);
+  pdf.setFontSize(10);
   pdf.setFont('helvetica', 'normal');
-  pdf.setTextColor(113, 128, 150);
-  pdf.text('ROI ANALYTICS', margin + 35, 25);
+  pdf.setTextColor(118, 75, 162);
+  pdf.text('ROI ANALYTICS', margin + 45, 25);
   
   // Add line separator
-  pdf.setDrawColor(226, 232, 240);
+  pdf.setLineWidth(0.5);
+  pdf.setDrawColor(200, 200, 200);
   pdf.line(margin, 30, pageWidth - margin, 30);
 };
 
