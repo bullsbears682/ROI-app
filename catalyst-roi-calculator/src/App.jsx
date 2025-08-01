@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Header from './components/Header'
 import Calculator from './components/Calculator'
 import Results from './components/Results'
+import Scenarios from './components/Scenarios'
 import CookieConsent from './components/CookieConsent'
 import LeadCapture from './components/LeadCapture'
 import { roiCategories, roiScenarios } from './data/roiScenarios'
@@ -64,6 +65,9 @@ const calculateSuccessRate = (riskLevel, industry, companySize) => {
 };
 
 function App() {
+  // Navigation state
+  const [currentPage, setCurrentPage] = useState('calculator');
+
   // Main application state
   const [selectedCategory, setSelectedCategory] = useState('ai');
   const [selectedScenario, setSelectedScenario] = useState('ai-chatbot');
@@ -238,6 +242,32 @@ function App() {
     }
   };
 
+  // Handle navigation
+  const handleNavigation = (page) => {
+    setCurrentPage(page);
+    // Track navigation
+    if (cookieConsent?.analytics) {
+      trackUserInteraction('navigation', { page, timestamp: Date.now() });
+    }
+  };
+
+  // Handle scenario selection from Scenarios page
+  const handleScenarioSelect = (scenarioKey, categoryKey) => {
+    setSelectedScenario(scenarioKey);
+    setSelectedCategory(categoryKey);
+    setCurrentPage('calculator');
+    setShowResults(false);
+    // Track scenario selection
+    if (cookieConsent?.analytics) {
+      trackUserInteraction('scenario_select', { 
+        scenario: scenarioKey, 
+        category: categoryKey,
+        source: 'scenarios_page',
+        timestamp: Date.now() 
+      });
+    }
+  };
+
   // Handle cookie consent
   const handleCookieConsent = (consent) => {
     setCookieConsent(consent);
@@ -247,38 +277,62 @@ function App() {
     initAnalytics(consent);
   };
 
+  // Render current page
+  const renderCurrentPage = () => {
+    switch (currentPage) {
+      case 'scenarios':
+        return <Scenarios onSelectScenario={handleScenarioSelect} />;
+      case 'about':
+        return (
+          <div className="about-page">
+            <div style={{ padding: '2rem', textAlign: 'center' }}>
+              <h1>About Catalyst</h1>
+              <p>Professional ROI Calculator coming soon...</p>
+            </div>
+          </div>
+        );
+      default:
+        return (
+          <main className="main-content">
+            <div className="calculator-section">
+              <Calculator
+                categories={roiCategories}
+                scenarios={roiScenarios}
+                selectedCategory={selectedCategory}
+                selectedScenario={selectedScenario}
+                inputs={calculationInputs}
+                currency={currency}
+                onCategoryChange={setSelectedCategory}
+                onScenarioChange={setSelectedScenario}
+                onInputChange={handleInputChange}
+                onCurrencyChange={handleCurrencyChange}
+                onCalculate={calculateROI}
+              />
+            </div>
+
+            <div className="results-section">
+              <Results
+                results={results}
+                showResults={showResults}
+                onExportPDF={() => {
+                  // PDF export will be implemented in Results component
+                  console.log('Exporting PDF...');
+                }}
+              />
+            </div>
+          </main>
+        );
+    }
+  };
+
   return (
     <div className="app">
-      <Header />
+      <Header 
+        currentPage={currentPage} 
+        onNavigate={handleNavigation}
+      />
       
-      <main className="main-content">
-        <div className="calculator-section">
-          <Calculator
-            categories={roiCategories}
-            scenarios={roiScenarios}
-            selectedCategory={selectedCategory}
-            selectedScenario={selectedScenario}
-            inputs={calculationInputs}
-            currency={currency}
-            onCategoryChange={setSelectedCategory}
-            onScenarioChange={setSelectedScenario}
-            onInputChange={handleInputChange}
-            onCurrencyChange={handleCurrencyChange}
-            onCalculate={calculateROI}
-          />
-        </div>
-
-        <div className="results-section">
-          <Results
-            results={results}
-            showResults={showResults}
-            onExportPDF={() => {
-              // PDF export will be implemented in Results component
-              console.log('Exporting PDF...');
-            }}
-          />
-        </div>
-      </main>
+      {renderCurrentPage()}
 
       {/* Cookie consent banner */}
       {cookieConsent === null && (

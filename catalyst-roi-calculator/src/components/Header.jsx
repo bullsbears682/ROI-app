@@ -1,10 +1,17 @@
 import React from 'react';
 
-const Header = () => {
+const Header = ({ currentPage = 'calculator', onNavigate }) => {
+  const handleNavClick = (page, e) => {
+    e.preventDefault();
+    if (onNavigate) {
+      onNavigate(page);
+    }
+  };
+
   return (
     <header className="header">
       <div className="header-content">
-        <div className="logo">
+        <div className="logo" onClick={() => handleNavClick('calculator')} style={{ cursor: 'pointer' }}>
           <div className="logo-icon">
             {/* Inline SVG version of our logo for better performance */}
             <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
@@ -29,9 +36,24 @@ const Header = () => {
 
         <nav className="header-nav">
           <div className="nav-links">
-            <a href="#calculator" className="nav-link active">Calculator</a>
-            <a href="#scenarios" className="nav-link">Scenarios</a>
-            <a href="#about" className="nav-link">About</a>
+            <button 
+              onClick={(e) => handleNavClick('calculator', e)} 
+              className={`nav-link ${currentPage === 'calculator' ? 'active' : ''}`}
+            >
+              Calculator
+            </button>
+            <button 
+              onClick={(e) => handleNavClick('scenarios', e)} 
+              className={`nav-link ${currentPage === 'scenarios' ? 'active' : ''}`}
+            >
+              Scenarios
+            </button>
+            <button 
+              onClick={(e) => handleNavClick('about', e)} 
+              className={`nav-link ${currentPage === 'about' ? 'active' : ''}`}
+            >
+              About
+            </button>
           </div>
           <button className="btn btn-primary header-cta">
             Get Started
