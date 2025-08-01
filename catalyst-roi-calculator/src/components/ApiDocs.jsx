@@ -8,57 +8,148 @@ const ApiDocs = () => {
   const [loading, setLoading] = useState(false);
   const [apiKey, setApiKey] = useState('demo_key_hubspot_trial');
 
-  // Simulate API testing
+  // Real API base URL
+  const API_BASE_URL = process.env.NODE_ENV === 'production' 
+    ? 'https://your-api-domain.com' 
+    : 'http://localhost:3001';
+
+  // Make real API calls
   const testEndpoint = async (endpointKey) => {
     setLoading(true);
     setTestResult(null);
     
-    // Simulate API call delay
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    const mockResults = {
-      calculate: {
-        status: 200,
-        responseTime: '127ms',
-        result: {
-          success: true,
-          roiPercentage: 285,
-          paybackPeriod: 8,
-          projectedSavings: 142500,
-          projectedRevenue: 285000,
-          successRate: 82,
-          riskLevel: 'medium',
-          leadScore: 85,
-          timestamp: new Date().toISOString()
-        }
-      },
-      scenarios: {
-        status: 200,
-        responseTime: '89ms',
-        result: {
-          success: true,
-          total: 85,
-          filtered: 12,
-          scenarios: [
-            { id: 'ai-chatbot', name: 'AI Chatbot/Customer Service', expectedROI: '180-340%' },
-            { id: 'marketing-automation', name: 'Marketing Automation', expectedROI: '220-450%' }
-          ]
-        }
-      },
-      leads: {
-        status: 201,
-        responseTime: '156ms',
-        result: {
-          success: true,
-          leadId: 'lead_' + Math.random().toString(36).substr(2, 9),
-          leadScore: 89,
-          qualification: 'enterprise',
-          nextSteps: ['Schedule technical demo', 'Send ROI case studies', 'Prepare custom integration plan']
-        }
-      }
-    };
+    try {
+      const startTime = Date.now();
+      let response;
+      
+      const headers = {
+        'Content-Type': 'application/json',
+        'X-API-Key': apiKey
+      };
 
-    setTestResult(mockResults[endpointKey] || mockResults.calculate);
+      switch (endpointKey) {
+        case 'calculate':
+          response = await fetch(`${API_BASE_URL}/api/roi/calculate`, {
+            method: 'POST',
+            headers,
+            body: JSON.stringify({
+              scenario: 'ai-chatbot',
+              investment: 50000,
+              timeframe: 12,
+              industry: 'saas',
+              companySize: 'medium',
+              currency: 'USD',
+              customFactors: {
+                teamSize: 25,
+                currentTools: ['zendesk', 'intercom'],
+                supportVolume: 1200
+              }
+            })
+          });
+          break;
+          
+        case 'scenarios':
+          const params = new URLSearchParams({
+            industry: 'saas',
+            budget_min: '10000',
+            budget_max: '100000',
+            risk_level: 'medium',
+            ai_recommend: 'true'
+          });
+          response = await fetch(`${API_BASE_URL}/api/scenarios?${params}`, {
+            method: 'GET',
+            headers
+          });
+          break;
+          
+        case 'leads':
+          response = await fetch(`${API_BASE_URL}/api/leads`, {
+            method: 'POST',
+            headers,
+            body: JSON.stringify({
+              firstName: 'John',
+              lastName: 'Smith',
+              email: 'john.smith@techcorp.com',
+              company: 'Tech Corp',
+              jobTitle: 'VP of Marketing',
+              industry: 'saas',
+              companySize: 'medium',
+              revenue: '10M-50M',
+              calculationData: {
+                scenario: 'ai-chatbot',
+                roiPercentage: 285,
+                investment: 50000
+              },
+              source: 'api_testing',
+              utm_campaign: 'hubspot_trial'
+            })
+          });
+          break;
+          
+        case 'analytics':
+          const analyticsParams = new URLSearchParams({
+            date_from: '2024-12-01',
+            date_to: '2024-12-19',
+            group_by: 'day'
+          });
+          response = await fetch(`${API_BASE_URL}/api/analytics?${analyticsParams}`, {
+            method: 'GET',
+            headers
+          });
+          break;
+          
+        case 'branding':
+          response = await fetch(`${API_BASE_URL}/api/branding/hubspot`, {
+            method: 'GET',
+            headers
+          });
+          break;
+          
+        case 'webhooks':
+          response = await fetch(`${API_BASE_URL}/api/webhooks`, {
+            method: 'POST',
+            headers,
+            body: JSON.stringify({
+              url: 'https://api.hubspot.com/webhooks/roi-events',
+              events: ['calculation.completed', 'lead.created', 'lead.qualified'],
+              secret: 'webhook_secret_key',
+              retry_policy: {
+                max_retries: 3,
+                backoff: 'exponential'
+              }
+            })
+          });
+          break;
+          
+        default:
+          throw new Error('Unknown endpoint');
+      }
+
+      const responseTime = Date.now() - startTime;
+      const result = await response.json();
+      
+      setTestResult({
+        status: response.status,
+        responseTime: `${responseTime}ms`,
+        result: result
+      });
+      
+    } catch (error) {
+      console.error('API Test Error:', error);
+      setTestResult({
+        status: error.message.includes('fetch') ? 'Connection Error' : 500,
+        responseTime: 'N/A',
+        result: {
+          error: error.message.includes('fetch') 
+            ? 'Could not connect to API server. Make sure the server is running on port 3001.' 
+            : error.message,
+          suggestion: error.message.includes('fetch') 
+            ? 'Run: cd catalyst-roi-calculator/api && npm install && npm start'
+            : 'Check the API key and request format'
+        }
+      });
+    }
+    
     setLoading(false);
   };
 
@@ -265,8 +356,8 @@ const ApiDocs = () => {
         success: true,
         branding: {
           name: 'HubSpot ROI Calculator',
-          logo: 'https://cdn.hubspot.com/logo.svg',
-          favicon: 'https://cdn.hubspot.com/favicon.ico',
+          logo: 'https://cdn.brandfetch.io/hubspot.com/w/400/h/400/theme/dark/icon.jpeg?k=bfHSJFAPEG',
+          favicon: 'https://www.hubspot.com/favicon.ico',
           colors: {
             primary: '#ff5c35',
             secondary: '#0091ae',
@@ -327,7 +418,7 @@ const ApiDocs = () => {
   };
 
   const authExamples = {
-    apiKey: 'X-API-Key: hubspot_live_1a2b3c4d5e6f7g8h9i0j',
+    apiKey: 'X-API-Key: demo_key_hubspot_trial',
     bearer: 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
     domain: 'Origin: https://app.hubspot.com',
     enterprise: 'X-Enterprise-Token: ent_hubspot_premium_access_2024'
@@ -339,7 +430,7 @@ import { CatalystAPI, RealTimeAnalytics } from '@catalyst/enterprise-sdk';
 
 const catalyst = new CatalystAPI({
   apiKey: 'your_enterprise_key',
-  baseURL: 'https://api.catalyst-roi.com',
+  baseURL: '${API_BASE_URL}',
   environment: 'production',
   retryPolicy: { maxRetries: 3, backoff: 'exponential' }
 });
@@ -369,7 +460,7 @@ import asyncio
 
 client = CatalystAPI(
     api_key='your_enterprise_key',
-    base_url='https://api.catalyst-roi.com',
+    base_url='${API_BASE_URL}',
     timeout=30,
     retry_config={'max_retries': 3, 'backoff_factor': 1.5}
 )
@@ -401,8 +492,8 @@ results = await process_roi_batch(scenarios)
 print(f"Batch processed: {len(results)} calculations")`,
 
     curl: `# Advanced cURL with Enterprise Features
-curl -X POST https://api.catalyst-roi.com/api/roi/calculate \\
-  -H "X-API-Key: your_enterprise_key" \\
+curl -X POST ${API_BASE_URL}/api/roi/calculate \\
+  -H "X-API-Key: demo_key_hubspot_trial" \\
   -H "X-Enterprise-Token: ent_premium_access" \\
   -H "Content-Type: application/json" \\
   -H "X-Request-ID: req_$(uuidgen)" \\
@@ -718,7 +809,7 @@ query AdvancedROIAnalysis($input: ROICalculationInput!) {
                       checked={testingMode} 
                       onChange={(e) => setTestingMode(e.target.checked)}
                     />
-                    Interactive Testing Mode
+                    Live API Testing Mode
                   </label>
                 </div>
                 
@@ -765,13 +856,13 @@ query AdvancedROIAnalysis($input: ROICalculationInput!) {
                     {testingMode && (
                       <div className="api-tester">
                         <div className="tester-header">
-                          <h4>🧪 Interactive API Tester</h4>
+                          <h4>🧪 Live API Tester</h4>
                           <button 
                             className="test-btn"
                             onClick={() => testEndpoint(selectedEndpoint)}
                             disabled={loading}
                           >
-                            {loading ? '⏳ Testing...' : '🚀 Test API'}
+                            {loading ? '⏳ Testing...' : '🚀 Test Real API'}
                           </button>
                         </div>
                         
@@ -783,12 +874,15 @@ query AdvancedROIAnalysis($input: ROICalculationInput!) {
                             onChange={(e) => setApiKey(e.target.value)}
                             placeholder="Enter your API key"
                           />
+                          <small style={{color: '#666', fontSize: '0.8rem', display: 'block', marginTop: '0.5rem'}}>
+                            Demo key: demo_key_hubspot_trial
+                          </small>
                         </div>
                         
                         {testResult && (
                           <div className="test-result">
                             <div className="result-header">
-                              <span className={`status-code ${testResult.status === 200 || testResult.status === 201 ? 'success' : 'error'}`}>
+                              <span className={`status-code ${(testResult.status === 200 || testResult.status === 201) ? 'success' : 'error'}`}>
                                 {testResult.status}
                               </span>
                               <span className="response-time">{testResult.responseTime}</span>

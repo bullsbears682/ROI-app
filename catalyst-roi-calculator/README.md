@@ -36,14 +36,40 @@ A comprehensive business investment calculator that helps companies analyze retu
 
 ## 🛠️ Technology Stack
 
-- **Frontend**: React 18 with Vite
+### Frontend
+- **Framework**: React 18 with Vite
 - **Charts**: Chart.js with react-chartjs-2
 - **PDF Generation**: jsPDF with html2canvas
 - **Styling**: Modern CSS with CSS Variables
 - **Icons**: Native emoji and SVG graphics
 
+### Backend API (NEW!)
+- **Runtime**: Node.js 16+ with Express.js
+- **Database**: SQLite (production-ready for PostgreSQL)
+- **Security**: Helmet, CORS, Rate Limiting, API Key Auth
+- **Features**: Real ROI calculations, lead scoring, analytics, webhooks
+
 ## 📦 Installation
 
+### Option 1: Full Stack (Frontend + API)
+```bash
+# Clone the repository
+git clone [repository-url]
+cd catalyst-roi-calculator
+
+# Start the API server (Terminal 1)
+./start-api.sh
+
+# Install frontend dependencies and start (Terminal 2)
+npm install
+npm run dev
+```
+
+**Frontend**: `http://localhost:5173`  
+**API**: `http://localhost:3001`  
+**API Key**: `demo_key_hubspot_trial`
+
+### Option 2: Frontend Only
 ```bash
 # Clone the repository
 git clone [repository-url]
