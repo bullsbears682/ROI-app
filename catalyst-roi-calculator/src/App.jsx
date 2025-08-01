@@ -389,9 +389,191 @@ function App() {
       case 'about':
         return (
           <div className="about-page">
-            <div style={{ padding: '2rem', textAlign: 'center' }}>
-              <h1>About Catalyst</h1>
-              <p>Professional ROI Calculator coming soon...</p>
+            <div className="about-container">
+              {/* Hero Section */}
+              <section className="about-hero">
+                <div className="hero-content">
+                  <h1>About Catalyst ROI Calculator</h1>
+                  <p className="hero-subtitle">
+                    Enterprise-grade investment analysis powered by real market data from government sources
+                  </p>
+                </div>
+              </section>
+
+              {/* Mission Section */}
+              <section className="about-section">
+                <div className="section-content">
+                  <h2>Our Mission</h2>
+                  <p>
+                    Catalyst transforms business investment decisions through accurate, data-driven ROI calculations. 
+                    We bridge the gap between complex financial modeling and accessible business intelligence, 
+                    empowering companies to make confident investment choices backed by real market data.
+                  </p>
+                </div>
+              </section>
+
+              {/* What Makes Us Different */}
+              <section className="about-section">
+                <div className="section-content">
+                  <h2>What Makes Catalyst Different</h2>
+                  <div className="features-grid">
+                    <div className="feature-card">
+                      <div className="feature-icon">📊</div>
+                      <h3>Real Market Data</h3>
+                      <p>
+                        Our calculations are powered by live data from government sources including the 
+                        US Bureau of Labor Statistics, Federal Reserve Economic Data (FRED), and World Bank Open Data.
+                      </p>
+                    </div>
+                    <div className="feature-card">
+                      <div className="feature-icon">🎯</div>
+                      <h3>85 Proven Scenarios</h3>
+                      <p>
+                        From AI chatbots to CRM upgrades, our comprehensive scenario library covers 
+                        14 business categories with validated ROI models and success rates.
+                      </p>
+                    </div>
+                    <div className="feature-card">
+                      <div className="feature-icon">🏛️</div>
+                      <h3>Enterprise Ready</h3>
+                      <p>
+                        Built for scale with professional APIs, lead capture, analytics, multi-currency 
+                        support, and comprehensive reporting capabilities.
+                      </p>
+                    </div>
+                    <div className="feature-card">
+                      <div className="feature-icon">🔒</div>
+                      <h3>100% Legal Data</h3>
+                      <p>
+                        All market data comes from public domain government sources and open license 
+                        international organizations - completely copyright-free.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              {/* Technology Stack */}
+              <section className="about-section">
+                <div className="section-content">
+                  <h2>Built for Performance & Scale</h2>
+                  <div className="tech-grid">
+                    <div className="tech-category">
+                      <h3>Frontend</h3>
+                      <ul>
+                        <li>React 19.1.1</li>
+                        <li>Vite 7.0.6</li>
+                        <li>Chart.js 4.5.0</li>
+                        <li>Responsive Design</li>
+                      </ul>
+                    </div>
+                    <div className="tech-category">
+                      <h3>Backend API</h3>
+                      <ul>
+                        <li>Node.js & Express</li>
+                        <li>SQLite Database</li>
+                        <li>Real-time Market Data</li>
+                        <li>Enterprise Security</li>
+                      </ul>
+                    </div>
+                    <div className="tech-category">
+                      <h3>Data Sources</h3>
+                      <ul>
+                        <li>US Bureau of Labor Statistics</li>
+                        <li>Federal Reserve Economic Data</li>
+                        <li>World Bank Open Data</li>
+                        <li>European Central Bank</li>
+                      </ul>
+                    </div>
+                    <div className="tech-category">
+                      <h3>Business Features</h3>
+                      <ul>
+                        <li>PDF Report Generation</li>
+                        <li>Lead Capture & CRM</li>
+                        <li>Multi-currency Support</li>
+                        <li>Usage Analytics</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              {/* Use Cases */}
+              <section className="about-section">
+                <div className="section-content">
+                  <h2>Perfect For</h2>
+                  <div className="use-cases">
+                    <div className="use-case">
+                      <h3>🏢 Enterprise Sales Teams</h3>
+                      <p>Demonstrate clear ROI to prospects with government-backed data and professional reports</p>
+                    </div>
+                    <div className="use-case">
+                      <h3>📈 Business Consultants</h3>
+                      <p>Provide clients with credible investment analysis and detailed market research</p>
+                    </div>
+                    <div className="use-case">
+                      <h3>💼 Investment Firms</h3>
+                      <p>Evaluate portfolio companies and investment opportunities with real market benchmarks</p>
+                    </div>
+                    <div className="use-case">
+                      <h3>🚀 SaaS Platforms</h3>
+                      <p>White-label the calculator into your platform or use the API for custom integrations</p>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              {/* Company Info */}
+              <section className="about-section">
+                <div className="section-content">
+                  <h2>About the Platform</h2>
+                  <div className="company-stats">
+                    <div className="stat">
+                      <div className="stat-number">85</div>
+                      <div className="stat-label">ROI Scenarios</div>
+                    </div>
+                    <div className="stat">
+                      <div className="stat-number">14</div>
+                      <div className="stat-label">Business Categories</div>
+                    </div>
+                    <div className="stat">
+                      <div className="stat-number">5</div>
+                      <div className="stat-label">Government Data Sources</div>
+                    </div>
+                    <div className="stat">
+                      <div className="stat-number">100%</div>
+                      <div className="stat-label">Legal & Free Data</div>
+                    </div>
+                  </div>
+                  <p className="company-description">
+                    Catalyst was built with a focus on accuracy, compliance, and enterprise scalability. 
+                    Every calculation is backed by real market data from trusted government sources, 
+                    ensuring your investment decisions are based on the most reliable information available.
+                  </p>
+                </div>
+              </section>
+
+              {/* CTA Section */}
+              <section className="about-cta">
+                <div className="cta-content">
+                  <h2>Ready to Transform Your Investment Analysis?</h2>
+                  <p>Join thousands of businesses making smarter investment decisions with Catalyst</p>
+                  <div className="cta-buttons">
+                    <button 
+                      className="btn btn-primary btn-large"
+                      onClick={() => window.location.href = '/#/calculator'}
+                    >
+                      Try Calculator Now
+                    </button>
+                    <button 
+                      className="btn btn-secondary btn-large"
+                      onClick={() => window.location.href = '/#/api'}
+                    >
+                      View API Documentation
+                    </button>
+                  </div>
+                </div>
+              </section>
             </div>
           </div>
         );
