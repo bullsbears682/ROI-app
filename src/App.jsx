@@ -1,143 +1,53 @@
-import React, { useState, useEffect } from 'react'
-import Header from './components/Header'
-import Calculator from './components/Calculator'
-import Results from './components/Results'
-import Scenarios from './components/Scenarios'
-import ApiDocs from './components/ApiDocs'
-import AdminLogin from './components/AdminLogin'
-import AdminDashboard from './components/AdminDashboard'
-import CookieConsent from './components/CookieConsent'
-import LeadCapture from './components/LeadCapture'
+import React, { useState } from 'react'
 import { roiCategories, roiScenarios } from './data/roiScenarios'
-import { detectUserCurrency, convertToUSD, formatCurrencyCustom } from './utils/currency'
-import { initAnalytics, trackROICalculation, trackUserInteraction } from './utils/analytics'
-
-// Calculate realistic success rate based on scenario factors
-const calculateSuccessRate = (riskLevel, industry, companySize) => {
-  let baseSuccessRate = 75; // Base 75% success rate
-  
-  // Adjust for risk level
-  switch (riskLevel) {
-    case 'low': baseSuccessRate += 15; break;
-    case 'medium': baseSuccessRate += 0; break;
-    case 'high': baseSuccessRate -= 10; break;
-  }
-  
-  // Adjust for industry
-  const industryAdjustments = {
-    'retail': 5,
-    'saas': 10,
-    'manufacturing': -5,
-    'financial': 0,
-    'healthcare': -10,
-    'professional': 8
-  };
-  baseSuccessRate += industryAdjustments[industry] || 0;
-  
-  // Adjust for company size
-  const sizeAdjustments = {
-    'startup': -5,
-    'small': 0,
-    'medium': 5,
-    'large': 10,
-    'enterprise': 8
-  };
-  baseSuccessRate += sizeAdjustments[companySize] || 0;
-  
-  // Cap between 60% and 95%
-  const finalRate = Math.max(60, Math.min(95, baseSuccessRate));
-  
-  // Determine success factors based on scenario
-  const successFactors = [];
-  if (riskLevel === 'low') successFactors.push('Proven technology');
-  if (industry === 'saas' || industry === 'retail') successFactors.push('High adoption rates');
-  if (companySize === 'large' || companySize === 'enterprise') successFactors.push('Strong resources');
-  if (finalRate > 85) successFactors.push('Executive support');
-  successFactors.push('Proper planning', 'Staff training');
-  
-  // Risk mitigation advice
-  let mitigation = 'Phased implementation recommended';
-  if (riskLevel === 'high') mitigation = 'Pilot program strongly recommended';
-  if (industry === 'healthcare' || industry === 'financial') mitigation += ', compliance review required';
-  
-  return {
-    probability: finalRate,
-    factors: successFactors.slice(0, 3), // Top 3 factors
-    mitigation: mitigation
-  };
-};
+import './styles/index.css'
 
 function App() {
-  // Navigation state
-  const [currentPage, setCurrentPage] = useState('calculator');
+  // Simple state management
+  const [selectedCategory, setSelectedCategory] = useState('automation')
+  const [selectedScenario, setSelectedScenario] = useState('automation-crm')
+  const [investment, setInvestment] = useState(50000)
+  const [timeframe, setTimeframe] = useState(12)
+  const [industry, setIndustry] = useState('technology')
+  const [companySize, setCompanySize] = useState('medium')
+  const [currency, setCurrency] = useState('USD')
+  const [results, setResults] = useState(null)
+  const [currentPage, setCurrentPage] = useState('calculator')
 
-  // Admin state
-  const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(false);
-  const [showAdminLogin, setShowAdminLogin] = useState(false);
+  // Currency symbols
+  const currencySymbols = {
+    'USD': '$',
+    'EUR': '€',
+    'GBP': '£',
+    'CAD': 'C$',
+    'AUD': 'A$'
+  }
 
-  // Main application state
-  const [selectedCategory, setSelectedCategory] = useState('ai');
-  const [selectedScenario, setSelectedScenario] = useState('ai-chatbot');
-  const [calculationInputs, setCalculationInputs] = useState({
-    investment: 25000,
-    timeframe: 12,
-    industry: 'general',
-    companySize: 'medium'
-  });
-  const [results, setResults] = useState(null);
-  const [showResults, setShowResults] = useState(false);
-  const [showLeadCapture, setShowLeadCapture] = useState(false);
-  const [currency, setCurrency] = useState('USD');
+  // Get scenarios for selected category
+  const getScenarios = () => {
+    return Object.entries(roiScenarios)
+      .filter(([key, scenario]) => scenario.category === selectedCategory)
+      .map(([key, scenario]) => ({ id: key, ...scenario }))
+  }
 
-  // Cookie consent state
-  const [cookieConsent, setCookieConsent] = useState(null);
-
-  // Check for saved cookie consent and detect currency on load
-  useEffect(() => {
-    const savedConsent = localStorage.getItem('catalyst-cookie-consent');
-    if (savedConsent) {
-      setCookieConsent(JSON.parse(savedConsent));
+  // Simple ROI calculation
+  const calculateROI = () => {
+    if (!investment || investment < 1000) {
+      alert('Please enter an investment amount of at least $1,000')
+      return
     }
+
+    const scenario = roiScenarios[selectedScenario]
+    if (!scenario) {
+      alert('Please select a valid scenario')
+      return
+    }
+
+    // Base ROI calculation
+    const baseROI = (scenario.expectedROI.min + scenario.expectedROI.max) / 2
     
-    // Detect user's likely currency
-    const detectedCurrency = detectUserCurrency();
-    setCurrency(detectedCurrency);
-    
-    // Initialize analytics if consent exists
-    if (savedConsent) {
-      initAnalytics(JSON.parse(savedConsent));
-    }
-
-    // Check for existing admin session
-    const adminAuth = sessionStorage.getItem('catalyst-admin-auth');
-    if (adminAuth === 'true') {
-      setIsAdminAuthenticated(true);
-    }
-
-    // Check for admin access via URL
-    if (window.location.pathname === '/admin' || window.location.hash === '#admin') {
-      if (adminAuth === 'true') {
-        setCurrentPage('admin');
-        setIsAdminAuthenticated(true);
-      } else {
-        setShowAdminLogin(true);
-      }
-    }
-  }, []);
-
-  // Update selected scenario when category changes
-  useEffect(() => {
-    const categoryScenarios = Object.entries(roiScenarios)
-      .filter(([key, scenario]) => scenario.category === selectedCategory);
-    
-    if (categoryScenarios.length > 0) {
-      setSelectedScenario(categoryScenarios[0][0]);
-    }
-  }, [selectedCategory]);
-
-  // Helper functions for ROI calculation
-  const getIndustryMultiplier = (industry) => {
-    const multipliers = {
+    // Industry adjustments
+    const industryMultipliers = {
       'technology': 1.2,
       'healthcare': 1.1,
       'finance': 1.0,
@@ -148,474 +58,361 @@ function App() {
       'professional-services': 1.1,
       'hospitality': 0.8,
       'transportation': 0.9
-    };
-    return multipliers[industry] || 1.0;
-  };
+    }
 
-  const getCompanySizeMultiplier = (size) => {
-    const multipliers = {
+    // Company size adjustments
+    const sizeMultipliers = {
       'startup': 0.8,
       'small': 0.9,
       'medium': 1.0,
       'large': 1.1,
       'enterprise': 1.2
-    };
-    return multipliers[size] || 1.0;
-  };
-
-  // Calculate ROI with local calculations
-  const calculateROI = () => {
-    const scenario = roiScenarios[selectedScenario];
-    if (!scenario) {
-      alert('Please select a valid scenario');
-      return;
     }
 
-    const { investment, timeframe } = calculationInputs;
-    if (!investment || investment < 1000) {
-      alert('Please enter an investment amount of at least $1,000');
-      return;
+    // Risk adjustments
+    const riskMultipliers = {
+      'low': 1.1,
+      'medium': 1.0,
+      'high': 0.9
     }
 
-    // Local ROI calculation
-    const baseROI = (scenario.expectedROI.min + scenario.expectedROI.max) / 2;
-    const industryMultiplier = getIndustryMultiplier(calculationInputs.industry);
-    const sizeMultiplier = getCompanySizeMultiplier(calculationInputs.companySize);
-    
+    // Calculate final ROI
+    const finalROI = baseROI * 
+      (industryMultipliers[industry] || 1.0) * 
+      (sizeMultipliers[companySize] || 1.0) * 
+      (riskMultipliers[scenario.riskLevel] || 1.0)
+
     // Calculate returns
-    const adjustedROI = baseROI * industryMultiplier * sizeMultiplier;
-    const expectedReturns = investment * (adjustedROI / 100);
-    const totalReturns = investment + expectedReturns;
-    const monthlyReturn = expectedReturns / timeframe;
-    const paybackMonths = Math.ceil(investment / monthlyReturn);
-    const annualizedROI = (adjustedROI / timeframe) * 12;
+    const expectedReturns = investment * (finalROI / 100)
+    const totalReturns = investment + expectedReturns
+    const monthlyReturn = expectedReturns / timeframe
+    const paybackMonths = Math.ceil(investment / monthlyReturn)
+    const annualizedROI = (finalROI / timeframe) * 12
 
-    // Calculate success rate
-    const successRate = calculateSuccessRate(scenario.riskLevel, calculationInputs.industry, calculationInputs.companySize);
+    // Success rate calculation
+    let successRate = 75
+    if (scenario.riskLevel === 'low') successRate += 15
+    if (scenario.riskLevel === 'high') successRate -= 10
+    if (industry === 'technology') successRate += 10
+    if (companySize === 'enterprise') successRate += 8
+    successRate = Math.max(60, Math.min(95, successRate))
 
-    const calculatedResults = {
-      investment: investment,
-      expectedReturns: expectedReturns,
-      totalReturns: totalReturns,
-      roiPercentage: adjustedROI,
-      annualizedROI: annualizedROI,
-      paybackMonths: paybackMonths,
-      successRate: successRate,
+    const calculationResults = {
+      investment,
+      expectedReturns: Math.round(expectedReturns),
+      totalReturns: Math.round(totalReturns),
+      roiPercentage: Math.round(finalROI * 100) / 100,
+      annualizedROI: Math.round(annualizedROI * 100) / 100,
+      paybackMonths: Math.max(1, paybackMonths),
+      successRate: Math.round(successRate),
       riskLevel: scenario.riskLevel,
-      confidence: 85,
-      monthlyReturn: monthlyReturn,
-      dataQuality: 'Calculated from scenario models',
+      monthlyReturn: Math.round(monthlyReturn),
       scenarioName: scenario.description,
       timeframe,
-      currency,
-      scenario: scenario,
-      inputs: calculationInputs
-    };
-
-    setResults(calculatedResults);
-    setIsLoading(false);
-    setShowResults(true);
-
-    // Track ROI calculation analytics
-    trackROICalculation(scenario, calculationInputs, calculatedResults);
-
-    // Show lead capture modal after a delay
-    setTimeout(() => {
-      setShowLeadCapture(true);
-    }, 2000);
-
-    console.log('⚠️ Using fallback calculations (API unavailable):', calculatedResults);
-
-    // Save calculation to localStorage if consent given
-    if (cookieConsent?.analytics) {
-      const savedCalculations = JSON.parse(localStorage.getItem('catalyst-calculations') || '[]');
-      savedCalculations.push({
-        ...calculatedResults,
-        timestamp: new Date().toISOString(),
-        scenarioId: selectedScenario
-      });
-      // Keep only last 10 calculations
-      if (savedCalculations.length > 10) {
-        savedCalculations.shift();
-      }
-      localStorage.setItem('catalyst-calculations', JSON.stringify(savedCalculations));
+      currency
     }
-  };
 
-  // Handle input changes
-  const handleInputChange = (field, value) => {
-    setCalculationInputs(prev => ({
-      ...prev,
-      [field]: value
-    }));
-  };
+    setResults(calculationResults)
+    console.log('✅ ROI Calculated:', calculationResults)
+  }
 
-  const handleLeadCapture = (leadData) => {
-    // Lead captured successfully
-    console.log('Lead captured:', leadData);
-    
-    // Track lead capture analytics
-    if (cookieConsent?.analytics) {
-      const leadEvent = {
-        type: 'lead_capture',
-        timestamp: new Date().toISOString(),
-        leadScore: leadData.leadScore,
-        source: 'roi_calculator',
-        scenario: selectedScenario,
-        roiPercentage: results?.roiPercentage
-      };
-      
-      const events = JSON.parse(localStorage.getItem('catalyst-analytics') || '[]');
-      events.push(leadEvent);
-      localStorage.setItem('catalyst-analytics', JSON.stringify(events));
-    }
-  };
+  // Format currency
+  const formatCurrency = (amount) => {
+    const symbol = currencySymbols[currency] || '$'
+    return `${symbol}${amount.toLocaleString()}`
+  }
 
-  const handleLeadCaptureClose = () => {
-    setShowLeadCapture(false);
-  };
-
-  const handleCurrencyChange = (newCurrency) => {
-    setCurrency(newCurrency);
-    
-    // Track currency change analytics
-    if (cookieConsent?.analytics) {
-      const currencyEvent = {
-        type: 'currency_change',
-        timestamp: new Date().toISOString(),
-        from: currency,
-        to: newCurrency,
-        scenario: selectedScenario
-      };
-      
-      const events = JSON.parse(localStorage.getItem('catalyst-analytics') || '[]');
-      events.push(currencyEvent);
-      localStorage.setItem('catalyst-analytics', JSON.stringify(events));
-    }
-  };
-
-  // Handle navigation
+  // Navigation
   const handleNavigation = (page) => {
-    setCurrentPage(page);
-    // Track navigation
-    if (cookieConsent?.analytics) {
-      trackUserInteraction('navigation', { page, timestamp: Date.now() });
-    }
-  };
+    setCurrentPage(page)
+  }
 
-  // Handle scenario selection from Scenarios page
-  const handleScenarioSelect = (scenarioKey, categoryKey) => {
-    setSelectedScenario(scenarioKey);
-    setSelectedCategory(categoryKey);
-    setCurrentPage('calculator');
-    setShowResults(false);
-    // Track scenario selection
-    if (cookieConsent?.analytics) {
-      trackUserInteraction('scenario_select', { 
-        scenario: scenarioKey, 
-        category: categoryKey,
-        source: 'scenarios_page',
-        timestamp: Date.now() 
-      });
-    }
-  };
-
-  // Handle admin login
-  const handleAdminLogin = () => {
-    setIsAdminAuthenticated(true);
-    setShowAdminLogin(false);
-    setCurrentPage('admin');
-  };
-
-  // Handle admin logout
-  const handleAdminLogout = () => {
-    setIsAdminAuthenticated(false);
-    sessionStorage.removeItem('catalyst-admin-auth');
-    setCurrentPage('calculator');
-  };
-
-  // Handle cookie consent
-  const handleCookieConsent = (consent) => {
-    setCookieConsent(consent);
-    localStorage.setItem('catalyst-cookie-consent', JSON.stringify(consent));
-    
-    // Initialize analytics with new consent
-    initAnalytics(consent);
-  };
-
-  // Render current page
-  const renderCurrentPage = () => {
-    switch (currentPage) {
-      case 'admin':
-        return isAdminAuthenticated ? (
-          <AdminDashboard onLogout={handleAdminLogout} />
-        ) : null;
-      case 'scenarios':
-        return <Scenarios onSelectScenario={handleScenarioSelect} />;
-      case 'api':
-        return <ApiDocs />;
-      case 'about':
-        return (
-          <div className="about-page">
-            <div className="about-container">
-              {/* Hero Section */}
-              <section className="about-hero">
-                <div className="hero-content">
-                  <h1>About Catalyst</h1>
-                  <p className="hero-subtitle">
-                    We built this because we were tired of making investment decisions based on guesswork. 
-                    Now it's powered by real government data, not marketing fluff.
-                  </p>
-                </div>
-              </section>
-
-              {/* Mission Section */}
-              <section className="about-section">
-                <div className="section-content">
-                  <h2>Why We Built This</h2>
-                  <p>
-                    Look, we've all been there. Someone asks "What's the ROI on this?" and you pull a number out of thin air. 
-                    Or spend weeks building spreadsheets that nobody trusts anyway. We got sick of it.
-                  </p>
-                  <p>
-                    So we built Catalyst to give you real answers. No BS, no made-up benchmarks. 
-                    Just solid calculations backed by actual government data that even your CFO can't argue with.
-                  </p>
-                </div>
-              </section>
-
-              {/* What Makes Us Different */}
-              <section className="about-section">
-                <div className="section-content">
-                  <h2>What Makes This Actually Work</h2>
-                  <div className="features-grid">
-                    <div className="feature-card">
-                      <div className="feature-icon">📊</div>
-                      <h3>Real Data, Not Fake Numbers</h3>
-                      <p>
-                        We pull data straight from the Bureau of Labor Statistics, Federal Reserve, and World Bank. 
-                        You know, the boring government sources that actually track this stuff for a living.
-                      </p>
-                    </div>
-                    <div className="feature-card">
-                      <div className="feature-icon">🎯</div>
-                      <h3>85 Real-World Scenarios</h3>
-                      <p>
-                        We didn't just make these up. These are actual business scenarios we've seen work 
-                        (and fail) in the real world. From chatbots to CRM upgrades - if people spend money on it, we track it.
-                      </p>
-                    </div>
-                    <div className="feature-card">
-                      <div className="feature-icon">🏛️</div>
-                      <h3>Built for Grown-Ups</h3>
-                      <p>
-                        APIs for your developers, analytics for your boss, lead capture for your sales team, 
-                        and reports that don't look like they were made in 1995.
-                      </p>
-                    </div>
-                    <div className="feature-card">
-                      <div className="feature-icon">🔒</div>
-                      <h3>Zero Legal Headaches</h3>
-                      <p>
-                        All our data comes from public sources. No licensing fees, no copyright lawyers, 
-                        no "sorry, you can't use that" surprises down the road.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </section>
-
-              {/* Technology Stack */}
-              <section className="about-section">
-                <div className="section-content">
-                  <h2>Under The Hood</h2>
-                  <div className="tech-grid">
-                    <div className="tech-category">
-                      <h3>Frontend</h3>
-                      <ul>
-                        <li>React 19.1.1</li>
-                        <li>Vite 7.0.6</li>
-                        <li>Chart.js 4.5.0</li>
-                        <li>Responsive Design</li>
-                      </ul>
-                    </div>
-                    <div className="tech-category">
-                      <h3>Backend API</h3>
-                      <ul>
-                        <li>Node.js & Express</li>
-                        <li>SQLite Database</li>
-                        <li>Real-time Market Data</li>
-                        <li>Enterprise Security</li>
-                      </ul>
-                    </div>
-                    <div className="tech-category">
-                      <h3>Data Sources</h3>
-                      <ul>
-                        <li>US Bureau of Labor Statistics</li>
-                        <li>Federal Reserve Economic Data</li>
-                        <li>World Bank Open Data</li>
-                        <li>European Central Bank</li>
-                      </ul>
-                    </div>
-                    <div className="tech-category">
-                      <h3>Business Features</h3>
-                      <ul>
-                        <li>PDF Report Generation</li>
-                        <li>Lead Capture & CRM</li>
-                        <li>Multi-currency Support</li>
-                        <li>Usage Analytics</li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </section>
-
-              {/* Use Cases */}
-              <section className="about-section">
-                <div className="section-content">
-                  <h2>Who Actually Uses This</h2>
-                  <div className="use-cases">
-                    <div className="use-case">
-                      <h3>🏢 Sales Teams That Hate Losing Deals</h3>
-                      <p>Finally, you can show prospects real ROI numbers instead of just saying "trust us, you'll save money"</p>
-                    </div>
-                    <div className="use-case">
-                      <h3>📈 Consultants Who Want To Look Smart</h3>
-                      <p>Give your clients bulletproof analysis backed by actual government data. Your competition is still using Excel.</p>
-                    </div>
-                    <div className="use-case">
-                      <h3>💼 Anyone Who Has To Justify Budgets</h3>
-                      <p>Stop pulling ROI numbers out of thin air when the board asks tough questions about your investments</p>
-                    </div>
-                    <div className="use-case">
-                      <h3>🚀 SaaS Companies That Get It</h3>
-                      <p>White-label this into your platform or build on our API. Your customers will think you're wizards.</p>
-                    </div>
-                  </div>
-                </div>
-              </section>
-
-              {/* Company Info */}
-              <section className="about-section">
-                <div className="section-content">
-                  <h2>The Numbers (Because You Asked)</h2>
-                  <div className="company-stats">
-                    <div className="stat">
-                      <div className="stat-number">85</div>
-                      <div className="stat-label">Business Scenarios</div>
-                    </div>
-                    <div className="stat">
-                      <div className="stat-number">14</div>
-                      <div className="stat-label">Industry Categories</div>
-                    </div>
-                    <div className="stat">
-                      <div className="stat-number">5</div>
-                      <div className="stat-label">Government Sources</div>
-                    </div>
-                    <div className="stat">
-                      <div className="stat-number">0</div>
-                      <div className="stat-label">Made-Up Numbers</div>
-                    </div>
-                  </div>
-                  <p className="company-description">
-                    We spent way too much time making sure this actually works. 
-                    Every calculation uses real government data because, frankly, we're tired of tools that just make stuff up. 
-                    Your decisions deserve better than guesswork.
-                  </p>
-                </div>
-              </section>
-
-              {/* CTA Section */}
-              <section className="about-cta">
-                <div className="cta-content">
-                  <h2>Ready to Stop Guessing?</h2>
-                  <p>Try it out. If it doesn't make your investment decisions way easier, we'll be genuinely surprised.</p>
-                  <div className="cta-buttons">
-                    <button 
-                      className="btn btn-primary btn-large"
-                      onClick={() => handleNavigation('calculator')}
-                    >
-                      Try It Now
-                    </button>
-                    <button 
-                      className="btn btn-secondary btn-large"
-                      onClick={() => handleNavigation('api')}
-                    >
-                      See The API
-                    </button>
-                  </div>
-                </div>
-              </section>
-            </div>
+  // Header Component
+  const Header = () => (
+    <header className="header">
+      <div className="header-content">
+        <div className="logo" onClick={() => handleNavigation('calculator')}>
+          <svg width="32" height="32" viewBox="0 0 32 32">
+            <circle cx="16" cy="16" r="15" fill="url(#grad1)" stroke="none"/>
+            <text x="16" y="21" textAnchor="middle" fill="white" fontFamily="Arial" fontSize="12" fontWeight="bold">C</text>
+            <defs>
+              <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#667eea"/>
+                <stop offset="100%" stopColor="#764ba2"/>
+              </linearGradient>
+            </defs>
+          </svg>
+          <div>
+            <h1>Catalyst</h1>
+            <span className="logo-tagline">ROI Calculator</span>
           </div>
-        );
-      default:
-        return (
-          <main className="main-content">
-            <div className="calculator-section">
-              <Calculator
-                categories={roiCategories}
-                scenarios={roiScenarios}
-                selectedCategory={selectedCategory}
-                selectedScenario={selectedScenario}
-                inputs={calculationInputs}
-                currency={currency}
-                onCategoryChange={setSelectedCategory}
-                onScenarioChange={setSelectedScenario}
-                onInputChange={handleInputChange}
-                onCurrencyChange={handleCurrencyChange}
-                onCalculate={calculateROI}
-              />
-            </div>
+        </div>
+        
+        <nav className="nav">
+          <button 
+            className={`nav-link ${currentPage === 'calculator' ? 'active' : ''}`}
+            onClick={() => handleNavigation('calculator')}
+          >
+            Calculator
+          </button>
+          <button 
+            className={`nav-link ${currentPage === 'scenarios' ? 'active' : ''}`}
+            onClick={() => handleNavigation('scenarios')}
+          >
+            Scenarios
+          </button>
+          <button 
+            className={`nav-link ${currentPage === 'about' ? 'active' : ''}`}
+            onClick={() => handleNavigation('about')}
+          >
+            About
+          </button>
+        </nav>
+      </div>
+    </header>
+  )
 
-            <div className="results-section">
-              <Results
-                results={results}
-                showResults={showResults}
-                onExportPDF={() => {
-                  // PDF export will be implemented in Results component
-                  console.log('Exporting PDF...');
-                }}
-              />
-            </div>
-          </main>
-        );
+  // Calculator Component
+  const Calculator = () => (
+    <div className="card">
+      <h2>🚀 ROI Calculator</h2>
+      <p>Calculate returns across 85+ business scenarios</p>
+      
+      {/* Category Selection */}
+      <div className="form-group">
+        <label>📊 Business Category</label>
+        <select 
+          value={selectedCategory} 
+          onChange={(e) => {
+            setSelectedCategory(e.target.value)
+            // Auto-select first scenario in category
+            const scenarios = Object.entries(roiScenarios)
+              .filter(([key, scenario]) => scenario.category === e.target.value)
+            if (scenarios.length > 0) {
+              setSelectedScenario(scenarios[0][0])
+            }
+          }}
+        >
+          {Object.values(roiCategories).map(category => (
+            <option key={category.id} value={category.id}>
+              {category.icon} {category.name}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {/* Scenario Selection */}
+      <div className="form-group">
+        <label>🎯 Specific Scenario</label>
+        <select value={selectedScenario} onChange={(e) => setSelectedScenario(e.target.value)}>
+          {getScenarios().map(scenario => (
+            <option key={scenario.id} value={scenario.id}>
+              {scenario.description}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {/* Investment Amount */}
+      <div className="form-group">
+        <label>💰 Investment Amount</label>
+        <div style={{display: 'flex', gap: '10px'}}>
+          <input 
+            type="number" 
+            value={investment} 
+            onChange={(e) => setInvestment(Number(e.target.value))}
+            placeholder="50000"
+            min="1000"
+            style={{flex: 1}}
+          />
+          <select value={currency} onChange={(e) => setCurrency(e.target.value)}>
+            <option value="USD">USD</option>
+            <option value="EUR">EUR</option>
+            <option value="GBP">GBP</option>
+            <option value="CAD">CAD</option>
+            <option value="AUD">AUD</option>
+          </select>
+        </div>
+      </div>
+
+      {/* Timeframe */}
+      <div className="form-group">
+        <label>⏱️ Timeframe (months)</label>
+        <input 
+          type="number" 
+          value={timeframe} 
+          onChange={(e) => setTimeframe(Number(e.target.value))}
+          min="1" 
+          max="60"
+        />
+      </div>
+
+      {/* Industry */}
+      <div className="form-group">
+        <label>🏢 Industry</label>
+        <select value={industry} onChange={(e) => setIndustry(e.target.value)}>
+          <option value="technology">Technology</option>
+          <option value="healthcare">Healthcare</option>
+          <option value="finance">Finance</option>
+          <option value="retail">Retail</option>
+          <option value="manufacturing">Manufacturing</option>
+          <option value="education">Education</option>
+          <option value="real-estate">Real Estate</option>
+          <option value="professional-services">Professional Services</option>
+          <option value="hospitality">Hospitality</option>
+          <option value="transportation">Transportation</option>
+        </select>
+      </div>
+
+      {/* Company Size */}
+      <div className="form-group">
+        <label>👥 Company Size</label>
+        <select value={companySize} onChange={(e) => setCompanySize(e.target.value)}>
+          <option value="startup">Startup (1-10 employees)</option>
+          <option value="small">Small (11-50 employees)</option>
+          <option value="medium">Medium (51-200 employees)</option>
+          <option value="large">Large (201-1000 employees)</option>
+          <option value="enterprise">Enterprise (1000+ employees)</option>
+        </select>
+      </div>
+
+      {/* Calculate Button */}
+      <button 
+        className="btn btn-primary" 
+        onClick={calculateROI}
+        style={{width: '100%', marginTop: '20px'}}
+      >
+        🧮 Calculate ROI
+      </button>
+    </div>
+  )
+
+  // Results Component
+  const Results = () => {
+    if (!results) {
+      return (
+        <div className="card">
+          <h2>📊 Results</h2>
+          <p>Enter your investment details and click "Calculate ROI" to see your results.</p>
+        </div>
+      )
     }
-  };
 
+    return (
+      <div className="card">
+        <h2>📊 ROI Analysis Results</h2>
+        
+        <div className="results-grid">
+          <div className="result-item primary">
+            <div className="result-label">Total ROI</div>
+            <div className="result-value">{results.roiPercentage}%</div>
+          </div>
+          
+          <div className="result-item">
+            <div className="result-label">Expected Returns</div>
+            <div className="result-value">{formatCurrency(results.expectedReturns)}</div>
+          </div>
+          
+          <div className="result-item">
+            <div className="result-label">Total Value</div>
+            <div className="result-value">{formatCurrency(results.totalReturns)}</div>
+          </div>
+          
+          <div className="result-item">
+            <div className="result-label">Payback Period</div>
+            <div className="result-value">{results.paybackMonths} months</div>
+          </div>
+          
+          <div className="result-item">
+            <div className="result-label">Monthly Return</div>
+            <div className="result-value">{formatCurrency(results.monthlyReturn)}</div>
+          </div>
+          
+          <div className="result-item">
+            <div className="result-label">Success Rate</div>
+            <div className="result-value">{results.successRate}%</div>
+          </div>
+        </div>
+
+        <div className="result-summary">
+          <h3>Investment Summary</h3>
+          <p><strong>Scenario:</strong> {results.scenarioName}</p>
+          <p><strong>Investment:</strong> {formatCurrency(results.investment)}</p>
+          <p><strong>Timeframe:</strong> {results.timeframe} months</p>
+          <p><strong>Risk Level:</strong> {results.riskLevel.toUpperCase()}</p>
+          <p><strong>Annualized ROI:</strong> {results.annualizedROI}%</p>
+        </div>
+      </div>
+    )
+  }
+
+  // Simple About Page
+  const About = () => (
+    <div className="card">
+      <h2>About Catalyst</h2>
+      <p>Professional ROI Calculator for business investments with 85+ scenarios across 14 industries.</p>
+      <h3>Features</h3>
+      <ul>
+        <li>85+ business scenarios</li>
+        <li>14 industry categories</li>
+        <li>Multi-currency support</li>
+        <li>Risk-adjusted calculations</li>
+        <li>Industry-specific adjustments</li>
+        <li>Company size considerations</li>
+      </ul>
+      <button className="btn btn-primary" onClick={() => handleNavigation('calculator')}>
+        Try Calculator
+      </button>
+    </div>
+  )
+
+  // Simple Scenarios Page
+  const Scenarios = () => (
+    <div className="card">
+      <h2>Business Scenarios</h2>
+      <p>Choose from 85+ pre-built ROI scenarios across these categories:</p>
+      <div className="scenarios-grid">
+        {Object.values(roiCategories).map(category => (
+          <div key={category.id} className="scenario-category">
+            <h3>{category.icon} {category.name}</h3>
+            <p>{category.description}</p>
+            <button 
+              className="btn btn-secondary" 
+              onClick={() => {
+                setSelectedCategory(category.id)
+                handleNavigation('calculator')
+              }}
+            >
+              Explore Scenarios
+            </button>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+
+  // Main App Render
   return (
     <div className="app">
-      {/* Show admin login if needed */}
-      {showAdminLogin && (
-        <AdminLogin onLogin={handleAdminLogin} />
-      )}
-
-      {/* Only show header for non-admin pages */}
-      {currentPage !== 'admin' && (
-        <Header 
-          currentPage={currentPage} 
-          onNavigate={handleNavigation}
-        />
-      )}
+      <Header />
       
-      {renderCurrentPage()}
-
-      {/* Cookie consent banner */}
-      {cookieConsent === null && currentPage !== 'admin' && (
-        <CookieConsent onConsent={handleCookieConsent} />
-      )}
-
-      {/* Lead Capture Modal */}
-      {currentPage !== 'admin' && (
-        <LeadCapture
-          isOpen={showLeadCapture}
-          onClose={handleLeadCaptureClose}
-          onSubmit={handleLeadCapture}
-          calculationData={results}
-        />
-      )}
+      <main className="main-content">
+        {currentPage === 'calculator' && (
+          <>
+            <div className="calculator-section">
+              <Calculator />
+            </div>
+            <div className="results-section">
+              <Results />
+            </div>
+          </>
+        )}
+        
+        {currentPage === 'about' && <About />}
+        {currentPage === 'scenarios' && <Scenarios />}
+      </main>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
