@@ -18,4 +18,4 @@ export default defineConfig({
     port: 3000,
     open: true
   }
-})
+})// Force Vercel redeploy - Fri Aug  1 06:46:21 PM UTC 2025
