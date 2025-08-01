@@ -3,6 +3,7 @@ import Header from './components/Header'
 import Calculator from './components/Calculator'
 import Results from './components/Results'
 import Scenarios from './components/Scenarios'
+import ApiDocs from './components/ApiDocs'
 import AdminLogin from './components/AdminLogin'
 import AdminDashboard from './components/AdminDashboard'
 import CookieConsent from './components/CookieConsent'
@@ -322,6 +323,8 @@ function App() {
         ) : null;
       case 'scenarios':
         return <Scenarios onSelectScenario={handleScenarioSelect} />;
+      case 'api':
+        return <ApiDocs />;
       case 'about':
         return (
           <div className="about-page">

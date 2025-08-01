@@ -49,6 +49,12 @@ const Header = ({ currentPage = 'calculator', onNavigate }) => {
               Scenarios
             </button>
             <button 
+              onClick={(e) => handleNavClick('api', e)} 
+              className={`nav-link ${currentPage === 'api' ? 'active' : ''}`}
+            >
+              API
+            </button>
+            <button 
               onClick={(e) => handleNavClick('about', e)} 
               className={`nav-link ${currentPage === 'about' ? 'active' : ''}`}
             >
