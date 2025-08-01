@@ -40,9 +40,9 @@ const ApiDocs = () => {
               companySize: 'medium',
               currency: 'USD',
               customFactors: {
-                teamSize: 25,
-                currentTools: ['zendesk', 'intercom'],
-                supportVolume: 1200
+                          teamSize: 25,
+          currentTools: ['crm_system', 'chat_platform'],
+          supportVolume: 1200
               }
             })
           });
@@ -170,7 +170,7 @@ const ApiDocs = () => {
         currency: 'USD',
         customFactors: {
           teamSize: 25,
-          currentTools: ['zendesk', 'intercom'],
+          currentTools: ['crm_system', 'chat_platform'],
           supportVolume: 1200
         }
       },
@@ -217,7 +217,7 @@ const ApiDocs = () => {
         budget_max: 100000,
         risk_level: 'medium',
         company_size: 'medium',
-        current_tools: ['salesforce', 'pipedrive'],
+        current_tools: ['crm_system', 'marketing_platform'],
         goals: ['increase_revenue', 'reduce_costs'],
         ai_recommend: true
       },
@@ -282,8 +282,8 @@ const ApiDocs = () => {
           'Connect with enterprise success team'
         ],
         crm_sync: {
-          salesforce_lead_id: 'sf_67890',
-          pipedrive_person_id: 'pd_12345',
+          primary_crm_id: 'crm_67890',
+          marketing_contact_id: 'ma_12345',
           sync_status: 'completed'
         },
         ai_insights: {
@@ -482,7 +482,7 @@ async def process_roi_batch(scenarios):
 @client.webhook_handler(['lead.created', 'calculation.completed'])
 async def handle_events(event_type, data):
     if event_type == 'lead.created':
-        await sync_to_salesforce(data)
+        await sync_to_crm(data)
     elif event_type == 'calculation.completed':
         await update_analytics_dashboard(data)
 
@@ -509,7 +509,7 @@ curl -X POST ${API_BASE_URL}/api/roi/calculate \\
       "risk_assessment": "detailed",
       "custom_factors": {
         "team_size": 25,
-        "current_tools": ["salesforce", "pipedrive"],
+        "current_tools": ["crm_system", "marketing_platform"],
         "support_volume": 1200
       }
     },
@@ -733,32 +733,32 @@ query AdvancedROIAnalysis($input: ROICalculationInput!) {
             <div className="integration-showcase">
               <h3>🔗 Native CRM Integrations</h3>
               <div className="integration-grid">
-                              <div className="integration-card featured">
-                <div className="integration-logo-text">SF</div>
-                <h4>Salesforce Native</h4>
-                <p>Deep integration with Salesforce CRM, Sales Cloud, and Service Cloud</p>
+                                            <div className="integration-card featured">
+                <div className="integration-logo-text">CRM</div>
+                <h4>Primary CRM</h4>
+                <p>Deep integration with enterprise CRM, sales, and service platforms</p>
                 <div className="integration-features">
                   <span>✓ Contact sync</span>
                   <span>✓ Deal pipeline</span>
-                  <span>✓ Custom objects</span>
+                  <span>✓ Custom fields</span>
                   <span>✓ Workflow automation</span>
                 </div>
               </div>
-                <div className="integration-card">
-                  <div className="integration-logo-text">MS</div>
-                  <h4>Microsoft Dynamics</h4>
-                  <p>Enterprise Dynamics 365 integration with custom entities</p>
-                </div>
-                <div className="integration-card">
-                  <div className="integration-logo-text">PP</div>
-                  <h4>Pipedrive</h4>
-                  <p>Seamless lead scoring and opportunity tracking</p>
-                </div>
-                <div className="integration-card">
-                  <div className="integration-logo-text">ZD</div>
-                  <h4>Zendesk</h4>
-                  <p>Customer service and support integration</p>
-                </div>
+              <div className="integration-card">
+                <div className="integration-logo-text">ERP</div>
+                <h4>ERP Systems</h4>
+                <p>Enterprise resource planning and business management</p>
+              </div>
+              <div className="integration-card">
+                <div className="integration-logo-text">MA</div>
+                <h4>Marketing Automation</h4>
+                <p>Seamless lead scoring and campaign tracking</p>
+              </div>
+              <div className="integration-card">
+                <div className="integration-logo-text">CS</div>
+                <h4>Customer Support</h4>
+                <p>Customer service and support platform integration</p>
+              </div>
               </div>
             </div>
 
@@ -1253,12 +1253,12 @@ query AdvancedROIAnalysis($input: ROICalculationInput!) {
                   <div className="flow-arrow">→</div>
                   <div className="flow-step">Lead Score</div>
                   <div className="flow-arrow">→</div>
-                  <div className="flow-step">Salesforce CRM</div>
+                  <div className="flow-step">Enterprise CRM</div>
                   <div className="flow-arrow">→</div>
                   <div className="flow-step">Sales Team</div>
                 </div>
                 <ul>
-                                      <li>Native Salesforce integration</li>
+                                      <li>Native CRM integration</li>
                   <li>Automatic contact creation</li>
                   <li>Custom property mapping</li>
                   <li>Workflow triggers</li>
@@ -1359,7 +1359,7 @@ query AdvancedROIAnalysis($input: ROICalculationInput!) {
                   <li>✅ Basic white-label options</li>
                   <li>✅ Webhook integrations</li>
                   <li>✅ ML-powered insights</li>
-                  <li>✅ CRM integrations (Salesforce, Pipedrive)</li>
+                  <li>✅ CRM integrations (Primary, Secondary)</li>
                   <li>✅ Custom reporting</li>
                   <li>❌ Source code access</li>
                 </ul>
@@ -1488,7 +1488,7 @@ query AdvancedROIAnalysis($input: ROICalculationInput!) {
                   </div>
                   <p>Complete CRM integration with custom workflows and training</p>
                   <div className="addon-features">
-                    <span>✓ Salesforce/Pipedrive setup</span>
+                    <span>✓ Primary/Secondary CRM setup</span>
                     <span>✓ Custom field mapping</span>
                     <span>✓ Workflow automation</span>
                     <span>✓ Team training included</span>

@@ -471,8 +471,8 @@ app.post('/api/leads', authenticateApiKey, createRateLimit(500), (req, res) => {
       qualification,
       nextSteps,
       crm_sync: {
-        hubspot_contact_id: `hs_${crypto.randomBytes(4).toString('hex')}`,
-        salesforce_lead_id: `sf_${crypto.randomBytes(4).toString('hex')}`,
+        primary_crm_id: `crm_${crypto.randomBytes(4).toString('hex')}`,
+        secondary_crm_id: `ma_${crypto.randomBytes(4).toString('hex')}`,
         sync_status: 'completed'
       },
       ai_insights: {
@@ -634,24 +634,24 @@ app.get('/api/branding/:client', authenticateApiKey, createRateLimit(1000), (req
           webhooks: 'https://api.enterprise.com/webhooks/roi-events'
         }
       },
-      salesforce: {
-        name: 'Salesforce ROI Calculator',
-        logo: 'https://via.placeholder.com/400x400/00a1e0/ffffff?text=SF',
+      corporate: {
+        name: 'Corporate ROI Calculator',
+        logo: 'https://via.placeholder.com/400x400/0066cc/ffffff?text=CORP',
         favicon: '/favicon.ico',
         colors: {
-          primary: '#00a1e0',
-          secondary: '#0176d3',
+          primary: '#0066cc',
+          secondary: '#004499',
           background: '#ffffff',
           text: '#032d60',
           accent: '#1b96ff'
         },
         fonts: {
-          primary: 'Salesforce Sans, sans-serif',
-          secondary: 'system-ui, sans-serif'
+          primary: 'system-ui, sans-serif',
+          secondary: 'Arial, sans-serif'
         },
-        domain: 'roi.salesforce.com',
+        domain: 'roi.corporate.com',
         subdomain: 'calculator',
-        customScenarios: ['sales-cloud', 'service-cloud', 'marketing-cloud'],
+        customScenarios: ['sales-optimization', 'service-enhancement', 'marketing-automation'],
         features: {
           leadCapture: true,
           analytics: true,
@@ -659,9 +659,9 @@ app.get('/api/branding/:client', authenticateApiKey, createRateLimit(1000), (req
           apiAccess: true
         },
         integrations: {
-          crm: 'salesforce',
-          analytics: 'salesforce_analytics',
-          webhooks: 'https://api.salesforce.com/webhooks/roi-events'
+          crm: 'primary_crm',
+          analytics: 'corporate_analytics',
+          webhooks: 'https://api.corporate.com/webhooks/roi-events'
         }
       }
     };
