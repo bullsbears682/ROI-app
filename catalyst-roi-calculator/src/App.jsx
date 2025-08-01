@@ -393,9 +393,10 @@ function App() {
               {/* Hero Section */}
               <section className="about-hero">
                 <div className="hero-content">
-                  <h1>About Catalyst ROI Calculator</h1>
+                  <h1>About Catalyst</h1>
                   <p className="hero-subtitle">
-                    Enterprise-grade investment analysis powered by real market data from government sources
+                    We built this because we were tired of making investment decisions based on guesswork. 
+                    Now it's powered by real government data, not marketing fluff.
                   </p>
                 </div>
               </section>
@@ -403,11 +404,14 @@ function App() {
               {/* Mission Section */}
               <section className="about-section">
                 <div className="section-content">
-                  <h2>Our Mission</h2>
+                  <h2>Why We Built This</h2>
                   <p>
-                    Catalyst transforms business investment decisions through accurate, data-driven ROI calculations. 
-                    We bridge the gap between complex financial modeling and accessible business intelligence, 
-                    empowering companies to make confident investment choices backed by real market data.
+                    Look, we've all been there. Someone asks "What's the ROI on this?" and you pull a number out of thin air. 
+                    Or spend weeks building spreadsheets that nobody trusts anyway. We got sick of it.
+                  </p>
+                  <p>
+                    So we built Catalyst to give you real answers. No BS, no made-up benchmarks. 
+                    Just solid calculations backed by actual government data that even your CFO can't argue with.
                   </p>
                 </div>
               </section>
@@ -415,38 +419,38 @@ function App() {
               {/* What Makes Us Different */}
               <section className="about-section">
                 <div className="section-content">
-                  <h2>What Makes Catalyst Different</h2>
+                  <h2>What Makes This Actually Work</h2>
                   <div className="features-grid">
                     <div className="feature-card">
                       <div className="feature-icon">📊</div>
-                      <h3>Real Market Data</h3>
+                      <h3>Real Data, Not Fake Numbers</h3>
                       <p>
-                        Our calculations are powered by live data from government sources including the 
-                        US Bureau of Labor Statistics, Federal Reserve Economic Data (FRED), and World Bank Open Data.
+                        We pull data straight from the Bureau of Labor Statistics, Federal Reserve, and World Bank. 
+                        You know, the boring government sources that actually track this stuff for a living.
                       </p>
                     </div>
                     <div className="feature-card">
                       <div className="feature-icon">🎯</div>
-                      <h3>85 Proven Scenarios</h3>
+                      <h3>85 Real-World Scenarios</h3>
                       <p>
-                        From AI chatbots to CRM upgrades, our comprehensive scenario library covers 
-                        14 business categories with validated ROI models and success rates.
+                        We didn't just make these up. These are actual business scenarios we've seen work 
+                        (and fail) in the real world. From chatbots to CRM upgrades - if people spend money on it, we track it.
                       </p>
                     </div>
                     <div className="feature-card">
                       <div className="feature-icon">🏛️</div>
-                      <h3>Enterprise Ready</h3>
+                      <h3>Built for Grown-Ups</h3>
                       <p>
-                        Built for scale with professional APIs, lead capture, analytics, multi-currency 
-                        support, and comprehensive reporting capabilities.
+                        APIs for your developers, analytics for your boss, lead capture for your sales team, 
+                        and reports that don't look like they were made in 1995.
                       </p>
                     </div>
                     <div className="feature-card">
                       <div className="feature-icon">🔒</div>
-                      <h3>100% Legal Data</h3>
+                      <h3>Zero Legal Headaches</h3>
                       <p>
-                        All market data comes from public domain government sources and open license 
-                        international organizations - completely copyright-free.
+                        All our data comes from public sources. No licensing fees, no copyright lawyers, 
+                        no "sorry, you can't use that" surprises down the road.
                       </p>
                     </div>
                   </div>
@@ -456,7 +460,7 @@ function App() {
               {/* Technology Stack */}
               <section className="about-section">
                 <div className="section-content">
-                  <h2>Built for Performance & Scale</h2>
+                  <h2>Under The Hood</h2>
                   <div className="tech-grid">
                     <div className="tech-category">
                       <h3>Frontend</h3>
@@ -501,23 +505,23 @@ function App() {
               {/* Use Cases */}
               <section className="about-section">
                 <div className="section-content">
-                  <h2>Perfect For</h2>
+                  <h2>Who Actually Uses This</h2>
                   <div className="use-cases">
                     <div className="use-case">
-                      <h3>🏢 Enterprise Sales Teams</h3>
-                      <p>Demonstrate clear ROI to prospects with government-backed data and professional reports</p>
+                      <h3>🏢 Sales Teams That Hate Losing Deals</h3>
+                      <p>Finally, you can show prospects real ROI numbers instead of just saying "trust us, you'll save money"</p>
                     </div>
                     <div className="use-case">
-                      <h3>📈 Business Consultants</h3>
-                      <p>Provide clients with credible investment analysis and detailed market research</p>
+                      <h3>📈 Consultants Who Want To Look Smart</h3>
+                      <p>Give your clients bulletproof analysis backed by actual government data. Your competition is still using Excel.</p>
                     </div>
                     <div className="use-case">
-                      <h3>💼 Investment Firms</h3>
-                      <p>Evaluate portfolio companies and investment opportunities with real market benchmarks</p>
+                      <h3>💼 Anyone Who Has To Justify Budgets</h3>
+                      <p>Stop pulling ROI numbers out of thin air when the board asks tough questions about your investments</p>
                     </div>
                     <div className="use-case">
-                      <h3>🚀 SaaS Platforms</h3>
-                      <p>White-label the calculator into your platform or use the API for custom integrations</p>
+                      <h3>🚀 SaaS Companies That Get It</h3>
+                      <p>White-label this into your platform or build on our API. Your customers will think you're wizards.</p>
                     </div>
                   </div>
                 </div>
@@ -526,29 +530,29 @@ function App() {
               {/* Company Info */}
               <section className="about-section">
                 <div className="section-content">
-                  <h2>About the Platform</h2>
+                  <h2>The Numbers (Because You Asked)</h2>
                   <div className="company-stats">
                     <div className="stat">
                       <div className="stat-number">85</div>
-                      <div className="stat-label">ROI Scenarios</div>
+                      <div className="stat-label">Business Scenarios</div>
                     </div>
                     <div className="stat">
                       <div className="stat-number">14</div>
-                      <div className="stat-label">Business Categories</div>
+                      <div className="stat-label">Industry Categories</div>
                     </div>
                     <div className="stat">
                       <div className="stat-number">5</div>
-                      <div className="stat-label">Government Data Sources</div>
+                      <div className="stat-label">Government Sources</div>
                     </div>
                     <div className="stat">
-                      <div className="stat-number">100%</div>
-                      <div className="stat-label">Legal & Free Data</div>
+                      <div className="stat-number">0</div>
+                      <div className="stat-label">Made-Up Numbers</div>
                     </div>
                   </div>
                   <p className="company-description">
-                    Catalyst was built with a focus on accuracy, compliance, and enterprise scalability. 
-                    Every calculation is backed by real market data from trusted government sources, 
-                    ensuring your investment decisions are based on the most reliable information available.
+                    We spent way too much time making sure this actually works. 
+                    Every calculation uses real government data because, frankly, we're tired of tools that just make stuff up. 
+                    Your decisions deserve better than guesswork.
                   </p>
                 </div>
               </section>
@@ -556,20 +560,20 @@ function App() {
               {/* CTA Section */}
               <section className="about-cta">
                 <div className="cta-content">
-                  <h2>Ready to Transform Your Investment Analysis?</h2>
-                  <p>Join thousands of businesses making smarter investment decisions with Catalyst</p>
+                  <h2>Ready to Stop Guessing?</h2>
+                  <p>Try it out. If it doesn't make your investment decisions way easier, we'll be genuinely surprised.</p>
                   <div className="cta-buttons">
                     <button 
                       className="btn btn-primary btn-large"
                       onClick={() => window.location.href = '/#/calculator'}
                     >
-                      Try Calculator Now
+                      Try It Now
                     </button>
                     <button 
                       className="btn btn-secondary btn-large"
                       onClick={() => window.location.href = '/#/api'}
                     >
-                      View API Documentation
+                      See The API
                     </button>
                   </div>
                 </div>
