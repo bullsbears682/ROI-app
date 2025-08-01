@@ -1471,12 +1471,12 @@ function App() {
                     desc: 'Comprehensive analytics and reporting for usage patterns and trends',
                     features: ['Usage metrics', 'Popular scenarios', 'Conversion tracking', 'Performance insights']
                   },
-                  { 
-                    icon: '🎨', 
-                    title: 'White-label Ready', 
-                    desc: 'Customizable branding and embedding options for your applications',
-                    features: ['Custom branding', 'Domain flexibility', 'Embedded widgets', 'Theme customization']
-                  },
+                                     { 
+                     icon: '🎨', 
+                     title: 'Advanced White-Label', 
+                     desc: 'Complete customization and branding control for seamless integration',
+                     features: ['Custom domains', 'Dynamic theming', 'Logo integration', 'Brand guidelines']
+                   },
                   { 
                     icon: '⚡', 
                     title: 'High Performance', 
@@ -1489,12 +1489,18 @@ function App() {
                     desc: 'Production-grade security with headers, validation, and monitoring',
                     features: ['Helmet.js security', 'Input validation', 'SQL injection protection', 'Request logging']
                   },
-                  { 
-                    icon: '🔄', 
-                    title: 'Real-time Sync', 
-                    desc: 'Live data synchronization and webhook support for integrations',
-                    features: ['Webhook notifications', 'Real-time updates', 'Event streaming', 'Integration APIs']
-                  }
+                                     { 
+                     icon: '🔄', 
+                     title: 'Real-time Sync', 
+                     desc: 'Live data synchronization and webhook support for integrations',
+                     features: ['Webhook notifications', 'Real-time updates', 'Event streaming', 'Integration APIs']
+                   },
+                   { 
+                     icon: '💼', 
+                     title: 'Primary CRM', 
+                     desc: 'Deep integration with enterprise CRM, sales, and service platforms',
+                     features: ['Contact sync', 'Deal pipeline', 'Custom fields', 'Workflow automation']
+                   }
                 ].map((feature, index) => (
                   <div key={index} style={{
                     background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
