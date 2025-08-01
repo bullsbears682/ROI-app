@@ -135,27 +135,77 @@ function App() {
     }
   }, [selectedCategory]);
 
-  // Calculate ROI based on inputs and scenario data
-  const calculateROI = () => {
+  // Calculate ROI using real market data from API
+  const calculateROI = async () => {
     const scenario = roiScenarios[selectedScenario];
     if (!scenario) return;
 
-        const { investment, timeframe } = calculationInputs;
+    const { investment, timeframe } = calculationInputs;
+    setIsLoading(true);
 
-    // Convert investment to USD for calculations (scenarios are in USD)
+    try {
+      // Try to use the real API first
+      const apiResponse = await fetch('http://localhost:3001/api/roi/calculate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-API-Key': 'demo_key_enterprise_trial'
+        },
+        body: JSON.stringify({
+          scenario: selectedScenario,
+          investment,
+          timeframe,
+          industry: calculationInputs.industry || 'technology',
+          companySize: calculationInputs.companySize || 'medium',
+          currency
+        })
+      });
+
+      if (apiResponse.ok) {
+        const apiData = await apiResponse.json();
+        
+        // Use real API data with market-based calculations
+        const results = {
+          investment: investment,
+          expectedReturns: apiData.results.projectedRevenue - investment,
+          totalReturns: apiData.results.projectedRevenue,
+          roiPercentage: apiData.results.roiPercentage,
+          annualizedROI: (apiData.results.roiPercentage / timeframe) * 12,
+          paybackMonths: apiData.results.paybackPeriod,
+          successRate: apiData.results.successRate,
+          riskLevel: apiData.results.riskLevel,
+          confidence: apiData.results.confidence * 100,
+          monthlyReturn: (apiData.results.projectedRevenue - investment) / timeframe,
+          
+          // Enhanced data from real market sources
+          marketData: apiData.marketData,
+          industryBenchmarks: apiData.benchmarks,
+          dataQuality: apiData.marketData?.dataQuality || 'Real market data',
+          
+          // Original scenario data for reference
+          scenarioName: scenario.description,
+          timeframe,
+          currency
+        };
+
+        setResults(results);
+        console.log('✅ Using real market data from API:', results);
+        return;
+      }
+    } catch (error) {
+      console.warn('⚠️ API unavailable, using fallback calculations:', error.message);
+    }
+
+    // Fallback to local calculations if API is unavailable
     const investmentUSD = convertToUSD(investment, currency);
-
-    // Get expected returns based on scenario and industry
     const industryData = scenario.industryBenchmarks?.[calculationInputs.industry];
     const baseROI = industryData?.roi || (scenario.expectedROI.min + scenario.expectedROI.max) / 2;
     
-    // Calculate returns (in USD)
     const expectedReturnsUSD = investmentUSD * (baseROI / 100);
     const totalReturnsUSD = investmentUSD + expectedReturnsUSD;
     const monthlyReturnUSD = expectedReturnsUSD / timeframe;
     const paybackMonths = investmentUSD / monthlyReturnUSD;
 
-    // Risk adjustment based on scenario
     let riskMultiplier = 1;
     switch (scenario.riskLevel) {
       case 'low': riskMultiplier = 0.9; break;
@@ -171,22 +221,31 @@ function App() {
     const successRate = calculateSuccessRate(scenario.riskLevel, calculationInputs.industry, calculationInputs.companySize);
 
     const calculatedResults = {
-      investment: investment, // In display currency
-      expectedReturns: adjustedReturnsUSD, // Keep in USD for consistency
-      totalReturns: investmentUSD + adjustedReturnsUSD, // In USD
+      investment: investment,
+      expectedReturns: adjustedReturnsUSD,
+      totalReturns: investmentUSD + adjustedReturnsUSD,
       roiPercentage: roiPercentage,
       annualizedROI: annualizedROI,
-      paybackPeriod: paybackMonths,
-      monthlyReturn: adjustedReturnsUSD / timeframe, // In USD
-      netProfit: adjustedReturnsUSD, // In USD
+      paybackMonths: paybackMonths,
       successRate: successRate,
+      riskLevel: scenario.riskLevel,
+      confidence: 85, // Default confidence for fallback
+      monthlyReturn: adjustedReturnsUSD / timeframe,
+      
+      // Indicate this is fallback data
+      dataQuality: 'Estimated from scenario models',
+      scenarioName: scenario.description,
+      timeframe,
+      currency,
+      
+      // Legacy fields for compatibility
       scenario: scenario,
       inputs: calculationInputs,
-      currency: currency, // Store currency for display
-      investmentUSD: investmentUSD // Store USD amount for calculations
+      investmentUSD: investmentUSD
     };
 
-              setResults(calculatedResults);
+    setResults(calculatedResults);
+    setIsLoading(false);
     setShowResults(true);
 
     // Track ROI calculation analytics
@@ -196,6 +255,8 @@ function App() {
     setTimeout(() => {
       setShowLeadCapture(true);
     }, 2000);
+
+    console.log('⚠️ Using fallback calculations (API unavailable):', calculatedResults);
 
     // Save calculation to localStorage if consent given
     if (cookieConsent?.analytics) {

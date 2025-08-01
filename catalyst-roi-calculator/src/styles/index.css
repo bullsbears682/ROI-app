@@ -4138,3 +4138,131 @@ body {
     grid-template-columns: 1fr;
   }
 }
+
+/* Market Data Section Styles */
+.market-data-section {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 24px;
+  margin: 24px 0;
+}
+
+.market-data-section h3 {
+  margin: 0 0 20px 0;
+  color: #1a202c;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.market-data-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.data-quality-card,
+.benchmarks-card,
+.success-analysis-card {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.quality-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.quality-badge.real {
+  background: #d1fae5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+}
+
+.quality-badge.estimated {
+  background: #fef3c7;
+  color: #92400e;
+  border: 1px solid #fde68a;
+}
+
+.quality-text {
+  font-size: 0.9rem;
+  color: #64748b;
+}
+
+.benchmark-title,
+.success-title {
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 12px;
+  font-size: 0.95rem;
+}
+
+.benchmark-values,
+.success-details {
+  space-y: 8px;
+}
+
+.benchmark-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 0;
+  font-size: 0.9rem;
+}
+
+.benchmark-item span:first-child {
+  color: #6b7280;
+}
+
+.benchmark-item span:last-child {
+  font-weight: 600;
+  color: #059669;
+}
+
+.confidence-range {
+  font-size: 0.9rem;
+  color: #374151;
+  margin-bottom: 8px;
+}
+
+.market-factors {
+  font-size: 0.85rem;
+  color: #6b7280;
+  font-style: italic;
+}
+
+.data-sources {
+  border-top: 1px solid #e5e7eb;
+  padding-top: 16px;
+}
+
+.sources-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 8px;
+}
+
+.sources-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.source-tag {
+  background: #e0e7ff;
+  color: #3730a3;
+  padding: 4px 10px;
+  border-radius: 16px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  border: 1px solid #c7d2fe;
+}

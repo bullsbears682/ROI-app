@@ -195,6 +195,68 @@ const Results = ({ results, showResults, onExportPDF }) => {
         </div>
       </div>
 
+      {/* Market Data Quality Indicator */}
+      {(results.dataQuality || results.marketData) && (
+        <div className="market-data-section">
+          <h3>📈 Market Data & Analysis</h3>
+          <div className="market-data-grid">
+            <div className="data-quality-card">
+              <div className="quality-indicator">
+                <span className={`quality-badge ${results.dataQuality === 'Real market data' ? 'real' : 'estimated'}`}>
+                  {results.dataQuality === 'Real market data' ? '✅ Live Data' : '⚠️ Estimated'}
+                </span>
+                <div className="quality-text">{results.dataQuality}</div>
+              </div>
+            </div>
+            
+            {results.industryBenchmarks && (
+              <div className="benchmarks-card">
+                <div className="benchmark-title">Industry Benchmarks</div>
+                <div className="benchmark-values">
+                  <div className="benchmark-item">
+                    <span>Market Leader:</span>
+                    <span>{formatPercent(results.industryBenchmarks.marketLeader)}</span>
+                  </div>
+                  <div className="benchmark-item">
+                    <span>Top Quartile:</span>
+                    <span>{formatPercent(results.industryBenchmarks.topQuartile)}</span>
+                  </div>
+                  <div className="benchmark-item">
+                    <span>Industry Avg:</span>
+                    <span>{formatPercent(results.industryBenchmarks.industryAverage)}</span>
+                  </div>
+                </div>
+              </div>
+            )}
+            
+            {results.marketData?.successRateData && (
+              <div className="success-analysis-card">
+                <div className="success-title">Success Rate Analysis</div>
+                <div className="success-details">
+                  <div className="confidence-range">
+                    Confidence: {results.marketData.successRateData.confidence_interval?.[0]?.toFixed(1)}% - {results.marketData.successRateData.confidence_interval?.[1]?.toFixed(1)}%
+                  </div>
+                  <div className="market-factors">
+                    Based on: {results.marketData.successRateData.factors?.scenario_complexity}, Market conditions, Industry trends
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+          
+          {results.marketData?.industryBenchmarks?.data_sources && (
+            <div className="data-sources">
+              <div className="sources-title">Data Sources:</div>
+              <div className="sources-list">
+                {results.marketData.industryBenchmarks.data_sources.map((source, index) => (
+                  <span key={index} className="source-tag">{source}</span>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
       {/* Investment Breakdown */}
       <div className="investment-breakdown">
         <h3>Investment Breakdown</h3>
