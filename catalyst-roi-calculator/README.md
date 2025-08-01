@@ -67,7 +67,7 @@ npm run dev
 
 **Frontend**: `http://localhost:5173`  
 **API**: `http://localhost:3001`  
-**API Key**: `demo_key_hubspot_trial`
+**API Key**: `demo_key_enterprise_trial`
 
 ### Option 2: Frontend Only
 ```bash

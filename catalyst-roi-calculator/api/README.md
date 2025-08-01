@@ -27,7 +27,7 @@ The API will be available at: `http://localhost:3001`
 
 ### Demo API Key
 ```
-demo_key_hubspot_trial
+demo_key_enterprise_trial
 ```
 
 ## 🎯 Features
@@ -67,7 +67,7 @@ demo_key_hubspot_trial
 ### 🧮 ROI Calculation
 ```http
 POST /api/roi/calculate
-X-API-Key: demo_key_hubspot_trial
+X-API-Key: demo_key_enterprise_trial
 
 {
   "scenario": "ai-chatbot",
@@ -81,13 +81,13 @@ X-API-Key: demo_key_hubspot_trial
 ### 📋 Scenarios Discovery
 ```http
 GET /api/scenarios?industry=saas&ai_recommend=true
-X-API-Key: demo_key_hubspot_trial
+X-API-Key: demo_key_enterprise_trial
 ```
 
 ### 👥 Lead Capture
 ```http
 POST /api/leads
-X-API-Key: demo_key_hubspot_trial
+X-API-Key: demo_key_enterprise_trial
 
 {
   "firstName": "John",
@@ -101,22 +101,22 @@ X-API-Key: demo_key_hubspot_trial
 ### 📈 Analytics
 ```http
 GET /api/analytics?date_from=2024-12-01&date_to=2024-12-19
-X-API-Key: demo_key_hubspot_trial
+X-API-Key: demo_key_enterprise_trial
 ```
 
 ### 🎨 White-Label Branding
 ```http
-GET /api/branding/hubspot
-X-API-Key: demo_key_hubspot_trial
+GET /api/branding/enterprise
+X-API-Key: demo_key_enterprise_trial
 ```
 
 ### 🔗 Webhook Management
 ```http
 POST /api/webhooks
-X-API-Key: demo_key_hubspot_trial
+X-API-Key: demo_key_enterprise_trial
 
 {
-  "url": "https://api.hubspot.com/webhooks/roi-events",
+  "url": "https://api.enterprise.com/webhooks/roi-events",
   "events": ["calculation.completed", "lead.created"]
 }
 ```
@@ -128,10 +128,10 @@ Include your API key in requests:
 
 ```bash
 # Header method (Recommended)
-X-API-Key: demo_key_hubspot_trial
+X-API-Key: demo_key_enterprise_trial
 
 # Bearer token method
-Authorization: Bearer demo_key_hubspot_trial
+Authorization: Bearer demo_key_enterprise_trial
 ```
 
 ### Rate Limits
@@ -155,7 +155,7 @@ The demo API key is automatically inserted with enterprise-level permissions.
 1. Start the API server: `./start-api.sh`
 2. Open the frontend and navigate to the **API** tab
 3. Toggle **"Live API Testing Mode"**
-4. Use API key: `demo_key_hubspot_trial`
+4. Use API key: `demo_key_enterprise_trial`
 5. Click **"Test Real API"** on any endpoint
 
 ### Method 2: cURL Commands
@@ -165,7 +165,7 @@ curl http://localhost:3001/api/health
 
 # ROI Calculation
 curl -X POST http://localhost:3001/api/roi/calculate \
-  -H "X-API-Key: demo_key_hubspot_trial" \
+  -H "X-API-Key: demo_key_enterprise_trial" \
   -H "Content-Type: application/json" \
   -d '{
     "scenario": "ai-chatbot",
@@ -177,7 +177,7 @@ curl -X POST http://localhost:3001/api/roi/calculate \
 
 # Get scenarios
 curl "http://localhost:3001/api/scenarios?industry=saas&ai_recommend=true" \
-  -H "X-API-Key: demo_key_hubspot_trial"
+  -H "X-API-Key: demo_key_enterprise_trial"
 ```
 
 ### Method 3: Postman
@@ -297,7 +297,7 @@ npm install pg
 
 ## 🎯 Perfect For
 
-✅ **HubSpot Integration** - Native CRM connection examples
+✅ **Enterprise CRM Integration** - Native connection examples
 ✅ **Enterprise Demos** - Full-featured API for technical evaluation  
 ✅ **Lead Generation** - Intelligent scoring and qualification
 ✅ **White-Label Solutions** - Complete branding customization

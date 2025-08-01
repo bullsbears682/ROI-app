@@ -6,7 +6,7 @@ const ApiDocs = () => {
   const [testingMode, setTestingMode] = useState(false);
   const [testResult, setTestResult] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [apiKey, setApiKey] = useState('demo_key_hubspot_trial');
+  const [apiKey, setApiKey] = useState('demo_key_enterprise_trial');
 
   // Real API base URL
   const API_BASE_URL = process.env.NODE_ENV === 'production' 
@@ -80,8 +80,8 @@ const ApiDocs = () => {
                 roiPercentage: 285,
                 investment: 50000
               },
-              source: 'api_testing',
-              utm_campaign: 'hubspot_trial'
+                             source: 'api_testing',
+               utm_campaign: 'enterprise_trial'
             })
           });
           break;
@@ -98,27 +98,27 @@ const ApiDocs = () => {
           });
           break;
           
-        case 'branding':
-          response = await fetch(`${API_BASE_URL}/api/branding/hubspot`, {
-            method: 'GET',
-            headers
-          });
-          break;
+                 case 'branding':
+           response = await fetch(`${API_BASE_URL}/api/branding/enterprise`, {
+             method: 'GET',
+             headers
+           });
+           break;
           
         case 'webhooks':
-          response = await fetch(`${API_BASE_URL}/api/webhooks`, {
-            method: 'POST',
-            headers,
-            body: JSON.stringify({
-              url: 'https://api.hubspot.com/webhooks/roi-events',
-              events: ['calculation.completed', 'lead.created', 'lead.qualified'],
-              secret: 'webhook_secret_key',
-              retry_policy: {
-                max_retries: 3,
-                backoff: 'exponential'
-              }
-            })
-          });
+                     response = await fetch(`${API_BASE_URL}/api/webhooks`, {
+             method: 'POST',
+             headers,
+             body: JSON.stringify({
+               url: 'https://api.enterprise.com/webhooks/roi-events',
+               events: ['calculation.completed', 'lead.created', 'lead.qualified'],
+               secret: 'webhook_secret_key',
+               retry_policy: {
+                 max_retries: 3,
+                 backoff: 'exponential'
+               }
+             })
+           });
           break;
           
         default:
@@ -417,12 +417,12 @@ const ApiDocs = () => {
     }
   };
 
-  const authExamples = {
-    apiKey: 'X-API-Key: demo_key_hubspot_trial',
-    bearer: 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
-    domain: 'Origin: https://app.hubspot.com',
-    enterprise: 'X-Enterprise-Token: ent_hubspot_premium_access_2024'
-  };
+      const authExamples = {
+      apiKey: 'X-API-Key: demo_key_enterprise_trial',
+      bearer: 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
+      domain: 'Origin: https://app.enterprise.com',
+      enterprise: 'X-Enterprise-Token: ent_premium_access_2024'
+    };
 
   const sdkExamples = {
     javascript: `// Enterprise JavaScript SDK v2.1
@@ -491,9 +491,9 @@ scenarios = [('ai-chatbot', 50000), ('marketing-automation', 75000)]
 results = await process_roi_batch(scenarios)
 print(f"Batch processed: {len(results)} calculations")`,
 
-    curl: `# Advanced cURL with Enterprise Features
+          curl: `# Advanced cURL with Enterprise Features
 curl -X POST ${API_BASE_URL}/api/roi/calculate \\
-  -H "X-API-Key: demo_key_hubspot_trial" \\
+  -H "X-API-Key: demo_key_enterprise_trial" \\
   -H "X-Enterprise-Token: ent_premium_access" \\
   -H "Content-Type: application/json" \\
   -H "X-Request-ID: req_$(uuidgen)" \\
@@ -509,7 +509,7 @@ curl -X POST ${API_BASE_URL}/api/roi/calculate \\
       "risk_assessment": "detailed",
       "custom_factors": {
         "team_size": 25,
-        "current_tools": ["hubspot", "salesforce"],
+        "current_tools": ["salesforce", "pipedrive"],
         "support_volume": 1200
       }
     },
@@ -557,7 +557,7 @@ query AdvancedROIAnalysis($input: ROICalculationInput!) {
 
     webhook: `# Advanced Webhook Configuration
 {
-  "webhook_url": "https://api.hubspot.com/webhooks/catalyst-events",
+      "webhook_url": "https://api.enterprise.com/webhooks/catalyst-events",
   "events": [
     "calculation.completed",
     "lead.created", 
@@ -565,10 +565,10 @@ query AdvancedROIAnalysis($input: ROICalculationInput!) {
     "insights.generated",
     "forecast.updated"
   ],
-  "headers": {
-    "Authorization": "Bearer hubspot_webhook_token",
-    "X-Source": "Catalyst-ROI-Calculator"
-  },
+      "headers": {
+      "Authorization": "Bearer enterprise_webhook_token",
+      "X-Source": "Catalyst-ROI-Calculator"
+    },
   "retry_policy": {
     "max_retries": 5,
     "backoff_strategy": "exponential",
@@ -579,7 +579,7 @@ query AdvancedROIAnalysis($input: ROICalculationInput!) {
     "industries": ["saas", "retail", "financial"],
     "lead_score_threshold": 70
   },
-  "payload_template": "hubspot_v2"
+      "payload_template": "enterprise_v2"
 }`
   };
 
@@ -704,8 +704,8 @@ query AdvancedROIAnalysis($input: ROICalculationInput!) {
             
             <div className="value-prop">
               <div className="value-card primary">
-                <h3>🎯 Built for HubSpot-Scale Integration</h3>
-                <p>Production-ready API designed for enterprise CRM platforms with millions of users. Native HubSpot integration examples, white-label capabilities, and enterprise-grade infrastructure.</p>
+                <h3>🎯 Built for Enterprise-Scale Integration</h3>
+                <p>Production-ready API designed for enterprise CRM platforms with millions of users. Native CRM integration examples, white-label capabilities, and enterprise-grade infrastructure.</p>
                 <div className="tech-badges">
                   <span className="tech-badge">99.97% SLA</span>
                   <span className="tech-badge">SOC 2 Certified</span>
@@ -733,21 +733,21 @@ query AdvancedROIAnalysis($input: ROICalculationInput!) {
             <div className="integration-showcase">
               <h3>🔗 Native CRM Integrations</h3>
               <div className="integration-grid">
-                <div className="integration-card featured">
-                  <img src="https://cdn.brandfetch.io/hubspot.com/w/400/h/400/theme/dark/icon.jpeg?k=bfHSJFAPEG" alt="HubSpot" className="integration-logo" />
-                  <h4>HubSpot Native</h4>
-                  <p>Deep integration with HubSpot CRM, Marketing Hub, and Sales Hub</p>
-                  <div className="integration-features">
-                    <span>✓ Contact sync</span>
-                    <span>✓ Deal pipeline</span>
-                    <span>✓ Custom properties</span>
-                    <span>✓ Workflow triggers</span>
-                  </div>
+                              <div className="integration-card featured">
+                <div className="integration-logo-text">SF</div>
+                <h4>Salesforce Native</h4>
+                <p>Deep integration with Salesforce CRM, Sales Cloud, and Service Cloud</p>
+                <div className="integration-features">
+                  <span>✓ Contact sync</span>
+                  <span>✓ Deal pipeline</span>
+                  <span>✓ Custom objects</span>
+                  <span>✓ Workflow automation</span>
                 </div>
+              </div>
                 <div className="integration-card">
-                  <div className="integration-logo-text">SF</div>
-                  <h4>Salesforce</h4>
-                  <p>Enterprise Salesforce integration with custom objects</p>
+                  <div className="integration-logo-text">MS</div>
+                  <h4>Microsoft Dynamics</h4>
+                  <p>Enterprise Dynamics 365 integration with custom entities</p>
                 </div>
                 <div className="integration-card">
                   <div className="integration-logo-text">PP</div>
@@ -755,9 +755,9 @@ query AdvancedROIAnalysis($input: ROICalculationInput!) {
                   <p>Seamless lead scoring and opportunity tracking</p>
                 </div>
                 <div className="integration-card">
-                  <div className="integration-logo-text">MS</div>
-                  <h4>Microsoft</h4>
-                  <p>Dynamics 365 and Teams integration</p>
+                  <div className="integration-logo-text">ZD</div>
+                  <h4>Zendesk</h4>
+                  <p>Customer service and support integration</p>
                 </div>
               </div>
             </div>
@@ -766,7 +766,7 @@ query AdvancedROIAnalysis($input: ROICalculationInput!) {
               <h3>🧮 Live ROI Calculator Integration</h3>
               <div className="preview-card">
                 <div className="preview-header">
-                  <span className="preview-url">https://roi.hubspot.com/calculator</span>
+                  <span className="preview-url">https://roi.enterprise.com/calculator</span>
                   <span className="preview-status">🟢 Live</span>
                 </div>
                 <div className="preview-content">
@@ -789,7 +789,7 @@ query AdvancedROIAnalysis($input: ROICalculationInput!) {
                       <span className="metric-label">Confidence</span>
                     </div>
                   </div>
-                  <button className="preview-cta">Embed in HubSpot →</button>
+                  <button className="preview-cta">Embed in CRM →</button>
                 </div>
               </div>
             </div>
@@ -875,7 +875,7 @@ query AdvancedROIAnalysis($input: ROICalculationInput!) {
                             placeholder="Enter your API key"
                           />
                           <small style={{color: '#666', fontSize: '0.8rem', display: 'block', marginTop: '0.5rem'}}>
-                            Demo key: demo_key_hubspot_trial
+                            Demo key: demo_key_enterprise_trial
                           </small>
                         </div>
                         

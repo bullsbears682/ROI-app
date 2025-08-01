@@ -696,7 +696,7 @@ app.use((req, res) => {
 app.listen(PORT, () => {
   console.log(`🚀 Catalyst ROI API Server running on port ${PORT}`);
   console.log(`📡 API Documentation: http://localhost:${PORT}/api/health`);
-  console.log(`🔑 Demo API Key: demo_key_hubspot_trial`);
+  console.log(`🔑 Demo API Key: demo_key_enterprise_trial`);
 });
 
 module.exports = app;
