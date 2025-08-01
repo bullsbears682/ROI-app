@@ -1814,7 +1814,7 @@ query AdvancedROIAnalysis($input: ROICalculationInput!) {
                     <div className="quick-resources">
                       <a href="#" onClick={(e) => { e.preventDefault(); handleResourceClick('postman', `${API_BASE_URL}/api/postman-collection`); }} className="resource-link">📄 Postman Collection</a>
                       <a href="#" onClick={(e) => { e.preventDefault(); handleResourceClick('openapi', `${API_BASE_URL}/api/swagger.json`); }} className="resource-link">📋 OpenAPI Spec</a>
-                      <a href="https://github.com/bullsbears682/ROI-app" target="_blank" rel="noopener" className="resource-link">💻 GitHub Repository</a>
+                      <a href="#" onClick={(e) => { e.preventDefault(); setActiveTab('enterprise'); }} className="resource-link">📖 Integration Guide</a>
                     </div>
                   </div>
                 </div>
@@ -1868,10 +1868,10 @@ query AdvancedROIAnalysis($input: ROICalculationInput!) {
             <ul>
               <li><a href="#" onClick={(e) => { e.preventDefault(); handleResourceClick('postman', `${API_BASE_URL}/api/postman-collection`); }}>Postman Collection</a></li>
               <li><a href="#" onClick={(e) => { e.preventDefault(); handleResourceClick('openapi', `${API_BASE_URL}/api/swagger.json`); }}>OpenAPI 3.0 Spec</a></li>
-              <li><a href="https://github.com/bullsbears682/ROI-app" target="_blank" rel="noopener">GitHub Repository</a></li>
               <li><a href="#" onClick={(e) => { e.preventDefault(); handleResourceClick('changelog', `${API_BASE_URL}/api/changelog`); }}>API Changelog</a></li>
               <li><a href="#" onClick={(e) => { e.preventDefault(); handleResourceClick('health', `${API_BASE_URL}/api/health`); }}>System Status</a></li>
               <li><a href="#" onClick={(e) => { e.preventDefault(); setActiveTab('testing'); }}>API Testing</a></li>
+              <li><a href="#" onClick={(e) => { e.preventDefault(); setActiveTab('enterprise'); }}>Integration Guide</a></li>
             </ul>
           </div>
           <div className="footer-section">
@@ -1879,10 +1879,10 @@ query AdvancedROIAnalysis($input: ROICalculationInput!) {
             <ul>
               <li><a href="#" onClick={(e) => { e.preventDefault(); setActiveTab('overview'); }}>Try ROI Calculator</a></li>
               <li><a href="#" onClick={(e) => { e.preventDefault(); window.location.href = '/#/scenarios'; }}>Browse Scenarios</a></li>
-              <li><a href="#" onClick={(e) => { e.preventDefault(); window.location.href = '/#/admin'; }}>View Admin Dashboard</a></li>
               <li><a href="#" onClick={(e) => { e.preventDefault(); setActiveTab('enterprise'); }}>Enterprise Features</a></li>
               <li><a href="#" onClick={(e) => { e.preventDefault(); setActiveTab('pricing'); }}>Enterprise Pricing</a></li>
               <li><a href="#" onClick={(e) => { e.preventDefault(); setActiveTab('trial'); }}>Start Free Trial</a></li>
+              <li><a href="mailto:enterprise@catalyst-roi.com?subject=Demo Request">Request Demo</a></li>
             </ul>
           </div>
           <div className="footer-section">
