@@ -1,5 +1,4 @@
 import React from 'react';
-import { getCurrencyOptions, formatCurrencyCustom, convertROIScenario } from '../utils/currency';
 
 const Calculator = ({ 
   categories, 
@@ -21,23 +20,29 @@ const Calculator = ({
 
   const currentScenario = scenarios[selectedScenario];
 
+  // Currency options
+  const currencyOptions = [
+    { code: 'USD', symbol: '$', name: 'US Dollar' },
+    { code: 'EUR', symbol: '€', name: 'Euro' },
+    { code: 'GBP', symbol: '£', name: 'British Pound' },
+    { code: 'CAD', symbol: 'C$', name: 'Canadian Dollar' },
+    { code: 'AUD', symbol: 'A$', name: 'Australian Dollar' }
+  ];
+
   // Format currency for display
   const formatCurrency = (amount) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0
-    }).format(amount);
+    const currencyData = currencyOptions.find(c => c.code === currency) || currencyOptions[0];
+    return `${currencyData.symbol}${amount.toLocaleString()}`;
   };
 
   return (
     <div className="card calculator-card">
-      <h2>ROI Calculator</h2>
+      <h2>🚀 ROI Calculator</h2>
+      <p className="card-subtitle">Calculate returns across 85+ business scenarios</p>
       
       {/* Category Selection */}
       <div className="form-group">
-        <label className="form-label">Business Category</label>
+        <label className="form-label">📊 Business Category</label>
         <select 
           className="form-select"
           value={selectedCategory}
@@ -49,14 +54,12 @@ const Calculator = ({
             </option>
           ))}
         </select>
-        <small className="form-help">
-          {categories[selectedCategory]?.description}
-        </small>
+        <small className="form-hint">{categoryScenarios.length} scenarios available</small>
       </div>
 
       {/* Scenario Selection */}
       <div className="form-group">
-        <label className="form-label">Investment Scenario</label>
+        <label className="form-label">🎯 Specific Scenario</label>
         <select 
           className="form-select"
           value={selectedScenario}
@@ -64,146 +67,133 @@ const Calculator = ({
         >
           {categoryScenarios.map(scenario => (
             <option key={scenario.id} value={scenario.id}>
-              {scenario.name}
+              {scenario.description}
             </option>
           ))}
         </select>
         {currentScenario && (
-          <small className="form-help">
-            {currentScenario.description}
+          <small className="form-hint">
+            Risk: {currentScenario.riskLevel} | 
+            ROI Range: {currentScenario.expectedROI.min}% - {currentScenario.expectedROI.max}%
           </small>
         )}
-      </div>
-
-      {/* Currency Selection */}
-      <div className="form-group">
-        <label className="form-label">Currency</label>
-        <select 
-          className="form-select"
-          value={currency}
-          onChange={(e) => onCurrencyChange(e.target.value)}
-        >
-          {getCurrencyOptions().map(option => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
       </div>
 
       {/* Investment Amount */}
       <div className="form-group">
-        <label className="form-label">Investment Amount</label>
+        <label className="form-label">💰 Investment Amount</label>
         <div className="input-group">
-          <span className="input-prefix">{formatCurrencyCustom(0, currency).replace(/\d/g, '').replace(',', '')}</span>
-          <input
+          <input 
             type="number"
             className="form-input"
-            value={inputs.investment}
-            onChange={(e) => onInputChange('investment', parseInt(e.target.value) || 0)}
-            placeholder="25000"
+            value={inputs.investment || ''}
+            onChange={(e) => onInputChange('investment', parseFloat(e.target.value) || 0)}
+            placeholder="Enter investment amount"
             min="1000"
             step="1000"
           />
+          <select 
+            className="form-select currency-select"
+            value={currency}
+            onChange={(e) => onCurrencyChange(e.target.value)}
+            style={{maxWidth: '100px'}}
+          >
+            {currencyOptions.map(curr => (
+              <option key={curr.code} value={curr.code}>
+                {curr.code}
+              </option>
+            ))}
+          </select>
         </div>
-        {currentScenario && (
-          <small className="form-help">
-            Typical range: {formatCurrency(currentScenario.costRange.min)} - {formatCurrency(currentScenario.costRange.max)}
-          </small>
-        )}
+        <small className="form-hint">Minimum: {formatCurrency(1000)}</small>
       </div>
 
       {/* Timeframe */}
       <div className="form-group">
-        <label className="form-label">Timeframe (months)</label>
-        <input
+        <label className="form-label">⏱️ Timeframe (months)</label>
+        <input 
           type="number"
           className="form-input"
-          value={inputs.timeframe}
-          onChange={(e) => onInputChange('timeframe', parseInt(e.target.value) || 1)}
-          placeholder="12"
+          value={inputs.timeframe || 12}
+          onChange={(e) => onInputChange('timeframe', parseInt(e.target.value) || 12)}
           min="1"
           max="60"
+          placeholder="12"
         />
-        {currentScenario && (
-          <small className="form-help">
-            Expected implementation: {currentScenario.timeframe.min}-{currentScenario.timeframe.max} months
-          </small>
-        )}
+        <small className="form-hint">Typical: 6-24 months</small>
       </div>
 
       {/* Industry */}
       <div className="form-group">
-        <label className="form-label">Industry</label>
+        <label className="form-label">🏢 Industry</label>
         <select 
           className="form-select"
-          value={inputs.industry}
+          value={inputs.industry || 'technology'}
           onChange={(e) => onInputChange('industry', e.target.value)}
         >
-          <option value="general">General Business</option>
-          <option value="retail">Retail & eCommerce</option>
-          <option value="saas">SaaS & Technology</option>
-          <option value="financial">Financial Services</option>
+          <option value="technology">Technology</option>
           <option value="healthcare">Healthcare</option>
+          <option value="finance">Finance</option>
+          <option value="retail">Retail</option>
           <option value="manufacturing">Manufacturing</option>
-          <option value="consulting">Professional Services</option>
-          <option value="real_estate">Real Estate</option>
           <option value="education">Education</option>
+          <option value="real-estate">Real Estate</option>
+          <option value="professional-services">Professional Services</option>
+          <option value="hospitality">Hospitality</option>
+          <option value="transportation">Transportation</option>
         </select>
       </div>
 
       {/* Company Size */}
       <div className="form-group">
-        <label className="form-label">Company Size</label>
+        <label className="form-label">👥 Company Size</label>
         <select 
           className="form-select"
-          value={inputs.companySize}
+          value={inputs.companySize || 'medium'}
           onChange={(e) => onInputChange('companySize', e.target.value)}
         >
           <option value="startup">Startup (1-10 employees)</option>
-          <option value="small">Small Business (11-50 employees)</option>
-          <option value="medium">Medium Business (51-200 employees)</option>
-          <option value="large">Large Enterprise (200+ employees)</option>
+          <option value="small">Small (11-50 employees)</option>
+          <option value="medium">Medium (51-200 employees)</option>
+          <option value="large">Large (201-1000 employees)</option>
+          <option value="enterprise">Enterprise (1000+ employees)</option>
         </select>
       </div>
 
-      {/* Scenario Details */}
+      {/* Scenario Preview */}
       {currentScenario && (
-        <div className="scenario-details">
-          <h3>About This Investment</h3>
-          <div className="details-grid">
+        <div className="scenario-preview">
+          <h4>📋 Scenario Overview</h4>
+          <div className="scenario-details">
             <div className="detail-item">
-              <span className="detail-label">Expected ROI Range</span>
-              <span className="detail-value">
-                {currentScenario.expectedROI.min}% - {currentScenario.expectedROI.max}%
+              <span className="detail-label">Description:</span>
+              <span>{currentScenario.description}</span>
+            </div>
+            <div className="detail-item">
+              <span className="detail-label">Category:</span>
+              <span>{categories[selectedCategory]?.name}</span>
+            </div>
+            <div className="detail-item">
+              <span className="detail-label">Risk Level:</span>
+              <span className={`risk-badge risk-${currentScenario.riskLevel}`}>
+                {currentScenario.riskLevel.toUpperCase()}
               </span>
             </div>
             <div className="detail-item">
-              <span className="detail-label">Payback Period</span>
-              <span className="detail-value">{currentScenario.paybackPeriod} months</span>
+              <span className="detail-label">Expected ROI:</span>
+              <span>{currentScenario.expectedROI.min}% - {currentScenario.expectedROI.max}%</span>
             </div>
-            <div className="detail-item">
-              <span className="detail-label">Risk Level</span>
-              <span className={`detail-value risk-${currentScenario.riskLevel}`}>
-                {currentScenario.riskLevel.charAt(0).toUpperCase() + currentScenario.riskLevel.slice(1)}
-              </span>
-            </div>
+            {currentScenario.benefits && (
+              <div className="detail-item">
+                <span className="detail-label">Key Benefits:</span>
+                <ul className="benefits-list">
+                  {currentScenario.benefits.slice(0, 3).map((benefit, index) => (
+                    <li key={index}>{benefit}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
-
-          {/* Benefits List */}
-          {currentScenario.benefits && (
-            <div className="benefits-section">
-              <h4>Key Benefits</h4>
-              <ul className="benefits-list">
-                {currentScenario.benefits.map((benefit, index) => (
-                  <li key={index} className="benefit-item">
-                    <span className="benefit-icon">✓</span>
-                    {benefit}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
         </div>
       )}
 
@@ -211,10 +201,18 @@ const Calculator = ({
       <button 
         className="btn btn-primary calculate-btn"
         onClick={onCalculate}
+        disabled={!inputs.investment || inputs.investment < 1000}
       >
-        Calculate ROI
+        🧮 Calculate ROI
         <span className="btn-icon">→</span>
       </button>
+
+      {/* Data Sources Note */}
+      <div className="data-sources-note">
+        <small>
+          💡 Calculations based on real market data from government sources and industry benchmarks
+        </small>
+      </div>
     </div>
   );
 };
