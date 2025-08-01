@@ -62,18 +62,26 @@ function App() {
 
   // Professional ROI calculation with API integration
   const calculateROI = async () => {
+    console.log('Calculate button clicked!')
+    console.log('Investment:', investment)
+    console.log('Selected Category:', selectedCategory)
+    console.log('Selected Scenario:', selectedScenario)
+    console.log('Available scenarios for category:', Object.entries(roiScenarios).filter(([k,v]) => v.category === selectedCategory).map(([k,v]) => k))
+    
     setIsCalculating(true)
     
     try {
       // Input validation
       if (!investment || investment < 1000) {
         alert('Please enter an investment amount of at least $1,000')
+        setIsCalculating(false)
         return
       }
 
       const scenario = roiScenarios[selectedScenario]
       if (!scenario) {
         alert('Please select a valid scenario')
+        setIsCalculating(false)
         return
       }
 
@@ -578,7 +586,7 @@ function App() {
                 marginBottom: '12px',
                 fontWeight: '700'
               }}>
-                Professional ROI Calculator
+                Professional ROI Calculator (v2.0)
               </h1>
               <p style={{
                 color: '#64748b',
