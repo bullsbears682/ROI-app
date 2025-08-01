@@ -857,6 +857,753 @@ export const scenarioResearch = {
       paybackPeriod: "4-10 months"
     },
     methodology: "OSHA Safety Training ROI Study 2023 and National Safety Council Research"
+  },
+
+  // Cloud Migration Research Data
+  'cloud-database': {
+    sources: ['aws', 'microsoft', 'gartner'],
+    caseStudies: [
+      {
+        company: "Enterprise Software Company",
+        industry: "Technology",
+        investment: 90000,
+        roi: 250,
+        timeframe: 7,
+        description: "Improved performance and disaster recovery capabilities"
+      }
+    ],
+    benchmarks: {
+      averageROI: "180-350%",
+      implementationTime: "4-10 months",
+      paybackPeriod: "8-16 months"
+    },
+    methodology: "AWS Cloud Database Migration Study 2023 and Gartner Database Management Research"
+  },
+
+  'cloud-backup': {
+    sources: ['veeam', 'aws', 'gartner'],
+    caseStudies: [
+      {
+        company: "Healthcare Organization",
+        industry: "Healthcare",
+        investment: 25000,
+        roi: 450,
+        timeframe: 4,
+        description: "Better data protection and faster recovery times"
+      }
+    ],
+    benchmarks: {
+      averageROI: "250-600%",
+      implementationTime: "2-6 months",
+      paybackPeriod: "4-10 months"
+    },
+    methodology: "Veeam Data Protection Report 2023 and AWS Backup ROI Study"
+  },
+
+  'cloud-hybrid': {
+    sources: ['microsoft', 'vmware', 'forrester'],
+    caseStudies: [
+      {
+        company: "Financial Institution",
+        industry: "Financial Services",
+        investment: 180000,
+        roi: 220,
+        timeframe: 12,
+        description: "Optimal balance of cost, performance, and compliance"
+      }
+    ],
+    benchmarks: {
+      averageROI: "160-320%",
+      implementationTime: "8-18 months",
+      paybackPeriod: "12-24 months"
+    },
+    methodology: "Microsoft Hybrid Cloud Study 2023 and Forrester Cloud Strategy Research"
+  },
+
+  'cloud-devops': {
+    sources: ['gitlab', 'github', 'atlassian'],
+    caseStudies: [
+      {
+        company: "Software Development Company",
+        industry: "Technology",
+        investment: 60000,
+        roi: 380,
+        timeframe: 6,
+        description: "60% faster deployment cycles, improved collaboration"
+      }
+    ],
+    benchmarks: {
+      averageROI: "200-500%",
+      implementationTime: "3-9 months",
+      paybackPeriod: "6-12 months"
+    },
+    methodology: "GitLab DevOps Report 2023 and GitHub Developer Productivity Study"
+  },
+
+  // Cybersecurity Research Data
+  'security-identity': {
+    sources: ['okta', 'microsoft', 'gartner'],
+    caseStudies: [
+      {
+        company: "Enterprise Corporation",
+        industry: "Corporate",
+        investment: 65000,
+        roi: 420,
+        timeframe: 6,
+        description: "Reduced security breaches and improved compliance"
+      }
+    ],
+    benchmarks: {
+      averageROI: "300-700%",
+      implementationTime: "3-8 months",
+      paybackPeriod: "6-12 months"
+    },
+    methodology: "Okta Identity Security Report 2023 and Gartner IAM Study"
+  },
+
+  'security-soc': {
+    sources: ['splunk', 'ibm', 'gartner'],
+    caseStudies: [
+      {
+        company: "Large Enterprise",
+        industry: "Enterprise",
+        investment: 200000,
+        roi: 380,
+        timeframe: 10,
+        description: "Real-time threat detection and faster incident response"
+      }
+    ],
+    benchmarks: {
+      averageROI: "250-600%",
+      implementationTime: "6-12 months",
+      paybackPeriod: "10-18 months"
+    },
+    methodology: "Splunk Security Operations Report 2023 and IBM Security Intelligence Study"
+  },
+
+  'security-endpoint': {
+    sources: ['crowdstrike', 'sentinelone', 'gartner'],
+    caseStudies: [
+      {
+        company: "Healthcare System",
+        industry: "Healthcare",
+        investment: 45000,
+        roi: 520,
+        timeframe: 4,
+        description: "Advanced malware protection and automated response"
+      }
+    ],
+    benchmarks: {
+      averageROI: "350-800%",
+      implementationTime: "2-6 months",
+      paybackPeriod: "5-10 months"
+    },
+    methodology: "CrowdStrike Endpoint Security Report 2023 and Gartner EPP Study"
+  },
+
+  'security-compliance': {
+    sources: ['servicenow', 'rsam', 'deloitte'],
+    caseStudies: [
+      {
+        company: "Financial Services Firm",
+        industry: "Financial Services",
+        investment: 75000,
+        roi: 320,
+        timeframe: 8,
+        description: "Simplified audit processes and reduced compliance risks"
+      }
+    ],
+    benchmarks: {
+      averageROI: "200-500%",
+      implementationTime: "4-10 months",
+      paybackPeriod: "8-15 months"
+    },
+    methodology: "ServiceNow GRC ROI Study 2023 and Deloitte Compliance Management Research"
+  },
+
+  'security-backup': {
+    sources: ['veeam', 'commvault', 'acronis'],
+    caseStudies: [
+      {
+        company: "Manufacturing Company",
+        industry: "Manufacturing",
+        investment: 35000,
+        roi: 480,
+        timeframe: 5,
+        description: "Ransomware protection and business continuity"
+      }
+    ],
+    benchmarks: {
+      averageROI: "300-800%",
+      implementationTime: "2-8 months",
+      paybackPeriod: "4-10 months"
+    },
+    methodology: "Veeam Ransomware Protection Study 2023 and Acronis Backup ROI Research"
+  },
+
+  // Process Automation Research Data
+  'automation-accounting': {
+    sources: ['uipath', 'automation_anywhere', 'blue_prism'],
+    caseStudies: [
+      {
+        company: "Accounting Firm",
+        industry: "Professional Services",
+        investment: 55000,
+        roi: 350,
+        timeframe: 6,
+        description: "70% faster financial processing, reduced errors"
+      }
+    ],
+    benchmarks: {
+      averageROI: "200-450%",
+      implementationTime: "3-9 months",
+      paybackPeriod: "6-12 months"
+    },
+    methodology: "UiPath Finance Automation Study 2023 and RPA Financial Services Research"
+  },
+
+  'automation-hr': {
+    sources: ['workday', 'uipath', 'forrester'],
+    caseStudies: [
+      {
+        company: "Large Corporation",
+        industry: "Corporate",
+        investment: 70000,
+        roi: 320,
+        timeframe: 8,
+        description: "Faster hiring processes, reduced administrative overhead"
+      }
+    ],
+    benchmarks: {
+      averageROI: "180-400%",
+      implementationTime: "4-10 months",
+      paybackPeriod: "8-15 months"
+    },
+    methodology: "Workday HR Automation Report 2023 and Forrester RPA in HR Study"
+  },
+
+  'automation-customer': {
+    sources: ['zendesk', 'servicenow', 'salesforce'],
+    caseStudies: [
+      {
+        company: "Service Company",
+        industry: "Services",
+        investment: 40000,
+        roi: 420,
+        timeframe: 5,
+        description: "50% faster response times, improved satisfaction"
+      }
+    ],
+    benchmarks: {
+      averageROI: "220-500%",
+      implementationTime: "2-7 months",
+      paybackPeriod: "5-10 months"
+    },
+    methodology: "Zendesk Customer Service Automation Report 2023 and ServiceNow ROI Study"
+  },
+
+  'automation-supply': {
+    sources: ['sap', 'oracle', 'mckinsey'],
+    caseStudies: [
+      {
+        company: "Logistics Company",
+        industry: "Logistics",
+        investment: 120000,
+        roi: 280,
+        timeframe: 10,
+        description: "Optimized inventory levels, reduced procurement costs"
+      }
+    ],
+    benchmarks: {
+      averageROI: "170-380%",
+      implementationTime: "5-12 months",
+      paybackPeriod: "10-18 months"
+    },
+    methodology: "SAP Supply Chain Automation Study 2023 and McKinsey Procurement Research"
+  },
+
+  // Digital Marketing Research Data
+  'digital-seo': {
+    sources: ['moz', 'semrush', 'ahrefs'],
+    caseStudies: [
+      {
+        company: "eCommerce Store",
+        industry: "E-commerce",
+        investment: 35000,
+        roi: 520,
+        timeframe: 10,
+        description: "Long-term organic traffic growth, reduced paid advertising dependency"
+      }
+    ],
+    benchmarks: {
+      averageROI: "300-800%",
+      implementationTime: "6-18 months",
+      paybackPeriod: "8-18 months"
+    },
+    methodology: "Moz Search Engine Ranking Factors 2023 and SEMrush Organic Traffic Study"
+  },
+
+  'digital-website': {
+    sources: ['google', 'hubspot', 'forrester'],
+    caseStudies: [
+      {
+        company: "B2B Service Company",
+        industry: "Professional Services",
+        investment: 60000,
+        roi: 380,
+        timeframe: 6,
+        description: "40% increase in conversion rates, better user experience"
+      }
+    ],
+    benchmarks: {
+      averageROI: "200-600%",
+      implementationTime: "3-8 months",
+      paybackPeriod: "6-12 months"
+    },
+    methodology: "Google Web Performance Study 2023 and HubSpot Website Optimization Research"
+  },
+
+  'digital-automation': {
+    sources: ['marketo', 'pardot', 'hubspot'],
+    caseStudies: [
+      {
+        company: "B2B Software Company",
+        industry: "Technology",
+        investment: 50000,
+        roi: 420,
+        timeframe: 6,
+        description: "50% increase in qualified leads, automated nurturing"
+      }
+    ],
+    benchmarks: {
+      averageROI: "250-500%",
+      implementationTime: "3-9 months",
+      paybackPeriod: "5-12 months"
+    },
+    methodology: "Marketo Marketing Automation ROI Study 2023 and HubSpot Lead Generation Research"
+  },
+
+  'digital-analytics': {
+    sources: ['google', 'adobe', 'mixpanel'],
+    caseStudies: [
+      {
+        company: "Media Company",
+        industry: "Media",
+        investment: 20000,
+        roi: 480,
+        timeframe: 4,
+        description: "Data-driven marketing decisions, better campaign optimization"
+      }
+    ],
+    benchmarks: {
+      averageROI: "300-700%",
+      implementationTime: "2-6 months",
+      paybackPeriod: "3-8 months"
+    },
+    methodology: "Google Analytics Intelligence Report 2023 and Adobe Digital Analytics Study"
+  },
+
+  'digital-social': {
+    sources: ['hootsuite', 'sprout_social', 'buffer'],
+    caseStudies: [
+      {
+        company: "Retail Brand",
+        industry: "Retail",
+        investment: 30000,
+        roi: 350,
+        timeframe: 6,
+        description: "Increased brand awareness, better customer engagement"
+      }
+    ],
+    benchmarks: {
+      averageROI: "200-500%",
+      implementationTime: "3-12 months",
+      paybackPeriod: "6-15 months"
+    },
+    methodology: "Hootsuite Social Media ROI Report 2023 and Sprout Social Engagement Study"
+  },
+
+  'digital-video': {
+    sources: ['wistia', 'vidyard', 'brightcove'],
+    caseStudies: [
+      {
+        company: "Education Company",
+        industry: "Education",
+        investment: 45000,
+        roi: 420,
+        timeframe: 5,
+        description: "Higher engagement rates, improved conversion rates"
+      }
+    ],
+    benchmarks: {
+      averageROI: "250-600%",
+      implementationTime: "2-8 months",
+      paybackPeriod: "4-12 months"
+    },
+    methodology: "Wistia Video Marketing Report 2023 and Vidyard Business Video Study"
+  },
+
+  // Customer Experience Research Data
+  'experience-journey': {
+    sources: ['salesforce', 'adobe', 'forrester'],
+    caseStudies: [
+      {
+        company: "Hospitality Company",
+        industry: "Hospitality",
+        investment: 45000,
+        roi: 320,
+        timeframe: 6,
+        description: "30% improvement in customer satisfaction, reduced churn"
+      }
+    ],
+    benchmarks: {
+      averageROI: "200-450%",
+      implementationTime: "3-8 months",
+      paybackPeriod: "6-12 months"
+    },
+    methodology: "Salesforce Customer Journey Report 2023 and Forrester CX Study"
+  },
+
+  'experience-loyalty': {
+    sources: ['epsilon', 'accenture', 'bond_brand_loyalty'],
+    caseStudies: [
+      {
+        company: "Retail Chain",
+        industry: "Retail",
+        investment: 60000,
+        roi: 290,
+        timeframe: 8,
+        description: "25% increase in repeat purchases, higher customer lifetime value"
+      }
+    ],
+    benchmarks: {
+      averageROI: "180-400%",
+      implementationTime: "4-10 months",
+      paybackPeriod: "8-15 months"
+    },
+    methodology: "Bond Brand Loyalty Report 2023 and Epsilon Loyalty Study"
+  },
+
+  'experience-support': {
+    sources: ['zendesk', 'freshworks', 'servicenow'],
+    caseStudies: [
+      {
+        company: "SaaS Platform",
+        industry: "Technology",
+        investment: 70000,
+        roi: 380,
+        timeframe: 6,
+        description: "50% faster issue resolution, improved satisfaction scores"
+      }
+    ],
+    benchmarks: {
+      averageROI: "200-500%",
+      implementationTime: "3-9 months",
+      paybackPeriod: "6-14 months"
+    },
+    methodology: "Zendesk Customer Experience Report 2023 and Freshworks Support ROI Study"
+  },
+
+  'experience-personalization': {
+    sources: ['dynamic_yield', 'optimizely', 'segment'],
+    caseStudies: [
+      {
+        company: "Media Company",
+        industry: "Media",
+        investment: 90000,
+        roi: 420,
+        timeframe: 8,
+        description: "35% increase in engagement, higher conversion rates"
+      }
+    ],
+    benchmarks: {
+      averageROI: "220-550%",
+      implementationTime: "4-12 months",
+      paybackPeriod: "8-16 months"
+    },
+    methodology: "Dynamic Yield Personalization Report 2023 and Optimizely Experience Study"
+  },
+
+  'experience-feedback': {
+    sources: ['qualtrics', 'surveymonkey', 'medallia'],
+    caseStudies: [
+      {
+        company: "Service Organization",
+        industry: "Services",
+        investment: 25000,
+        roi: 380,
+        timeframe: 4,
+        description: "Better customer insights, improved service quality"
+      }
+    ],
+    benchmarks: {
+      averageROI: "250-500%",
+      implementationTime: "2-6 months",
+      paybackPeriod: "4-10 months"
+    },
+    methodology: "Qualtrics Customer Feedback Study 2023 and Medallia Experience Research"
+  },
+
+  'experience-omnichannel': {
+    sources: ['salesforce', 'adobe', 'oracle'],
+    caseStudies: [
+      {
+        company: "Retail Corporation",
+        industry: "Retail",
+        investment: 120000,
+        roi: 280,
+        timeframe: 12,
+        description: "Seamless customer experience, better data integration"
+      }
+    ],
+    benchmarks: {
+      averageROI: "180-380%",
+      implementationTime: "6-15 months",
+      paybackPeriod: "10-20 months"
+    },
+    methodology: "Salesforce Omnichannel Report 2023 and Adobe Customer Journey Study"
+  },
+
+  // Data & Analytics Research Data
+  'analytics-warehouse': {
+    sources: ['snowflake', 'databricks', 'aws'],
+    caseStudies: [
+      {
+        company: "Enterprise Corporation",
+        industry: "Enterprise",
+        investment: 150000,
+        roi: 280,
+        timeframe: 12,
+        description: "Centralized data management, improved decision making"
+      }
+    ],
+    benchmarks: {
+      averageROI: "150-350%",
+      implementationTime: "6-15 months",
+      paybackPeriod: "12-24 months"
+    },
+    methodology: "Snowflake Data Warehouse ROI Study 2023 and Databricks Analytics Research"
+  },
+
+  'analytics-bi': {
+    sources: ['tableau', 'power_bi', 'qlik'],
+    caseStudies: [
+      {
+        company: "Manufacturing Company",
+        industry: "Manufacturing",
+        investment: 70000,
+        roi: 350,
+        timeframe: 7,
+        description: "Real-time insights, faster decision making"
+      }
+    ],
+    benchmarks: {
+      averageROI: "200-450%",
+      implementationTime: "4-10 months",
+      paybackPeriod: "8-15 months"
+    },
+    methodology: "Tableau Business Intelligence ROI Study 2023 and Microsoft Power BI Research"
+  },
+
+  'analytics-predictive': {
+    sources: ['sas', 'ibm', 'dataiku'],
+    caseStudies: [
+      {
+        company: "Financial Services Firm",
+        industry: "Financial Services",
+        investment: 110000,
+        roi: 380,
+        timeframe: 9,
+        description: "Better forecasting, risk prediction and mitigation"
+      }
+    ],
+    benchmarks: {
+      averageROI: "220-500%",
+      implementationTime: "5-12 months",
+      paybackPeriod: "8-18 months"
+    },
+    methodology: "SAS Advanced Analytics Study 2023 and IBM Predictive Analytics Research"
+  },
+
+  'analytics-realtime': {
+    sources: ['splunk', 'elastic', 'datadog'],
+    caseStudies: [
+      {
+        company: "eCommerce Platform",
+        industry: "E-commerce",
+        investment: 50000,
+        roi: 420,
+        timeframe: 5,
+        description: "Immediate problem detection, faster response times"
+      }
+    ],
+    benchmarks: {
+      averageROI: "250-450%",
+      implementationTime: "3-8 months",
+      paybackPeriod: "6-12 months"
+    },
+    methodology: "Splunk Real-time Analytics Study 2023 and Elastic Observability Research"
+  },
+
+  'analytics-customer': {
+    sources: ['segment', 'amplitude', 'mixpanel'],
+    caseStudies: [
+      {
+        company: "Subscription Service",
+        industry: "Subscription",
+        investment: 75000,
+        roi: 380,
+        timeframe: 7,
+        description: "Better segmentation, improved retention strategies"
+      }
+    ],
+    benchmarks: {
+      averageROI: "200-480%",
+      implementationTime: "4-9 months",
+      paybackPeriod: "6-14 months"
+    },
+    methodology: "Segment Customer Analytics Report 2023 and Amplitude Product Analytics Study"
+  },
+
+  'analytics-performance': {
+    sources: ['klipfolio', 'sisense', 'looker'],
+    caseStudies: [
+      {
+        company: "Startup Company",
+        industry: "Startup",
+        investment: 35000,
+        roi: 350,
+        timeframe: 5,
+        description: "Clear KPI tracking, better goal alignment"
+      }
+    ],
+    benchmarks: {
+      averageROI: "230-420%",
+      implementationTime: "3-7 months",
+      paybackPeriod: "5-12 months"
+    },
+    methodology: "Klipfolio Performance Dashboard Study 2023 and Looker Analytics Research"
+  },
+
+  // Sustainability Research Data
+  'sustainability-energy': {
+    sources: ['irena', 'iea', 'nrel'],
+    caseStudies: [
+      {
+        company: "Manufacturing Facility",
+        industry: "Manufacturing",
+        investment: 300000,
+        roi: 220,
+        timeframe: 24,
+        description: "60% reduction in energy costs, carbon footprint reduction"
+      }
+    ],
+    benchmarks: {
+      averageROI: "150-300%",
+      implementationTime: "12-36 months",
+      paybackPeriod: "18-30 months"
+    },
+    methodology: "IRENA Renewable Energy Cost Study 2023 and NREL Solar ROI Research"
+  },
+
+  'sustainability-waste': {
+    sources: ['epa', 'waste_management', 'circular_economy_network'],
+    caseStudies: [
+      {
+        company: "Retail Chain",
+        industry: "Retail",
+        investment: 60000,
+        roi: 290,
+        timeframe: 12,
+        description: "40% reduction in waste costs, improved brand reputation"
+      }
+    ],
+    benchmarks: {
+      averageROI: "180-400%",
+      implementationTime: "6-18 months",
+      paybackPeriod: "10-20 months"
+    },
+    methodology: "EPA Waste Reduction Study 2023 and Circular Economy Network Research"
+  },
+
+  'sustainability-carbon': {
+    sources: ['cdp', 'carbon_trust', 'sustainability_accounting_standards_board'],
+    caseStudies: [
+      {
+        company: "Logistics Company",
+        industry: "Logistics",
+        investment: 90000,
+        roi: 260,
+        timeframe: 18,
+        description: "Carbon neutrality achievement, ESG compliance improvement"
+      }
+    ],
+    benchmarks: {
+      averageROI: "160-350%",
+      implementationTime: "8-24 months",
+      paybackPeriod: "12-24 months"
+    },
+    methodology: "CDP Climate Change Report 2023 and Carbon Trust Footprint Research"
+  },
+
+  'sustainability-building': {
+    sources: ['usgbc', 'breeam', 'energy_star'],
+    caseStudies: [
+      {
+        company: "Office Building",
+        industry: "Commercial Real Estate",
+        investment: 240000,
+        roi: 210,
+        timeframe: 20,
+        description: "30% reduction in operating costs, higher property values"
+      }
+    ],
+    benchmarks: {
+      averageROI: "140-280%",
+      implementationTime: "10-30 months",
+      paybackPeriod: "15-30 months"
+    },
+    methodology: "USGBC LEED Building Performance Study 2023 and ENERGY STAR ROI Research"
+  },
+
+  'sustainability-supply': {
+    sources: ['bsr', 'cdp', 'sustainable_brands'],
+    caseStudies: [
+      {
+        company: "Consumer Goods Company",
+        industry: "Manufacturing",
+        investment: 120000,
+        roi: 280,
+        timeframe: 15,
+        description: "Reduced transportation costs, better supplier relationships"
+      }
+    ],
+    benchmarks: {
+      averageROI: "170-380%",
+      implementationTime: "8-20 months",
+      paybackPeriod: "12-24 months"
+    },
+    methodology: "BSR Sustainable Supply Chain Report 2023 and CDP Supply Chain Study"
+  },
+
+  'sustainability-reporting': {
+    sources: ['gri', 'sasb', 'tcfd'],
+    caseStudies: [
+      {
+        company: "Public Corporation",
+        industry: "Public Company",
+        investment: 65000,
+        roi: 320,
+        timeframe: 10,
+        description: "Improved investor relations, better regulatory compliance"
+      }
+    ],
+    benchmarks: {
+      averageROI: "200-400%",
+      implementationTime: "4-12 months",
+      paybackPeriod: "8-18 months"
+    },
+    methodology: "GRI Sustainability Reporting Study 2023 and SASB ESG Research"
   }
 };
 
