@@ -2117,39 +2117,25 @@ export const getResearchMethodology = () => {
   return researchMethodology;
 };
 
-// Generate research summary for PDF - BULLETPROOF 100% SUCCESS
+// Generate research summary for PDF
 export const generateResearchSummary = (scenarioId, industry) => {
-  // GUARANTEED: Always returns valid research data - 100% coverage
+  const scenarioData = getResearchForScenario(scenarioId);
+  const industryData = getIndustryBenchmark(industry);
+  
+  if (!scenarioData) return null;
+  
   return {
-    sources: [
-      { 
-        name: "Industry Research Institute", 
-        type: "Research Organization", 
-        credibility: "High", 
-        focus: "Market analysis and ROI benchmarking" 
-      },
-      { 
-        name: "Business Analytics Council", 
-        type: "Industry Association", 
-        credibility: "High", 
-        focus: "Performance metrics and implementation studies" 
+    scenario: scenarioData,
+    industry: industryData,
+    sources: scenarioData.sources.map(sourceId => {
+      // Find source in research sources
+      for (const category of Object.values(researchSources)) {
+        if (category[sourceId]) {
+          return category[sourceId];
+        }
       }
-    ],
-    caseStudies: [
-      {
-        company: "Enterprise Implementation",
-        industry: industry || "Technology",
-        investment: 75000,
-        roi: 320,
-        timeframe: 9,
-        description: "Successful enterprise deployment with measurable ROI and performance improvements"
-      }
-    ],
-    benchmarks: {
-      averageROI: "250-450%",
-      implementationTime: "6-12 months",
-      paybackPeriod: "8-15 months"
-    },
-    methodology: "Multi-industry analysis based on 500+ enterprise implementations and peer-reviewed research studies"
+      return null;
+    }).filter(Boolean),
+    methodology: researchMethodology
   };
 };
