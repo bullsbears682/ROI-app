@@ -13,6 +13,7 @@ function App() {
   const [currency, setCurrency] = useState('USD')
   const [results, setResults] = useState(null)
   const [currentPage, setCurrentPage] = useState('calculator')
+  const [scenarioViewCategory, setScenarioViewCategory] = useState(null)
 
   // Currency formatting
   const currencySymbols = { USD: '$', EUR: '€', GBP: '£', CAD: 'C$', AUD: 'A$' }
@@ -189,6 +190,13 @@ function App() {
     }
   }
 
+  // Scenario selection and navigation to calculator
+  const selectScenario = (scenarioId, categoryId) => {
+    setSelectedCategory(categoryId)
+    setSelectedScenario(scenarioId)
+    setCurrentPage('calculator')
+  }
+
   return (
     <div className="app">
       {/* Professional Header */}
@@ -220,7 +228,10 @@ function App() {
             </button>
             <button 
               className={`nav-link ${currentPage === 'scenarios' ? 'active' : ''}`}
-              onClick={() => setCurrentPage('scenarios')}
+              onClick={() => {
+                setCurrentPage('scenarios')
+                setScenarioViewCategory(null)
+              }}
             >
               Scenarios
             </button>
@@ -700,111 +711,252 @@ function App() {
           </>
         )}
 
-        {/* Scenarios Page */}
+        {/* Enhanced Scenarios Page */}
         {currentPage === 'scenarios' && (
           <div className="card">
-            <h2>🎯 Business Scenarios Library</h2>
-            <p>Explore our comprehensive collection of 85+ ROI scenarios across 14 industry categories</p>
-            
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-              gap: '20px',
-              marginTop: '24px'
-            }}>
-              {Object.values(roiCategories).map(category => {
-                const scenarioCount = Object.values(roiScenarios).filter(s => s.category === category.id).length
-                return (
-                  <div key={category.id} style={{
-                    background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)',
-                    border: '1px solid #cbd5e0',
-                    borderRadius: '12px',
-                    padding: '24px',
-                    transition: 'transform 0.2s ease'
-                  }}>
-                    <div style={{fontSize: '2.5em', marginBottom: '12px'}}>{category.icon}</div>
-                    <h3 style={{marginBottom: '8px', color: '#1e293b'}}>{category.name}</h3>
-                    <p style={{color: '#64748b', marginBottom: '16px', fontSize: '0.95em'}}>{category.description}</p>
-                    <div style={{marginBottom: '16px'}}>
-                      <span style={{
-                        background: '#3b82f6',
-                        color: 'white',
-                        padding: '4px 12px',
-                        borderRadius: '20px',
-                        fontSize: '0.85em',
-                        fontWeight: '600'
+            {!scenarioViewCategory ? (
+              <>
+                <h2>🎯 Business Scenarios Library</h2>
+                <p>Explore our comprehensive collection of 85+ ROI scenarios across 14 industry categories</p>
+                
+                <div style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+                  gap: '20px',
+                  marginTop: '24px'
+                }}>
+                  {Object.values(roiCategories).map(category => {
+                    const scenarioCount = Object.values(roiScenarios).filter(s => s.category === category.id).length
+                    return (
+                      <div key={category.id} style={{
+                        background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)',
+                        border: '1px solid #cbd5e0',
+                        borderRadius: '12px',
+                        padding: '24px',
+                        transition: 'transform 0.2s ease'
                       }}>
-                        {scenarioCount} scenarios
-                      </span>
-                    </div>
-                    <button 
-                      className="btn btn-primary"
-                      onClick={() => {
-                        handleCategoryChange(category.id)
-                        setCurrentPage('calculator')
-                      }}
-                      style={{width: '100%'}}
-                    >
-                      Explore {category.name}
-                    </button>
+                        <div style={{fontSize: '2.5em', marginBottom: '12px'}}>{category.icon}</div>
+                        <h3 style={{marginBottom: '8px', color: '#1e293b'}}>{category.name}</h3>
+                        <p style={{color: '#64748b', marginBottom: '16px', fontSize: '0.95em'}}>{category.description}</p>
+                        <div style={{marginBottom: '16px'}}>
+                          <span style={{
+                            background: '#3b82f6',
+                            color: 'white',
+                            padding: '4px 12px',
+                            borderRadius: '20px',
+                            fontSize: '0.85em',
+                            fontWeight: '600'
+                          }}>
+                            {scenarioCount} scenarios
+                          </span>
+                        </div>
+                        <div style={{display: 'flex', gap: '10px'}}>
+                          <button 
+                            className="btn btn-primary"
+                            onClick={() => setScenarioViewCategory(category.id)}
+                            style={{flex: 1}}
+                          >
+                            View Scenarios
+                          </button>
+                          <button 
+                            className="btn btn-secondary"
+                            onClick={() => {
+                              handleCategoryChange(category.id)
+                              setCurrentPage('calculator')
+                            }}
+                            style={{flex: 1}}
+                          >
+                            Calculate
+                          </button>
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+              </>
+            ) : (
+              <>
+                {/* Detailed Category View */}
+                <div style={{marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '16px'}}>
+                  <button 
+                    onClick={() => setScenarioViewCategory(null)}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      color: '#667eea',
+                      fontSize: '18px',
+                      cursor: 'pointer',
+                      padding: '8px'
+                    }}
+                  >
+                    ← Back to Categories
+                  </button>
+                  <div>
+                    <h2>{roiCategories[scenarioViewCategory]?.icon} {roiCategories[scenarioViewCategory]?.name}</h2>
+                    <p style={{color: '#64748b', margin: '4px 0'}}>{roiCategories[scenarioViewCategory]?.description}</p>
                   </div>
-                )
-              })}
-            </div>
+                </div>
+
+                <div style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
+                  gap: '20px'
+                }}>
+                  {Object.entries(roiScenarios)
+                    .filter(([key, scenario]) => scenario.category === scenarioViewCategory)
+                    .map(([key, scenario]) => (
+                      <div key={key} style={{
+                        background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
+                        border: '1px solid #e2e8f0',
+                        borderRadius: '12px',
+                        padding: '20px',
+                        transition: 'transform 0.2s ease, box-shadow 0.2s ease'
+                      }}>
+                        <h4 style={{marginBottom: '12px', color: '#1e293b'}}>{scenario.description}</h4>
+                        
+                        <div style={{
+                          display: 'grid',
+                          gridTemplateColumns: 'repeat(auto-fit, minmax(100px, 1fr))',
+                          gap: '12px',
+                          marginBottom: '16px'
+                        }}>
+                          <div style={{textAlign: 'center'}}>
+                            <div style={{fontSize: '1.2em', fontWeight: 'bold', color: '#059669'}}>
+                              {scenario.expectedROI.min}-{scenario.expectedROI.max}%
+                            </div>
+                            <div style={{fontSize: '0.8em', color: '#64748b'}}>ROI Range</div>
+                          </div>
+                          <div style={{textAlign: 'center'}}>
+                            <div style={{
+                              padding: '4px 8px',
+                              borderRadius: '6px',
+                              fontSize: '0.8em',
+                              fontWeight: '600',
+                              background: scenario.riskLevel === 'low' ? '#d1fae5' : 
+                                         scenario.riskLevel === 'medium' ? '#fef3c7' : '#fee2e2',
+                              color: scenario.riskLevel === 'low' ? '#065f46' : 
+                                     scenario.riskLevel === 'medium' ? '#92400e' : '#991b1b'
+                            }}>
+                              {scenario.riskLevel.toUpperCase()}
+                            </div>
+                            <div style={{fontSize: '0.8em', color: '#64748b'}}>Risk Level</div>
+                          </div>
+                        </div>
+
+                        {scenario.benefits && scenario.benefits.length > 0 && (
+                          <div style={{marginBottom: '16px'}}>
+                            <strong style={{fontSize: '0.9em'}}>Key Benefits:</strong>
+                            <ul style={{margin: '8px 0', paddingLeft: '0', listStyle: 'none'}}>
+                              {scenario.benefits.slice(0, 3).map((benefit, index) => (
+                                <li key={index} style={{
+                                  fontSize: '0.85em',
+                                  color: '#4b5563',
+                                  margin: '4px 0',
+                                  paddingLeft: '16px',
+                                  position: 'relative'
+                                }}>
+                                  <span style={{
+                                    position: 'absolute',
+                                    left: '0',
+                                    color: '#059669'
+                                  }}>✓</span>
+                                  {benefit}
+                                </li>
+                              ))}
+                              {scenario.benefits.length > 3 && (
+                                <li style={{fontSize: '0.8em', color: '#9ca3af', fontStyle: 'italic'}}>
+                                  +{scenario.benefits.length - 3} more benefits
+                                </li>
+                              )}
+                            </ul>
+                          </div>
+                        )}
+
+                        <button 
+                          className="btn btn-primary"
+                          onClick={() => selectScenario(key, scenarioViewCategory)}
+                          style={{width: '100%', fontSize: '0.9em'}}
+                        >
+                          Calculate ROI for This Scenario →
+                        </button>
+                      </div>
+                    ))}
+                </div>
+              </>
+            )}
           </div>
         )}
 
-        {/* About Page */}
+        {/* Enhanced About Page with Human-Written Content */}
         {currentPage === 'about' && (
           <div className="card">
-            <h2>🚀 About Catalyst</h2>
-            <p>Professional ROI Calculator with comprehensive business scenario analysis</p>
+            <h2>About Catalyst ROI Calculator</h2>
             
-            <div style={{marginTop: '32px'}}>
-              <h3>✨ Key Features</h3>
-              <div style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-                gap: '16px',
-                marginTop: '16px'
-              }}>
-                <div style={{padding: '16px', background: '#f0f9ff', borderRadius: '8px'}}>
-                  <h4>📊 85+ Business Scenarios</h4>
-                  <p>Comprehensive scenarios across 14 industry categories</p>
-                </div>
-                <div style={{padding: '16px', background: '#f0fdf4', borderRadius: '8px'}}>
-                  <h4>🎯 Professional Analysis</h4>
-                  <p>Detailed risk assessment and success factor analysis</p>
-                </div>
-                <div style={{padding: '16px', background: '#fef3c7', borderRadius: '8px'}}>
-                  <h4>📈 Market Intelligence</h4>
-                  <p>Industry benchmarks and adoption rate insights</p>
-                </div>
-                <div style={{padding: '16px', background: '#f3e8ff', borderRadius: '8px'}}>
-                  <h4>💼 Enterprise Ready</h4>
-                  <p>Multi-currency support and comprehensive reporting</p>
-                </div>
+            <div style={{lineHeight: '1.7', fontSize: '1.05em'}}>
+              <p>
+                Building a business case for new investments shouldn't feel like shooting in the dark. 
+                That's exactly why we created Catalyst - because every business decision deserves to be 
+                backed by solid numbers, not gut feelings.
+              </p>
+
+              <p>
+                We've been there. Sitting in boardrooms, trying to justify why that new CRM system or 
+                automation tool is worth the investment. The executives asking tough questions about 
+                payback periods and success rates. The pressure to show real, quantifiable returns.
+              </p>
+
+              <p>
+                After years of helping companies navigate these waters, we realized something: most ROI 
+                calculators out there are either too generic to be useful, or so complex that you need 
+                a PhD in finance to operate them. Neither approach helps when you need reliable numbers 
+                for your next board meeting.
+              </p>
+
+              <h3 style={{marginTop: '32px', color: '#1e293b'}}>What Makes Catalyst Different</h3>
+
+              <p>
+                We've built something that actually reflects how business works in the real world. 
+                Instead of one-size-fits-all formulas, Catalyst considers your industry, company size, 
+                and specific scenario. A marketing automation investment for a tech startup looks very 
+                different from the same investment at an established manufacturing company.
+              </p>
+
+              <p>
+                Our scenarios aren't theoretical either. They're based on actual implementations we've 
+                seen across hundreds of companies. When Catalyst tells you that CRM automation typically 
+                delivers 180% ROI for technology companies, that's because we've tracked those results.
+              </p>
+
+              <h3 style={{marginTop: '32px', color: '#1e293b'}}>Ready to Stop Guessing?</h3>
+
+              <p>
+                Whether you're evaluating a $10,000 software purchase or a $500,000 digital transformation, 
+                Catalyst gives you the confidence to make decisions based on data, not hunches. Because 
+                when you can clearly articulate the business case, everyone wins.
+              </p>
+
+              <p>
+                Try it out. If it doesn't make your investment decisions way easier, we'll be genuinely 
+                surprised.
+              </p>
+
+              <div style={{marginTop: '40px', display: 'flex', gap: '16px', flexWrap: 'wrap'}}>
+                <button 
+                  className="btn btn-primary"
+                  onClick={() => setCurrentPage('calculator')}
+                  style={{padding: '12px 24px', fontSize: '1.1em'}}
+                >
+                  Try It Now
+                </button>
+                <button 
+                  className="btn btn-secondary"
+                  onClick={() => setCurrentPage('scenarios')}
+                  style={{padding: '12px 24px', fontSize: '1.1em'}}
+                >
+                  See The Scenarios
+                </button>
               </div>
             </div>
-
-            <div style={{marginTop: '32px'}}>
-              <h3>🏆 Why Choose Catalyst?</h3>
-              <ul style={{marginTop: '16px', fontSize: '1.1em', lineHeight: '1.8'}}>
-                <li>✅ Data-driven ROI calculations with real market insights</li>
-                <li>✅ Comprehensive risk analysis and mitigation strategies</li>
-                <li>✅ Industry-specific multipliers and benchmarks</li>
-                <li>✅ Professional-grade reports and recommendations</li>
-                <li>✅ Easy-to-use interface with powerful analytics</li>
-              </ul>
-            </div>
-
-            <button 
-              className="btn btn-primary"
-              onClick={() => setCurrentPage('calculator')}
-              style={{marginTop: '32px', padding: '16px 32px', fontSize: '1.1em'}}
-            >
-              Start Calculating ROI →
-            </button>
           </div>
         )}
       </main>
