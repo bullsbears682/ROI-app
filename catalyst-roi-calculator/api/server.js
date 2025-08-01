@@ -100,9 +100,9 @@ db.serialize(() => {
   )`);
 
   // Insert demo API key
-  const demoKeyHash = bcrypt.hashSync('demo_key_hubspot_trial', 10);
+  const demoKeyHash = bcrypt.hashSync('demo_key_enterprise_trial', 10);
   db.run(`INSERT OR IGNORE INTO api_keys (key_id, key_hash, client_name, plan, rate_limit) VALUES (?, ?, ?, ?, ?)`,
-    ['demo_key_hubspot_trial', demoKeyHash, 'HubSpot Demo', 'enterprise', 10000]);
+    ['demo_key_enterprise_trial', demoKeyHash, 'Enterprise Demo', 'enterprise', 10000]);
 });
 
 // Middleware
@@ -604,24 +604,24 @@ app.get('/api/branding/:client', authenticateApiKey, createRateLimit(1000), (req
     
     // Mock branding configurations
     const brandingConfigs = {
-      hubspot: {
-        name: 'HubSpot ROI Calculator',
-        logo: 'https://cdn.brandfetch.io/hubspot.com/w/400/h/400/theme/dark/icon.jpeg?k=bfHSJFAPEG',
-        favicon: 'https://www.hubspot.com/favicon.ico',
+      enterprise: {
+        name: 'Enterprise ROI Calculator',
+        logo: 'https://via.placeholder.com/400x400/667eea/ffffff?text=ROI',
+        favicon: '/favicon.ico',
         colors: {
-          primary: '#ff5c35',
-          secondary: '#0091ae',
+          primary: '#667eea',
+          secondary: '#764ba2',
           background: '#ffffff',
           text: '#2d3748',
-          accent: '#f56500'
+          accent: '#4f46e5'
         },
         fonts: {
-          primary: 'Lexend, sans-serif',
-          secondary: 'Inter, sans-serif'
+          primary: 'Inter, sans-serif',
+          secondary: 'system-ui, sans-serif'
         },
-        domain: 'roi.hubspot.com',
+        domain: 'roi.enterprise.com',
         subdomain: 'calculator',
-        customScenarios: ['inbound-marketing', 'sales-automation', 'customer-success'],
+        customScenarios: ['ai-automation', 'digital-transformation', 'process-optimization'],
         features: {
           leadCapture: true,
           analytics: true,
@@ -629,9 +629,39 @@ app.get('/api/branding/:client', authenticateApiKey, createRateLimit(1000), (req
           apiAccess: true
         },
         integrations: {
-          crm: 'hubspot',
-          analytics: 'hubspot_analytics',
-          webhooks: 'https://api.hubspot.com/webhooks/roi-events'
+          crm: 'custom_crm',
+          analytics: 'enterprise_analytics',
+          webhooks: 'https://api.enterprise.com/webhooks/roi-events'
+        }
+      },
+      salesforce: {
+        name: 'Salesforce ROI Calculator',
+        logo: 'https://via.placeholder.com/400x400/00a1e0/ffffff?text=SF',
+        favicon: '/favicon.ico',
+        colors: {
+          primary: '#00a1e0',
+          secondary: '#0176d3',
+          background: '#ffffff',
+          text: '#032d60',
+          accent: '#1b96ff'
+        },
+        fonts: {
+          primary: 'Salesforce Sans, sans-serif',
+          secondary: 'system-ui, sans-serif'
+        },
+        domain: 'roi.salesforce.com',
+        subdomain: 'calculator',
+        customScenarios: ['sales-cloud', 'service-cloud', 'marketing-cloud'],
+        features: {
+          leadCapture: true,
+          analytics: true,
+          customReports: true,
+          apiAccess: true
+        },
+        integrations: {
+          crm: 'salesforce',
+          analytics: 'salesforce_analytics',
+          webhooks: 'https://api.salesforce.com/webhooks/roi-events'
         }
       }
     };
