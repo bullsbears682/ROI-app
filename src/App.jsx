@@ -13,6 +13,23 @@ function App() {
   const [currency, setCurrency] = useState('USD')
   const [results, setResults] = useState(null)
   const [currentPage, setCurrentPage] = useState('calculator')
+  
+  // Debug state
+  const [debugLog, setDebugLog] = useState([])
+  const [showDebug, setShowDebug] = useState(true)
+  const [lastError, setLastError] = useState(null)
+
+  // Debug logger
+  const addDebugLog = (message, data = null) => {
+    const timestamp = new Date().toLocaleTimeString()
+    const logEntry = {
+      timestamp,
+      message,
+      data: data ? JSON.stringify(data, null, 2) : null
+    }
+    setDebugLog(prev => [...prev.slice(-9), logEntry]) // Keep last 10 entries
+    console.log(`[${timestamp}] ${message}`, data)
+  }
 
   // Currency formatting
   const currencySymbols = { USD: '$', EUR: '€', GBP: '£', CAD: 'C$', AUD: 'A$' }
@@ -20,182 +37,330 @@ function App() {
 
   // Get scenarios for selected category
   const getCategoryScenarios = () => {
-    return Object.entries(roiScenarios)
-      .filter(([key, scenario]) => scenario.category === selectedCategory)
-      .map(([key, scenario]) => ({ id: key, ...scenario }))
+    try {
+      const scenarios = Object.entries(roiScenarios)
+        .filter(([key, scenario]) => scenario.category === selectedCategory)
+        .map(([key, scenario]) => ({ id: key, ...scenario }))
+      addDebugLog(`Found ${scenarios.length} scenarios for category: ${selectedCategory}`)
+      return scenarios
+    } catch (error) {
+      addDebugLog('ERROR in getCategoryScenarios', error)
+      setLastError(error.message)
+      return []
+    }
   }
 
   // Professional ROI calculation with comprehensive data
   const calculateROI = () => {
-    console.log('🧮 Starting ROI Calculation...', { investment, selectedScenario, industry, companySize })
-    
-    // Input validation
-    if (!investment || investment < 1000) {
-      alert('Please enter an investment amount of at least $1,000')
-      return
-    }
+    try {
+      addDebugLog('🧮 CALCULATE ROI BUTTON CLICKED!')
+      addDebugLog('Current state values:', {
+        investment,
+        selectedScenario,
+        industry,
+        companySize,
+        timeframe,
+        currency
+      })
 
-    const scenario = roiScenarios[selectedScenario]
-    if (!scenario) {
-      alert('Please select a valid scenario')
-      return
-    }
-
-    console.log('📊 Selected scenario:', scenario)
-
-    // Professional calculation engine
-    const baseROI = (scenario.expectedROI.min + scenario.expectedROI.max) / 2
-
-    // Industry impact data (real market analysis)
-    const industryImpact = {
-      'technology': { multiplier: 1.25, adoption: 85, avgROI: 180, complexity: 'medium' },
-      'healthcare': { multiplier: 1.15, adoption: 70, avgROI: 120, complexity: 'high' },
-      'finance': { multiplier: 1.10, adoption: 75, avgROI: 150, complexity: 'high' },
-      'retail': { multiplier: 0.95, adoption: 80, avgROI: 110, complexity: 'low' },
-      'manufacturing': { multiplier: 0.90, adoption: 65, avgROI: 95, complexity: 'medium' },
-      'education': { multiplier: 0.85, adoption: 60, avgROI: 85, complexity: 'low' },
-      'real-estate': { multiplier: 1.05, adoption: 70, avgROI: 125, complexity: 'medium' },
-      'professional-services': { multiplier: 1.20, adoption: 78, avgROI: 160, complexity: 'low' },
-      'hospitality': { multiplier: 0.88, adoption: 72, avgROI: 90, complexity: 'medium' },
-      'transportation': { multiplier: 0.92, adoption: 68, avgROI: 105, complexity: 'medium' }
-    }
-
-    // Company size impact
-    const sizeImpact = {
-      'startup': { multiplier: 0.85, resources: 60, speed: 130, risk: 'high' },
-      'small': { multiplier: 0.92, resources: 70, speed: 120, risk: 'medium' },
-      'medium': { multiplier: 1.00, resources: 80, speed: 100, risk: 'medium' },
-      'large': { multiplier: 1.12, resources: 90, speed: 80, risk: 'low' },
-      'enterprise': { multiplier: 1.25, resources: 100, speed: 60, risk: 'low' }
-    }
-
-    // Risk analysis
-    const riskAnalysis = {
-      'low': { multiplier: 1.15, confidence: 92, successBonus: 20, mitigation: 'Standard monitoring' },
-      'medium': { multiplier: 1.00, confidence: 85, successBonus: 0, mitigation: 'Regular checkpoints' },
-      'high': { multiplier: 0.85, confidence: 75, successBonus: -15, mitigation: 'Pilot program recommended' }
-    }
-
-    const industryData = industryImpact[industry] || industryImpact['technology']
-    const sizeData = sizeImpact[companySize] || sizeImpact['medium']
-    const riskData = riskAnalysis[scenario.riskLevel] || riskAnalysis['medium']
-
-    // Calculate comprehensive metrics
-    const adjustedROI = baseROI * industryData.multiplier * sizeData.multiplier * riskData.multiplier
-    const expectedReturns = investment * (adjustedROI / 100)
-    const totalValue = investment + expectedReturns
-    const monthlyReturn = expectedReturns / timeframe
-    const paybackPeriod = Math.max(1, Math.ceil(investment / monthlyReturn))
-    const annualizedROI = (adjustedROI / timeframe) * 12
-
-    // Success rate calculation
-    let successRate = 75
-    successRate += riskData.successBonus
-    successRate += industryData.adoption > 75 ? 10 : (industryData.adoption < 65 ? -5 : 0)
-    successRate += sizeData.resources > 85 ? 8 : (sizeData.resources < 70 ? -5 : 0)
-    successRate = Math.max(50, Math.min(95, Math.round(successRate)))
-
-    // Generate success factors
-    const successFactors = []
-    if (riskData.confidence > 85) successFactors.push('Proven technology stack')
-    if (industryData.adoption > 75) successFactors.push('High industry adoption rate')
-    if (sizeData.resources > 80) successFactors.push('Strong resource availability')
-    if (paybackPeriod <= 12) successFactors.push('Quick payback period')
-    if (adjustedROI > 150) successFactors.push('High ROI potential')
-    if (scenario.riskLevel === 'low') successFactors.push('Low implementation risk')
-    successFactors.push('Executive support', 'Proper planning', 'Team training')
-
-    // Risk mitigation strategies
-    const riskMitigation = []
-    if (scenario.riskLevel === 'high') riskMitigation.push('Implement pilot program first')
-    if (companySize === 'startup') riskMitigation.push('Secure adequate resources')
-    if (industry === 'healthcare' || industry === 'finance') riskMitigation.push('Ensure regulatory compliance')
-    if (sizeData.speed < 100) riskMitigation.push('Plan for longer implementation')
-    riskMitigation.push('Regular progress monitoring', 'Change management plan', 'Stakeholder communication')
-
-    // Implementation insights
-    const implementationInsights = []
-    if (sizeData.speed > 110) implementationInsights.push('Fast implementation possible')
-    if (industryData.complexity === 'high') implementationInsights.push('Complex integration expected')
-    if (scenario.riskLevel === 'low') implementationInsights.push('Straightforward deployment')
-    implementationInsights.push('Professional support recommended')
-
-    // Create comprehensive results
-    const comprehensiveResults = {
-      // Core financial metrics
-      investment: investment,
-      expectedReturns: Math.round(expectedReturns),
-      totalValue: Math.round(totalValue),
-      roiPercentage: Math.round(adjustedROI * 100) / 100,
-      annualizedROI: Math.round(annualizedROI * 100) / 100,
-      paybackPeriod: paybackPeriod,
-      monthlyReturn: Math.round(monthlyReturn),
+      // Clear previous error
+      setLastError(null)
       
-      // Success and risk metrics
-      successRate: successRate,
-      confidence: riskData.confidence,
-      riskLevel: scenario.riskLevel,
-      
-      // Scenario information
-      scenarioName: scenario.description,
-      scenarioCategory: roiCategories[selectedCategory]?.name || 'Business',
-      timeframe: timeframe,
-      currency: currency,
-      
-      // Market benchmarks
-      industryBenchmark: industryData.avgROI,
-      industryAdoption: industryData.adoption,
-      marketComplexity: industryData.complexity,
-      
-      // Company-specific data
-      resourceAvailability: sizeData.resources,
-      implementationSpeed: sizeData.speed,
-      organizationalRisk: sizeData.risk,
-      
-      // Rich content
-      benefits: scenario.benefits || [
-        'Improved operational efficiency',
-        'Enhanced customer satisfaction',
-        'Reduced operational costs',
-        'Better decision making',
-        'Competitive advantage'
-      ],
-      successFactors: successFactors.slice(0, 6),
-      riskMitigation: riskMitigation.slice(0, 5),
-      implementationInsights: implementationInsights.slice(0, 4),
-      
-      // Cost analysis
-      costRange: scenario.costRange || { 
-        min: Math.round(investment * 0.8), 
-        max: Math.round(investment * 1.2) 
-      },
-      
-      // Market data
-      marketData: {
-        dataQuality: 'Professional scenario analysis',
-        industryTrend: industryData.adoption > 75 ? 'Growing' : 'Stable',
-        competitiveAdvantage: adjustedROI > industryData.avgROI ? 'High' : 'Standard',
-        implementationDifficulty: industryData.complexity
+      // Input validation
+      if (!investment || investment < 1000) {
+        const errorMsg = 'Investment must be at least $1,000'
+        addDebugLog('❌ VALIDATION ERROR:', errorMsg)
+        alert(errorMsg)
+        return
       }
-    }
 
-    console.log('✅ Comprehensive results calculated:', comprehensiveResults)
-    setResults(comprehensiveResults)
+      addDebugLog('✅ Investment validation passed')
+
+      // Get scenario
+      addDebugLog('Looking for scenario:', selectedScenario)
+      const scenario = roiScenarios[selectedScenario]
+      
+      if (!scenario) {
+        const errorMsg = `Scenario '${selectedScenario}' not found`
+        addDebugLog('❌ SCENARIO ERROR:', errorMsg)
+        addDebugLog('Available scenarios:', Object.keys(roiScenarios))
+        alert(errorMsg)
+        return
+      }
+
+      addDebugLog('✅ Scenario found:', scenario)
+
+      // Professional calculation engine
+      const baseROI = (scenario.expectedROI.min + scenario.expectedROI.max) / 2
+      addDebugLog('Base ROI calculated:', baseROI)
+
+      // Industry impact data (real market analysis)
+      const industryImpact = {
+        'technology': { multiplier: 1.25, adoption: 85, avgROI: 180, complexity: 'medium' },
+        'healthcare': { multiplier: 1.15, adoption: 70, avgROI: 120, complexity: 'high' },
+        'finance': { multiplier: 1.10, adoption: 75, avgROI: 150, complexity: 'high' },
+        'retail': { multiplier: 0.95, adoption: 80, avgROI: 110, complexity: 'low' },
+        'manufacturing': { multiplier: 0.90, adoption: 65, avgROI: 95, complexity: 'medium' },
+        'education': { multiplier: 0.85, adoption: 60, avgROI: 85, complexity: 'low' },
+        'real-estate': { multiplier: 1.05, adoption: 70, avgROI: 125, complexity: 'medium' },
+        'professional-services': { multiplier: 1.20, adoption: 78, avgROI: 160, complexity: 'low' },
+        'hospitality': { multiplier: 0.88, adoption: 72, avgROI: 90, complexity: 'medium' },
+        'transportation': { multiplier: 0.92, adoption: 68, avgROI: 105, complexity: 'medium' }
+      }
+
+      // Company size impact
+      const sizeImpact = {
+        'startup': { multiplier: 0.85, resources: 60, speed: 130, risk: 'high' },
+        'small': { multiplier: 0.92, resources: 70, speed: 120, risk: 'medium' },
+        'medium': { multiplier: 1.00, resources: 80, speed: 100, risk: 'medium' },
+        'large': { multiplier: 1.12, resources: 90, speed: 80, risk: 'low' },
+        'enterprise': { multiplier: 1.25, resources: 100, speed: 60, risk: 'low' }
+      }
+
+      // Risk analysis
+      const riskAnalysis = {
+        'low': { multiplier: 1.15, confidence: 92, successBonus: 20, mitigation: 'Standard monitoring' },
+        'medium': { multiplier: 1.00, confidence: 85, successBonus: 0, mitigation: 'Regular checkpoints' },
+        'high': { multiplier: 0.85, confidence: 75, successBonus: -15, mitigation: 'Pilot program recommended' }
+      }
+
+      const industryData = industryImpact[industry] || industryImpact['technology']
+      const sizeData = sizeImpact[companySize] || sizeImpact['medium']
+      const riskData = riskAnalysis[scenario.riskLevel] || riskAnalysis['medium']
+
+      addDebugLog('Multiplier data:', { industryData, sizeData, riskData })
+
+      // Calculate comprehensive metrics
+      const adjustedROI = baseROI * industryData.multiplier * sizeData.multiplier * riskData.multiplier
+      const expectedReturns = investment * (adjustedROI / 100)
+      const totalValue = investment + expectedReturns
+      const monthlyReturn = expectedReturns / timeframe
+      const paybackPeriod = Math.max(1, Math.ceil(investment / monthlyReturn))
+      const annualizedROI = (adjustedROI / timeframe) * 12
+
+      addDebugLog('Financial calculations:', {
+        adjustedROI,
+        expectedReturns,
+        totalValue,
+        monthlyReturn,
+        paybackPeriod,
+        annualizedROI
+      })
+
+      // Success rate calculation
+      let successRate = 75
+      successRate += riskData.successBonus
+      successRate += industryData.adoption > 75 ? 10 : (industryData.adoption < 65 ? -5 : 0)
+      successRate += sizeData.resources > 85 ? 8 : (sizeData.resources < 70 ? -5 : 0)
+      successRate = Math.max(50, Math.min(95, Math.round(successRate)))
+
+      addDebugLog('Success rate calculated:', successRate)
+
+      // Generate success factors
+      const successFactors = []
+      if (riskData.confidence > 85) successFactors.push('Proven technology stack')
+      if (industryData.adoption > 75) successFactors.push('High industry adoption rate')
+      if (sizeData.resources > 80) successFactors.push('Strong resource availability')
+      if (paybackPeriod <= 12) successFactors.push('Quick payback period')
+      if (adjustedROI > 150) successFactors.push('High ROI potential')
+      if (scenario.riskLevel === 'low') successFactors.push('Low implementation risk')
+      successFactors.push('Executive support', 'Proper planning', 'Team training')
+
+      // Risk mitigation strategies
+      const riskMitigation = []
+      if (scenario.riskLevel === 'high') riskMitigation.push('Implement pilot program first')
+      if (companySize === 'startup') riskMitigation.push('Secure adequate resources')
+      if (industry === 'healthcare' || industry === 'finance') riskMitigation.push('Ensure regulatory compliance')
+      if (sizeData.speed < 100) riskMitigation.push('Plan for longer implementation')
+      riskMitigation.push('Regular progress monitoring', 'Change management plan', 'Stakeholder communication')
+
+      // Implementation insights
+      const implementationInsights = []
+      if (sizeData.speed > 110) implementationInsights.push('Fast implementation possible')
+      if (industryData.complexity === 'high') implementationInsights.push('Complex integration expected')
+      if (scenario.riskLevel === 'low') implementationInsights.push('Straightforward deployment')
+      implementationInsights.push('Professional support recommended')
+
+      // Create comprehensive results
+      const comprehensiveResults = {
+        // Core financial metrics
+        investment: investment,
+        expectedReturns: Math.round(expectedReturns),
+        totalValue: Math.round(totalValue),
+        roiPercentage: Math.round(adjustedROI * 100) / 100,
+        annualizedROI: Math.round(annualizedROI * 100) / 100,
+        paybackPeriod: paybackPeriod,
+        monthlyReturn: Math.round(monthlyReturn),
+        
+        // Success and risk metrics
+        successRate: successRate,
+        confidence: riskData.confidence,
+        riskLevel: scenario.riskLevel,
+        
+        // Scenario information
+        scenarioName: scenario.description,
+        scenarioCategory: roiCategories[selectedCategory]?.name || 'Business',
+        timeframe: timeframe,
+        currency: currency,
+        
+        // Market benchmarks
+        industryBenchmark: industryData.avgROI,
+        industryAdoption: industryData.adoption,
+        marketComplexity: industryData.complexity,
+        
+        // Company-specific data
+        resourceAvailability: sizeData.resources,
+        implementationSpeed: sizeData.speed,
+        organizationalRisk: sizeData.risk,
+        
+        // Rich content
+        benefits: scenario.benefits || [
+          'Improved operational efficiency',
+          'Enhanced customer satisfaction',
+          'Reduced operational costs',
+          'Better decision making',
+          'Competitive advantage'
+        ],
+        successFactors: successFactors.slice(0, 6),
+        riskMitigation: riskMitigation.slice(0, 5),
+        implementationInsights: implementationInsights.slice(0, 4),
+        
+        // Cost analysis
+        costRange: scenario.costRange || { 
+          min: Math.round(investment * 0.8), 
+          max: Math.round(investment * 1.2) 
+        },
+        
+        // Market data
+        marketData: {
+          dataQuality: 'Professional scenario analysis',
+          industryTrend: industryData.adoption > 75 ? 'Growing' : 'Stable',
+          competitiveAdvantage: adjustedROI > industryData.avgROI ? 'High' : 'Standard',
+          implementationDifficulty: industryData.complexity
+        }
+      }
+
+      addDebugLog('✅ Comprehensive results created:', comprehensiveResults)
+      addDebugLog('🎯 About to call setResults...')
+      
+      setResults(comprehensiveResults)
+      
+      addDebugLog('✅ setResults called successfully!')
+
+    } catch (error) {
+      addDebugLog('💥 FATAL ERROR in calculateROI:', error)
+      setLastError(error.message)
+      alert(`Calculation Error: ${error.message}`)
+    }
   }
 
   // Category change handler
   const handleCategoryChange = (categoryId) => {
-    setSelectedCategory(categoryId)
-    // Auto-select first scenario in new category
-    const categoryScenarios = Object.entries(roiScenarios)
-      .filter(([key, scenario]) => scenario.category === categoryId)
-    if (categoryScenarios.length > 0) {
-      setSelectedScenario(categoryScenarios[0][0])
+    try {
+      addDebugLog('Category changed to:', categoryId)
+      setSelectedCategory(categoryId)
+      // Auto-select first scenario in new category
+      const categoryScenarios = Object.entries(roiScenarios)
+        .filter(([key, scenario]) => scenario.category === categoryId)
+      if (categoryScenarios.length > 0) {
+        const newScenario = categoryScenarios[0][0]
+        setSelectedScenario(newScenario)
+        addDebugLog('Auto-selected scenario:', newScenario)
+      }
+    } catch (error) {
+      addDebugLog('ERROR in handleCategoryChange:', error)
+      setLastError(error.message)
     }
   }
 
   return (
     <div className="app">
+      {/* Debug Panel */}
+      {showDebug && (
+        <div style={{
+          position: 'fixed',
+          top: '10px',
+          right: '10px',
+          width: '400px',
+          maxHeight: '600px',
+          background: 'rgba(0,0,0,0.9)',
+          color: '#00ff00',
+          padding: '15px',
+          borderRadius: '8px',
+          fontSize: '12px',
+          fontFamily: 'monospace',
+          zIndex: 9999,
+          overflow: 'auto',
+          border: '2px solid #00ff00'
+        }}>
+          <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px'}}>
+            <strong>🐛 DEBUG CONSOLE</strong>
+            <button 
+              onClick={() => setShowDebug(false)}
+              style={{background: 'red', color: 'white', border: 'none', padding: '2px 6px', borderRadius: '3px'}}
+            >
+              ✕
+            </button>
+          </div>
+          
+          <div style={{marginBottom: '10px', padding: '5px', background: 'rgba(255,255,255,0.1)', borderRadius: '4px'}}>
+            <strong>CURRENT STATE:</strong><br/>
+            Investment: {investment}<br/>
+            Scenario: {selectedScenario}<br/>
+            Industry: {industry}<br/>
+            Size: {companySize}<br/>
+            Results: {results ? '✅ SET' : '❌ NULL'}
+          </div>
+
+          {lastError && (
+            <div style={{marginBottom: '10px', padding: '5px', background: 'rgba(255,0,0,0.3)', borderRadius: '4px'}}>
+              <strong>❌ LAST ERROR:</strong><br/>
+              {lastError}
+            </div>
+          )}
+
+          <div style={{marginBottom: '10px'}}>
+            <strong>📝 DEBUG LOG:</strong>
+            <div style={{maxHeight: '300px', overflow: 'auto'}}>
+              {debugLog.map((log, index) => (
+                <div key={index} style={{marginBottom: '8px', padding: '4px', background: 'rgba(255,255,255,0.05)', borderRadius: '3px'}}>
+                  <div style={{color: '#ffff00'}}>[{log.timestamp}] {log.message}</div>
+                  {log.data && <pre style={{fontSize: '10px', color: '#ccc', margin: '2px 0'}}>{log.data}</pre>}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <button 
+            onClick={() => setDebugLog([])}
+            style={{background: '#333', color: 'white', border: '1px solid #666', padding: '4px 8px', borderRadius: '3px', fontSize: '10px'}}
+          >
+            Clear Log
+          </button>
+        </div>
+      )}
+
+      {/* Debug Toggle (if hidden) */}
+      {!showDebug && (
+        <button 
+          onClick={() => setShowDebug(true)}
+          style={{
+            position: 'fixed',
+            top: '10px',
+            right: '10px',
+            background: '#000',
+            color: '#00ff00',
+            border: '2px solid #00ff00',
+            padding: '8px',
+            borderRadius: '50%',
+            zIndex: 9999,
+            fontSize: '14px'
+          }}
+        >
+          🐛
+        </button>
+      )}
+
       {/* Professional Header */}
       <header className="header">
         <div className="header-content">
