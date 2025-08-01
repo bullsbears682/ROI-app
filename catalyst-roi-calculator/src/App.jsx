@@ -3,6 +3,8 @@ import Header from './components/Header'
 import Calculator from './components/Calculator'
 import Results from './components/Results'
 import Scenarios from './components/Scenarios'
+import AdminLogin from './components/AdminLogin'
+import AdminDashboard from './components/AdminDashboard'
 import CookieConsent from './components/CookieConsent'
 import LeadCapture from './components/LeadCapture'
 import { roiCategories, roiScenarios } from './data/roiScenarios'
@@ -68,6 +70,10 @@ function App() {
   // Navigation state
   const [currentPage, setCurrentPage] = useState('calculator');
 
+  // Admin state
+  const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(false);
+  const [showAdminLogin, setShowAdminLogin] = useState(false);
+
   // Main application state
   const [selectedCategory, setSelectedCategory] = useState('ai');
   const [selectedScenario, setSelectedScenario] = useState('ai-chatbot');
@@ -99,6 +105,22 @@ function App() {
     // Initialize analytics if consent exists
     if (savedConsent) {
       initAnalytics(JSON.parse(savedConsent));
+    }
+
+    // Check for existing admin session
+    const adminAuth = sessionStorage.getItem('catalyst-admin-auth');
+    if (adminAuth === 'true') {
+      setIsAdminAuthenticated(true);
+    }
+
+    // Check for admin access via URL
+    if (window.location.pathname === '/admin' || window.location.hash === '#admin') {
+      if (adminAuth === 'true') {
+        setCurrentPage('admin');
+        setIsAdminAuthenticated(true);
+      } else {
+        setShowAdminLogin(true);
+      }
     }
   }, []);
 
@@ -268,6 +290,20 @@ function App() {
     }
   };
 
+  // Handle admin login
+  const handleAdminLogin = () => {
+    setIsAdminAuthenticated(true);
+    setShowAdminLogin(false);
+    setCurrentPage('admin');
+  };
+
+  // Handle admin logout
+  const handleAdminLogout = () => {
+    setIsAdminAuthenticated(false);
+    sessionStorage.removeItem('catalyst-admin-auth');
+    setCurrentPage('calculator');
+  };
+
   // Handle cookie consent
   const handleCookieConsent = (consent) => {
     setCookieConsent(consent);
@@ -280,6 +316,10 @@ function App() {
   // Render current page
   const renderCurrentPage = () => {
     switch (currentPage) {
+      case 'admin':
+        return isAdminAuthenticated ? (
+          <AdminDashboard onLogout={handleAdminLogout} />
+        ) : null;
       case 'scenarios':
         return <Scenarios onSelectScenario={handleScenarioSelect} />;
       case 'about':
@@ -327,25 +367,35 @@ function App() {
 
   return (
     <div className="app">
-      <Header 
-        currentPage={currentPage} 
-        onNavigate={handleNavigation}
-      />
+      {/* Show admin login if needed */}
+      {showAdminLogin && (
+        <AdminLogin onLogin={handleAdminLogin} />
+      )}
+
+      {/* Only show header for non-admin pages */}
+      {currentPage !== 'admin' && (
+        <Header 
+          currentPage={currentPage} 
+          onNavigate={handleNavigation}
+        />
+      )}
       
       {renderCurrentPage()}
 
       {/* Cookie consent banner */}
-      {cookieConsent === null && (
+      {cookieConsent === null && currentPage !== 'admin' && (
         <CookieConsent onConsent={handleCookieConsent} />
       )}
 
       {/* Lead Capture Modal */}
-      <LeadCapture
-        isOpen={showLeadCapture}
-        onClose={handleLeadCaptureClose}
-        onSubmit={handleLeadCapture}
-        calculationData={results}
-      />
+      {currentPage !== 'admin' && (
+        <LeadCapture
+          isOpen={showLeadCapture}
+          onClose={handleLeadCaptureClose}
+          onSubmit={handleLeadCapture}
+          calculationData={results}
+        />
+      )}
     </div>
   );
 }
