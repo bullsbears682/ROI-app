@@ -5,8 +5,8 @@ import './styles/index.css'
 
 function App() {
   // State management
-  const [selectedCategory, setSelectedCategory] = useState('automation')
-  const [selectedScenario, setSelectedScenario] = useState('automation-crm')
+  const [selectedCategory, setSelectedCategory] = useState('ai')
+  const [selectedScenario, setSelectedScenario] = useState('ai-chatbot')
   const [investment, setInvestment] = useState(25000)
   const [timeframe, setTimeframe] = useState(12)
   const [industry, setIndustry] = useState('technology')
@@ -613,7 +613,7 @@ function App() {
                 <input
                   type="number"
                   value={investment}
-                  onChange={(e) => setInvestment(e.target.value)}
+                  onChange={(e) => setInvestment(Number(e.target.value))}
                   placeholder="Enter amount"
                   style={{
                     width: '100%',
