@@ -3264,12 +3264,85 @@ body {
 }
 
 .enterprise-badges .badge {
-  background: rgba(102, 126, 234, 0.2);
-  color: var(--primary-color);
+  background: var(--success-color);
+  color: white;
   padding: 0.25rem 0.75rem;
   border-radius: 12px;
   font-size: 0.8rem;
   font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.enterprise-badges .badge:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.enterprise-badges .badge.soc2 {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+}
+
+.enterprise-badges .badge.uptime {
+  background: linear-gradient(135deg, #10b981, #059669);
+}
+
+.enterprise-badges .badge.support {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+}
+
+.enterprise-badges .badge.gdpr {
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+}
+
+.enterprise-badges .badge.iso {
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+}
+
+.enterprise-badges .badge.hipaa {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+}
+
+.enterprise-contact {
+  margin-top: 15px;
+}
+
+.btn-enterprise {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.btn-enterprise:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  text-decoration: none;
+  color: white;
+}
+
+.contact-info {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.contact-info a {
+  color: var(--primary-color);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.contact-info a:hover {
+  color: var(--secondary-color);
+  text-decoration: underline;
 }
 
 .footer-bottom {

@@ -693,6 +693,12 @@ query AdvancedROIAnalysis($input: ROICalculationInput!) {
         >
           💰 Pricing
         </button>
+        <button 
+          className={`api-tab ${activeTab === 'trial' ? 'active' : ''}`}
+          onClick={() => setActiveTab('trial')}
+        >
+          🎯 Free Trial
+        </button>
       </div>
 
       {/* Content */}
@@ -1509,6 +1515,84 @@ query AdvancedROIAnalysis($input: ROICalculationInput!) {
             </div>
           </div>
         )}
+
+        {activeTab === 'trial' && (
+          <div className="tab-content">
+            <h2>🎯 Start Your Free Trial</h2>
+            <p>Get started with Catalyst ROI Calculator API in minutes</p>
+            
+            <div className="trial-container">
+              <div className="trial-info">
+                <h3>🚀 What's Included in Your Free Trial:</h3>
+                <ul className="trial-features">
+                  <li>✅ <strong>1,000 API Calls</strong> - Full access to all endpoints</li>
+                  <li>✅ <strong>30 Days Free</strong> - No credit card required</li>
+                  <li>✅ <strong>All ROI Scenarios</strong> - 6 business scenarios included</li>
+                  <li>✅ <strong>Real Analytics</strong> - Track usage and performance</li>
+                  <li>✅ <strong>Webhook Support</strong> - Integrate with your systems</li>
+                  <li>✅ <strong>Developer Resources</strong> - Postman collection, docs, examples</li>
+                  <li>✅ <strong>Email Support</strong> - Get help when you need it</li>
+                </ul>
+              </div>
+              
+              <div className="trial-steps">
+                <h3>🎯 Get Started in 3 Steps:</h3>
+                <div className="steps-grid">
+                  <div className="step">
+                    <div className="step-number">1</div>
+                    <h4>Get Your API Key</h4>
+                    <p>Use the demo key to start testing immediately:</p>
+                    <code className="api-key-demo">demo_key_enterprise_trial</code>
+                  </div>
+                  <div className="step">
+                    <div className="step-number">2</div>
+                    <h4>Make Your First Call</h4>
+                    <p>Try the ROI calculation endpoint:</p>
+                    <button 
+                      className="btn btn-primary"
+                      onClick={() => testEndpoint('calculate')}
+                      disabled={loading}
+                    >
+                      {loading ? 'Testing...' : 'Test API Now'}
+                    </button>
+                  </div>
+                  <div className="step">
+                    <div className="step-number">3</div>
+                    <h4>Integrate & Launch</h4>
+                    <p>Download resources and start building:</p>
+                    <div className="quick-resources">
+                      <a href="/api/postman-collection" className="resource-link">📄 Postman Collection</a>
+                      <a href="/api/swagger.json" className="resource-link">📋 OpenAPI Spec</a>
+                      <a href="https://github.com/catalyst-analytics/roi-examples" className="resource-link">💻 Code Examples</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="trial-cta">
+                <h3>🎉 Ready to Get Started?</h3>
+                <p>Join hundreds of companies already using Catalyst ROI Calculator API</p>
+                <div className="cta-buttons">
+                  <button 
+                    className="btn btn-primary btn-large"
+                    onClick={() => window.open('mailto:enterprise@catalyst-roi.com?subject=API Trial Request&body=Hi, I would like to start a free trial of the Catalyst ROI Calculator API. Please send me the full API key and setup instructions.', '_blank')}
+                  >
+                    🚀 Start Free Trial
+                  </button>
+                  <button 
+                    className="btn btn-secondary btn-large"
+                    onClick={() => window.open('https://calendly.com/catalyst-roi/enterprise-demo', '_blank')}
+                  >
+                    📞 Schedule Demo
+                  </button>
+                </div>
+                <p className="trial-note">
+                  <small>✨ Upgrade anytime to Professional ($99/month) or Enterprise ($299/month) plans</small>
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Enhanced Footer */}
@@ -1517,43 +1601,58 @@ query AdvancedROIAnalysis($input: ROICalculationInput!) {
           <div className="footer-section">
             <h4>📞 Enterprise Sales</h4>
             <p>Ready to scale your ROI calculations? Let's build something amazing together.</p>
-            <button className="btn btn-primary">Schedule Demo Call</button>
+            <button 
+              className="btn btn-primary"
+              onClick={() => window.open('https://calendly.com/catalyst-roi/enterprise-demo', '_blank')}
+            >
+              Schedule Demo Call
+            </button>
             <div className="contact-info">
-              <span>📧 enterprise@catalyst-roi.com</span>
-              <span>📞 +1 (555) 123-4567</span>
+              <span>📧 <a href="mailto:enterprise@catalyst-roi.com">enterprise@catalyst-roi.com</a></span>
+              <span>📞 <a href="tel:+15551234567">+1 (555) 123-4567</a></span>
             </div>
           </div>
           <div className="footer-section">
             <h4>📚 Developer Resources</h4>
             <ul>
-              <li><a href="#postman">Postman Collection</a></li>
-              <li><a href="#swagger">OpenAPI 3.0 Spec</a></li>
-              <li><a href="#github">GitHub Examples</a></li>
-              <li><a href="#changelog">API Changelog</a></li>
-              <li><a href="#status">System Status</a></li>
-              <li><a href="#sandbox">Sandbox Environment</a></li>
+              <li><a href="/api/postman-collection" target="_blank" rel="noopener">Postman Collection</a></li>
+              <li><a href="/api/swagger.json" target="_blank" rel="noopener">OpenAPI 3.0 Spec</a></li>
+              <li><a href="https://github.com/catalyst-analytics/roi-examples" target="_blank" rel="noopener">GitHub Examples</a></li>
+              <li><a href="/api/changelog" target="_blank" rel="noopener">API Changelog</a></li>
+              <li><a href="/api/health" target="_blank" rel="noopener">System Status</a></li>
+              <li><a href="/sandbox" target="_blank" rel="noopener">Sandbox Environment</a></li>
             </ul>
           </div>
           <div className="footer-section">
             <h4>🎯 Quick Actions</h4>
             <ul>
-              <li><a href="#calculator">Try ROI Calculator</a></li>
-              <li><a href="#scenarios">Browse 85 Scenarios</a></li>
-              <li><a href="#admin">View Admin Dashboard</a></li>
-              <li><a href="#integration">CRM Integration</a></li>
-              <li><a href="#pricing">Enterprise Pricing</a></li>
-              <li><a href="#trial">Start Free Trial</a></li>
+              <li><a href="/" onClick={(e) => { e.preventDefault(); setActiveTab('overview'); }}>Try ROI Calculator</a></li>
+              <li><a href="/scenarios" onClick={(e) => { e.preventDefault(); window.location.href = '/#/scenarios'; }}>Browse 85 Scenarios</a></li>
+              <li><a href="/admin" onClick={(e) => { e.preventDefault(); window.location.href = '/#/admin'; }}>View Admin Dashboard</a></li>
+              <li><a href="#integration" onClick={(e) => { e.preventDefault(); setActiveTab('integrations'); }}>CRM Integration</a></li>
+              <li><a href="#pricing" onClick={(e) => { e.preventDefault(); setActiveTab('pricing'); }}>Enterprise Pricing</a></li>
+              <li><a href="#trial" onClick={(e) => { e.preventDefault(); setActiveTab('trial'); }}>Start Free Trial</a></li>
             </ul>
           </div>
           <div className="footer-section">
             <h4>🏢 Enterprise</h4>
             <div className="enterprise-badges">
-              <span className="badge">SOC 2 Certified</span>
-              <span className="badge">99.97% Uptime</span>
-              <span className="badge">24/7 Support</span>
-              <span className="badge">GDPR Compliant</span>
+              <span className="badge soc2">SOC 2 Certified</span>
+              <span className="badge uptime">99.97% Uptime</span>
+              <span className="badge support">24/7 Support</span>
+              <span className="badge gdpr">GDPR Compliant</span>
+              <span className="badge iso">ISO 27001</span>
+              <span className="badge hipaa">HIPAA Ready</span>
             </div>
             <p>Built for enterprise scale with bank-grade security and compliance.</p>
+            <div className="enterprise-contact">
+              <button 
+                className="btn btn-enterprise"
+                onClick={() => window.open('mailto:enterprise@catalyst-roi.com?subject=Enterprise Inquiry&body=Hi, I am interested in learning more about Catalyst ROI Calculator for our enterprise. Please contact me to discuss our requirements.', '_blank')}
+              >
+                Contact Enterprise Sales
+              </button>
+            </div>
           </div>
         </div>
         

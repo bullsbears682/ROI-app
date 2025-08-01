@@ -855,7 +855,8 @@ const {
   leadsEndpoint,
   analyticsEndpoint,
   webhooksEndpoint,
-  brandingEndpoint
+  brandingEndpoint,
+  developerResourcesEndpoints
 } = require('./endpoints');
 
 // Register additional endpoints
@@ -864,6 +865,7 @@ leadsEndpoint(app, db, log, authenticateApiKey, createRateLimit, validateRequest
 analyticsEndpoint(app, db, log, authenticateApiKey, createRateLimit, recordMetric);
 webhooksEndpoint(app, db, log, authenticateApiKey, createRateLimit, validateRequest, recordMetric);
 brandingEndpoint(app, log, authenticateApiKey, createRateLimit, recordMetric);
+developerResourcesEndpoints(app, log, recordMetric);
 
 // API documentation endpoint
 app.get('/api/docs', (req, res) => {
