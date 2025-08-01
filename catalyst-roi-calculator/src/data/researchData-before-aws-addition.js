@@ -1685,64 +1685,8 @@ export const scenarioResearch = {
       paybackPeriod: "8-15 months"
     },
     methodology: "CRM ROI Analysis 2023 and Sales Technology Performance Study"
-  },
-  'cloud-aws': {
-    sources: ['aws', 'gartner', 'forrester'],
-    caseStudies: [
-      {
-        company: "E-commerce Platform",
-        industry: "Technology",
-        investment: 95000,
-        roi: 340,
-        timeframe: 12,
-        description: "AWS migration, improved scalability and reduced infrastructure costs"
-      },
-      {
-        company: "Media Company",
-        industry: "Media",
-        investment: 120000,
-        roi: 290,
-        timeframe: 15,
-        description: "Cloud-first architecture, enhanced content delivery and performance"
-      }
-    ],
-    benchmarks: {
-      averageROI: "250-400%",
-      implementationTime: "8-18 months",
-      paybackPeriod: "10-20 months"
-    },
-    methodology: "AWS Cloud Economics Study 2023 and Public Cloud ROI Analysis"
-  },
-  'security-software': {
-    sources: ['symantec', 'mcafee', 'crowdstrike'],
-    caseStudies: [
-      {
-        company: "Financial Institution",
-        industry: "Financial Services",
-        investment: 85000,
-        roi: 320,
-        timeframe: 10,
-        description: "Enterprise security software, prevented breaches and compliance violations"
-      },
-      {
-        company: "Healthcare Network",
-        industry: "Healthcare",
-        investment: 70000,
-        roi: 380,
-        timeframe: 8,
-        description: "Medical data protection, enhanced patient privacy and regulatory compliance"
-      }
-    ],
-    benchmarks: {
-      averageROI: "280-450%",
-      implementationTime: "6-12 months",
-      paybackPeriod: "8-15 months"
-    },
-    methodology: "Enterprise Security Software ROI Study 2023 and Threat Protection Analysis"
   }
 };
-
-
 
 
 

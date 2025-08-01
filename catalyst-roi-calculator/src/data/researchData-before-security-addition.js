@@ -1712,36 +1712,8 @@ export const scenarioResearch = {
       paybackPeriod: "10-20 months"
     },
     methodology: "AWS Cloud Economics Study 2023 and Public Cloud ROI Analysis"
-  },
-  'security-software': {
-    sources: ['symantec', 'mcafee', 'crowdstrike'],
-    caseStudies: [
-      {
-        company: "Financial Institution",
-        industry: "Financial Services",
-        investment: 85000,
-        roi: 320,
-        timeframe: 10,
-        description: "Enterprise security software, prevented breaches and compliance violations"
-      },
-      {
-        company: "Healthcare Network",
-        industry: "Healthcare",
-        investment: 70000,
-        roi: 380,
-        timeframe: 8,
-        description: "Medical data protection, enhanced patient privacy and regulatory compliance"
-      }
-    ],
-    benchmarks: {
-      averageROI: "280-450%",
-      implementationTime: "6-12 months",
-      paybackPeriod: "8-15 months"
-    },
-    methodology: "Enterprise Security Software ROI Study 2023 and Threat Protection Analysis"
   }
 };
-
 
 
 
