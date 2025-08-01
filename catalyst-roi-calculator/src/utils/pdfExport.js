@@ -311,7 +311,19 @@ const addResearchSources = (pdf, results, margin, contentWidth, yPosition) => {
   else if (results.scenario.name.includes('E-commerce') || results.scenario.name.includes('eCommerce')) actualScenarioId = 'ecommerce-platform';
   else if (results.scenario.name.includes('Social Media')) actualScenarioId = 'social-media';
   else if (results.scenario.name.includes('Google Ads')) actualScenarioId = 'google-ads';
-  else if (results.scenario.name.includes('CRM')) actualScenarioId = 'crm-implementation';
+  else if (results.scenario.name.includes('CRM System Implementation')) actualScenarioId = 'crm-implementation';
+  else if (results.scenario.name.includes('CRM Platform Implementation')) actualScenarioId = 'saas-crm';
+  else if (results.scenario.name.includes('Marketing Automation')) actualScenarioId = 'saas-marketing';
+  else if (results.scenario.name.includes('Business Analytics')) actualScenarioId = 'saas-analytics';
+  else if (results.scenario.name.includes('ERP System Migration')) actualScenarioId = 'saas-erp';
+  else if (results.scenario.name.includes('HR Management System')) actualScenarioId = 'saas-hrms';
+  else if (results.scenario.name.includes('Team Communication Platform')) actualScenarioId = 'saas-communication';
+  else if (results.scenario.name.includes('Payment Processing')) actualScenarioId = 'fintech-payments';
+  else if (results.scenario.name.includes('Fraud Detection')) actualScenarioId = 'fintech-fraud';
+  else if (results.scenario.name.includes('Digital Lending')) actualScenarioId = 'fintech-lending';
+  else if (results.scenario.name.includes('Wealth Management')) actualScenarioId = 'fintech-wealth';
+  else if (results.scenario.name.includes('Mobile Banking')) actualScenarioId = 'fintech-mobile';
+  else if (results.scenario.name.includes('Robo-Advisory')) actualScenarioId = 'fintech-robo';
   
   const researchData = generateResearchSummary(actualScenarioId, results.inputs.industry);
   

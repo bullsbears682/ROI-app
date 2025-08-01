@@ -27,7 +27,19 @@ export const exportDetailedResearch = async (results) => {
     else if (results.scenario.name.includes('E-commerce') || results.scenario.name.includes('eCommerce')) scenarioId = 'ecommerce-platform';
     else if (results.scenario.name.includes('Social Media')) scenarioId = 'social-media';
     else if (results.scenario.name.includes('Google Ads')) scenarioId = 'google-ads';
-    else if (results.scenario.name.includes('CRM')) scenarioId = 'crm-implementation';
+    else if (results.scenario.name.includes('CRM System Implementation')) scenarioId = 'crm-implementation';
+    else if (results.scenario.name.includes('CRM Platform Implementation')) scenarioId = 'saas-crm';
+    else if (results.scenario.name.includes('Marketing Automation')) scenarioId = 'saas-marketing';
+    else if (results.scenario.name.includes('Business Analytics')) scenarioId = 'saas-analytics';
+    else if (results.scenario.name.includes('ERP System Migration')) scenarioId = 'saas-erp';
+    else if (results.scenario.name.includes('HR Management System')) scenarioId = 'saas-hrms';
+    else if (results.scenario.name.includes('Team Communication Platform')) scenarioId = 'saas-communication';
+    else if (results.scenario.name.includes('Payment Processing')) scenarioId = 'fintech-payments';
+    else if (results.scenario.name.includes('Fraud Detection')) scenarioId = 'fintech-fraud';
+    else if (results.scenario.name.includes('Digital Lending')) scenarioId = 'fintech-lending';
+    else if (results.scenario.name.includes('Wealth Management')) scenarioId = 'fintech-wealth';
+    else if (results.scenario.name.includes('Mobile Banking')) scenarioId = 'fintech-mobile';
+    else if (results.scenario.name.includes('Robo-Advisory')) scenarioId = 'fintech-robo';
     
     const researchData = generateResearchSummary(scenarioId, results.inputs.industry);
     const methodology = getResearchMethodology();
