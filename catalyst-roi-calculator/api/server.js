@@ -8,6 +8,7 @@ const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 const crypto = require('crypto');
 const fs = require('fs');
+const marketDataService = require('./services/marketData');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -521,7 +522,7 @@ const SIZE_MULTIPLIERS = {
   'enterprise': 1.25
 };
 
-const calculateROI = (scenario, investment, timeframe, industry, companySize, customFactors = {}) => {
+const calculateROI = async (scenario, investment, timeframe, industry, companySize, customFactors = {}) => {
   try {
     const scenarioData = ROI_SCENARIOS[scenario];
     if (!scenarioData) {
@@ -539,12 +540,27 @@ const calculateROI = (scenario, investment, timeframe, industry, companySize, cu
     if (customFactors.teamExperience === 'expert') customAdj *= 1.1;
     if (customFactors.teamExperience === 'novice') customAdj *= 0.9;
 
+    // Get real market success rates
+    let realSuccessRate = null;
+    let marketBenchmarks = null;
+    try {
+      realSuccessRate = await marketDataService.getSuccessRates(scenario, industry);
+      marketBenchmarks = await marketDataService.getIndustryBenchmarks(industry);
+    } catch (error) {
+      log.warn('Could not fetch market success rates:', error.message);
+    }
+
     const finalMultiplier = scenarioData.baseROI * industryAdj * sizeAdj * customAdj;
     const roiPercentage = Math.round(finalMultiplier * 100);
     const projectedSavings = Math.round(investment * scenarioData.savings * industryAdj);
     const projectedRevenue = Math.round(investment * finalMultiplier);
     const paybackPeriod = Math.max(1, Math.round(12 / finalMultiplier));
-    const successRate = Math.round(scenarioData.successRate * 100);
+    
+    // Use real success rate if available, otherwise use scenario default
+    const successRate = realSuccessRate ? 
+      Math.round(realSuccessRate.success_rate) : 
+      Math.round(scenarioData.successRate * 100);
+    
     const confidence = Math.min(0.95, 0.6 + (scenarioData.successRate * 0.4));
 
     return {
@@ -576,9 +592,21 @@ const calculateROI = (scenario, investment, timeframe, industry, companySize, cu
         finalMultiplier
       },
       benchmarks: {
-        industryAverage: Math.round(roiPercentage * 0.7),
-        topQuartile: Math.round(roiPercentage * 0.9),
-        marketLeader: Math.round(roiPercentage * 1.1)
+        industryAverage: marketBenchmarks ? 
+          Math.round(marketBenchmarks.roi_range.median) : 
+          Math.round(roiPercentage * 0.7),
+        topQuartile: marketBenchmarks ? 
+          Math.round(marketBenchmarks.roi_range.max * 0.75) : 
+          Math.round(roiPercentage * 0.9),
+        marketLeader: marketBenchmarks ? 
+          Math.round(marketBenchmarks.roi_range.max) : 
+          Math.round(roiPercentage * 1.1)
+      },
+      marketData: {
+        successRateData: realSuccessRate,
+        industryBenchmarks: marketBenchmarks,
+        dataQuality: realSuccessRate ? 'Real market data' : 'Estimated from scenario models',
+        lastUpdated: realSuccessRate ? realSuccessRate.last_updated : new Date().toISOString()
       }
     };
   } catch (error) {
@@ -770,8 +798,8 @@ app.post('/api/roi/calculate',
         requestId: req.id
       });
 
-      // Calculate ROI
-      const calculation = calculateROI(scenario, investment, timeframe, industry, companySize, customFactors);
+      // Calculate ROI with real market data
+      const calculation = await calculateROI(scenario, investment, timeframe, industry, companySize, customFactors);
       const calculationId = crypto.randomUUID();
       
       const result = {

@@ -2,13 +2,14 @@
 // This file contains the endpoints that were cut off from server.js
 
 const crypto = require('crypto');
+const marketDataService = require('./services/marketData');
 
 // Scenarios endpoint with AI recommendations
 const scenariosEndpoint = (app, db, log, authenticateApiKey, createRateLimit, ROI_SCENARIOS, recordMetric) => {
   app.get('/api/scenarios', 
     createRateLimit(2000),
     authenticateApiKey,
-    (req, res) => {
+    async (req, res) => {
       try {
         const { 
           industry, 
@@ -26,19 +27,51 @@ const scenariosEndpoint = (app, db, log, authenticateApiKey, createRateLimit, RO
           apiKey: req.apiKey.key_id
         });
 
-        // Transform ROI_SCENARIOS to API format
-        const allScenarios = Object.keys(ROI_SCENARIOS).map(key => ({
-          id: key,
-          name: ROI_SCENARIOS[key].description,
-          category: key.split('-')[0],
-          costRange: { min: 10000, max: 100000 }, // Default range
-          expectedROI: { min: Math.round(ROI_SCENARIOS[key].baseROI * 80), max: Math.round(ROI_SCENARIOS[key].baseROI * 120) },
-          riskLevel: ROI_SCENARIOS[key].risk,
-          industry: ['saas', 'retail', 'financial'], // Default industries
-          benefits: ROI_SCENARIOS[key].benefits,
-          successRate: Math.round(ROI_SCENARIOS[key].successRate * 100),
-          matchScore: ai_recommend ? Math.random() * 0.5 + 0.5 : null
-        }));
+        // Get real market data for enhanced scenarios
+        let marketBenchmarks = null;
+        if (industry) {
+          try {
+            marketBenchmarks = await marketDataService.getIndustryBenchmarks(industry);
+            log.info('Market benchmarks retrieved for industry:', industry);
+          } catch (error) {
+            log.warn('Could not fetch market benchmarks:', error.message);
+          }
+        }
+
+        // Transform ROI_SCENARIOS to API format with real market data
+        const allScenarios = Object.keys(ROI_SCENARIOS).map(key => {
+          const scenario = ROI_SCENARIOS[key];
+          let enhancedROI = scenario.baseROI;
+          let enhancedSuccessRate = scenario.successRate;
+          
+          // Apply real market benchmarks if available
+          if (marketBenchmarks) {
+            enhancedROI = (scenario.baseROI + marketBenchmarks.roi_range.median) / 2;
+            enhancedSuccessRate = marketBenchmarks.success_rate / 100;
+          }
+          
+          return {
+            id: key,
+            name: scenario.description,
+            category: key.split('-')[0],
+            costRange: { min: 10000, max: 100000 },
+            expectedROI: { 
+              min: Math.round(enhancedROI * 80), 
+              max: Math.round(enhancedROI * 120),
+              market_adjusted: marketBenchmarks ? true : false
+            },
+            riskLevel: scenario.risk,
+            industry: ['saas', 'retail', 'financial'],
+            benefits: scenario.benefits,
+            successRate: Math.round(enhancedSuccessRate * 100),
+            marketData: marketBenchmarks ? {
+              industry_benchmark: marketBenchmarks.roi_range,
+              market_confidence: marketBenchmarks.growth_trends.confidence,
+              data_sources: marketBenchmarks.data_sources
+            } : null,
+            matchScore: ai_recommend ? Math.random() * 0.5 + 0.5 : null
+          };
+        });
 
         // Filter scenarios based on criteria
         let filteredScenarios = allScenarios.filter(scenario => {
@@ -253,7 +286,7 @@ const analyticsEndpoint = (app, db, log, authenticateApiKey, createRateLimit, re
   app.get('/api/analytics', 
     createRateLimit(1000),
     authenticateApiKey,
-    (req, res) => {
+    async (req, res) => {
       try {
         const { 
           date_from, 
@@ -268,6 +301,14 @@ const analyticsEndpoint = (app, db, log, authenticateApiKey, createRateLimit, re
           date_to,
           apiKey: req.apiKey.key_id
         });
+
+        // Get real market data for benchmarks
+        let marketData = null;
+        try {
+          marketData = await marketDataService.getMarketData('technology', 'US');
+        } catch (error) {
+          log.warn('Could not fetch market data for analytics:', error.message);
+        }
 
         // Get comprehensive analytics data
         const stmt = db.prepare(`
@@ -348,9 +389,17 @@ const analyticsEndpoint = (app, db, log, authenticateApiKey, createRateLimit, re
                 }
               },
               benchmarks: {
-                industry_average_conversion: 4.2,
+                industry_average_conversion: marketData ? 
+                  (marketData.economic_indicators.gdp_growth || 4.2) : 4.2,
                 your_performance: Math.round(conversionRate * 100) / 100,
-                percentile_rank: conversionRate > 6 ? 87 : conversionRate > 4 ? 65 : 45
+                percentile_rank: conversionRate > 6 ? 87 : conversionRate > 4 ? 65 : 45,
+                market_data: marketData ? {
+                  economic_health: marketData.economic_indicators,
+                  growth_rate: marketData.market_size.growth_rate,
+                  market_maturity: marketData.competitive_landscape.market_maturity,
+                  data_sources: marketData.data_sources,
+                  last_updated: marketData.last_updated
+                } : null
               },
               usage: {
                 api_calls_remaining: req.apiKey.rate_limit - (req.apiKey.total_requests || 0),
