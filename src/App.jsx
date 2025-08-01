@@ -1066,28 +1066,50 @@ function App() {
           </div>
         )}
 
-        {/* API Documentation Page */}
+        {/* API Documentation Page - Enhanced like Scenarios */}
         {config.FEATURES.API_INTEGRATION && currentPage === 'api' && (
           <div className="card">
             <h2>🔗 Catalyst ROI API</h2>
-            <p>Professional ROI calculation API for developers and businesses</p>
+            <p>Professional ROI calculation API for developers and businesses. Integrate our powerful calculation engine into your applications.</p>
 
-            <div style={{marginTop: '32px'}}>
-              <h3>🚀 Quick Start</h3>
+            {/* API Status Banner */}
+            <div style={{
+              background: apiStatus === 'connected' ? 'linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%)' : 'linear-gradient(135deg, #fee2e2 0%, #fecaca 100%)',
+              color: apiStatus === 'connected' ? '#065f46' : '#991b1b',
+              padding: '16px',
+              borderRadius: '12px',
+              marginBottom: '32px',
+              textAlign: 'center',
+              border: '1px solid ' + (apiStatus === 'connected' ? '#10b981' : '#ef4444')
+            }}>
+              <div style={{fontSize: '1.2em', fontWeight: '600', marginBottom: '8px'}}>
+                {apiStatus === 'connected' ? '🟢 API Online & Ready' : '🔴 API Currently Offline'}
+              </div>
+              <div style={{fontSize: '0.9em', opacity: '0.8'}}>
+                {apiStatus === 'connected' ? 
+                  'All endpoints are operational and ready for requests' : 
+                  'API server is not responding. Demonstration mode active.'}
+              </div>
+            </div>
+
+            {/* Quick Start Section */}
+            <div style={{marginBottom: '32px'}}>
+              <h3>🚀 Quick Start Guide</h3>
+              <p>Get started with the Catalyst ROI API in minutes. Here's a simple example:</p>
               
               <div style={{
                 background: '#1e293b',
                 color: '#e2e8f0',
                 padding: '20px',
-                borderRadius: '8px',
+                borderRadius: '12px',
                 marginTop: '16px',
                 fontFamily: 'monospace',
                 fontSize: '0.9em'
               }}>
-                <div style={{color: '#10b981', marginBottom: '8px'}}>// Calculate ROI via API</div>
-                <div>curl -X POST {config.API_BASE_URL}/api/calculate \</div>
-                <div>  -H "Content-Type: application/json" \</div>
-                <div>  -H "X-API-Key: {config.API_KEY}" \</div>
+                <div style={{color: '#10b981', marginBottom: '12px'}}>// Calculate ROI for a CRM automation project</div>
+                <div style={{marginBottom: '4px'}}>curl -X POST {config.API_BASE_URL}/api/calculate \</div>
+                <div style={{marginBottom: '4px'}}>  -H "Content-Type: application/json" \</div>
+                <div style={{marginBottom: '4px'}}>  -H "X-API-Key: {config.API_KEY}" \</div>
                 <div>  -d '{JSON.stringify({
                   investment: 50000,
                   scenario: "automation-crm",
@@ -1097,132 +1119,426 @@ function App() {
                 }, null, 2)}'</div>
               </div>
 
-              <h3 style={{marginTop: '32px'}}>📊 Live API Status</h3>
+              <div style={{
+                background: '#f8fafc',
+                padding: '16px',
+                borderRadius: '8px',
+                marginTop: '16px',
+                fontSize: '0.9em',
+                border: '1px solid #e2e8f0'
+              }}>
+                <strong>💡 Try it now:</strong> Copy the code above and replace the URL with your deployed API endpoint. 
+                Use the demo key <code style={{background: '#e2e8f0', padding: '2px 6px', borderRadius: '4px'}}>{config.API_KEY}</code> for testing.
+              </div>
+            </div>
+
+            {/* API Endpoints Cards */}
+            <div style={{marginBottom: '32px'}}>
+              <h3>🛠️ API Endpoints</h3>
+              <p>Comprehensive endpoints for ROI calculations, scenario management, and business intelligence.</p>
+              
               <div style={{
                 display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-                gap: '16px',
-                marginTop: '16px'
+                gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+                gap: '20px',
+                marginTop: '24px'
               }}>
+                {/* Calculate Endpoint */}
                 <div style={{
-                  background: apiStatus === 'connected' ? '#d1fae5' : '#fee2e2',
-                  color: apiStatus === 'connected' ? '#065f46' : '#991b1b',
-                  padding: '16px',
-                  borderRadius: '8px',
-                  textAlign: 'center'
+                  background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)',
+                  border: '1px solid #cbd5e0',
+                  borderRadius: '12px',
+                  padding: '24px',
+                  transition: 'transform 0.2s ease'
                 }}>
-                  <div style={{fontSize: '1.5em', marginBottom: '8px'}}>
-                    {apiStatus === 'connected' ? '🟢' : '🔴'}
+                  <div style={{display: 'flex', alignItems: 'center', marginBottom: '12px'}}>
+                    <span style={{
+                      background: '#3b82f6',
+                      color: 'white',
+                      padding: '4px 12px',
+                      borderRadius: '6px',
+                      fontSize: '0.8em',
+                      fontWeight: '600',
+                      marginRight: '12px'
+                    }}>POST</span>
+                    <h4 style={{margin: '0', color: '#1e293b'}}>ROI Calculation</h4>
                   </div>
-                  <div style={{fontWeight: '600'}}>
-                    {apiStatus === 'connected' ? 'API Online' : 'API Offline'}
-                  </div>
-                  <div style={{fontSize: '0.9em', marginTop: '4px'}}>
-                    {apiStatus === 'connected' ? 'Ready for requests' : 'Check server status'}
+                  <code style={{
+                    background: '#e2e8f0',
+                    padding: '8px 12px',
+                    borderRadius: '6px',
+                    fontSize: '0.9em',
+                    fontFamily: 'monospace',
+                    display: 'block',
+                    marginBottom: '12px'
+                  }}>/api/calculate</code>
+                  <p style={{color: '#64748b', fontSize: '0.9em', marginBottom: '12px'}}>
+                    Calculate professional ROI analysis for 16+ business scenarios with industry benchmarks and risk assessment.
+                  </p>
+                  <div style={{fontSize: '0.85em', color: '#4b5563'}}>
+                    <strong>Features:</strong> Real-time calculations, industry multipliers, success rate analysis, financial projections
                   </div>
                 </div>
 
+                {/* Scenarios Endpoint */}
+                <div style={{
+                  background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)',
+                  border: '1px solid #cbd5e0',
+                  borderRadius: '12px',
+                  padding: '24px'
+                }}>
+                  <div style={{display: 'flex', alignItems: 'center', marginBottom: '12px'}}>
+                    <span style={{
+                      background: '#10b981',
+                      color: 'white',
+                      padding: '4px 12px',
+                      borderRadius: '6px',
+                      fontSize: '0.8em',
+                      fontWeight: '600',
+                      marginRight: '12px'
+                    }}>GET</span>
+                    <h4 style={{margin: '0', color: '#1e293b'}}>Scenarios Library</h4>
+                  </div>
+                  <code style={{
+                    background: '#e2e8f0',
+                    padding: '8px 12px',
+                    borderRadius: '6px',
+                    fontSize: '0.9em',
+                    fontFamily: 'monospace',
+                    display: 'block',
+                    marginBottom: '12px'
+                  }}>/api/scenarios</code>
+                  <p style={{color: '#64748b', fontSize: '0.9em', marginBottom: '12px'}}>
+                    Access our complete library of 85+ business scenarios across 8 categories with detailed descriptions and ROI ranges.
+                  </p>
+                  <div style={{fontSize: '0.85em', color: '#4b5563'}}>
+                    <strong>Includes:</strong> Scenario details, cost ranges, risk levels, expected benefits, implementation insights
+                  </div>
+                </div>
+
+                {/* Leads Endpoint */}
+                <div style={{
+                  background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)',
+                  border: '1px solid #cbd5e0',
+                  borderRadius: '12px',
+                  padding: '24px'
+                }}>
+                  <div style={{display: 'flex', alignItems: 'center', marginBottom: '12px'}}>
+                    <span style={{
+                      background: '#8b5cf6',
+                      color: 'white',
+                      padding: '4px 12px',
+                      borderRadius: '6px',
+                      fontSize: '0.8em',
+                      fontWeight: '600',
+                      marginRight: '12px'
+                    }}>POST</span>
+                    <h4 style={{margin: '0', color: '#1e293b'}}>Lead Management</h4>
+                  </div>
+                  <code style={{
+                    background: '#e2e8f0',
+                    padding: '8px 12px',
+                    borderRadius: '6px',
+                    fontSize: '0.9em',
+                    fontFamily: 'monospace',
+                    display: 'block',
+                    marginBottom: '12px'
+                  }}>/api/leads</code>
+                  <p style={{color: '#64748b', fontSize: '0.9em', marginBottom: '12px'}}>
+                    Capture and manage leads from ROI calculations with automatic linking to calculation data for follow-up.
+                  </p>
+                  <div style={{fontSize: '0.85em', color: '#4b5563'}}>
+                    <strong>Captures:</strong> Contact information, calculation context, lead scoring, automated follow-up data
+                  </div>
+                </div>
+
+                {/* Analytics Endpoint */}
+                <div style={{
+                  background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)',
+                  border: '1px solid #cbd5e0',
+                  borderRadius: '12px',
+                  padding: '24px'
+                }}>
+                  <div style={{display: 'flex', alignItems: 'center', marginBottom: '12px'}}>
+                    <span style={{
+                      background: '#f59e0b',
+                      color: 'white',
+                      padding: '4px 12px',
+                      borderRadius: '6px',
+                      fontSize: '0.8em',
+                      fontWeight: '600',
+                      marginRight: '12px'
+                    }}>GET</span>
+                    <h4 style={{margin: '0', color: '#1e293b'}}>Usage Analytics</h4>
+                  </div>
+                  <code style={{
+                    background: '#e2e8f0',
+                    padding: '8px 12px',
+                    borderRadius: '6px',
+                    fontSize: '0.9em',
+                    fontFamily: 'monospace',
+                    display: 'block',
+                    marginBottom: '12px'
+                  }}>/api/analytics</code>
+                  <p style={{color: '#64748b', fontSize: '0.9em', marginBottom: '12px'}}>
+                    Comprehensive usage analytics and business intelligence for API administrators and enterprise users.
+                  </p>
+                  <div style={{fontSize: '0.85em', color: '#4b5563'}}>
+                    <strong>Provides:</strong> Usage metrics, popular scenarios, conversion rates, performance insights
+                    <span style={{background: '#fef3c7', color: '#92400e', padding: '2px 6px', borderRadius: '4px', marginLeft: '8px', fontSize: '0.8em'}}>Admin Only</span>
+                  </div>
+                </div>
+
+                {/* Health Check */}
+                <div style={{
+                  background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)',
+                  border: '1px solid #cbd5e0',
+                  borderRadius: '12px',
+                  padding: '24px'
+                }}>
+                  <div style={{display: 'flex', alignItems: 'center', marginBottom: '12px'}}>
+                    <span style={{
+                      background: '#10b981',
+                      color: 'white',
+                      padding: '4px 12px',
+                      borderRadius: '6px',
+                      fontSize: '0.8em',
+                      fontWeight: '600',
+                      marginRight: '12px'
+                    }}>GET</span>
+                    <h4 style={{margin: '0', color: '#1e293b'}}>Health Check</h4>
+                  </div>
+                  <code style={{
+                    background: '#e2e8f0',
+                    padding: '8px 12px',
+                    borderRadius: '6px',
+                    fontSize: '0.9em',
+                    fontFamily: 'monospace',
+                    display: 'block',
+                    marginBottom: '12px'
+                  }}>/api/health</code>
+                  <p style={{color: '#64748b', fontSize: '0.9em', marginBottom: '12px'}}>
+                    Monitor API status, uptime, and system health for integration monitoring and debugging.
+                  </p>
+                  <div style={{fontSize: '0.85em', color: '#4b5563'}}>
+                    <strong>Returns:</strong> System status, database connectivity, version info, response times
+                  </div>
+                </div>
+
+                {/* API Info */}
+                <div style={{
+                  background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)',
+                  border: '1px solid #cbd5e0',
+                  borderRadius: '12px',
+                  padding: '24px'
+                }}>
+                  <div style={{display: 'flex', alignItems: 'center', marginBottom: '12px'}}>
+                    <span style={{
+                      background: '#10b981',
+                      color: 'white',
+                      padding: '4px 12px',
+                      borderRadius: '6px',
+                      fontSize: '0.8em',
+                      fontWeight: '600',
+                      marginRight: '12px'
+                    }}>GET</span>
+                    <h4 style={{margin: '0', color: '#1e293b'}}>API Information</h4>
+                  </div>
+                  <code style={{
+                    background: '#e2e8f0',
+                    padding: '8px 12px',
+                    borderRadius: '6px',
+                    fontSize: '0.9em',
+                    fontFamily: 'monospace',
+                    display: 'block',
+                    marginBottom: '12px'
+                  }}>/api/info</code>
+                  <p style={{color: '#64748b', fontSize: '0.9em', marginBottom: '12px'}}>
+                    Complete API documentation with endpoint descriptions, authentication details, and usage guidelines.
+                  </p>
+                  <div style={{fontSize: '0.85em', color: '#4b5563'}}>
+                    <strong>Includes:</strong> Endpoint reference, demo keys, rate limits, support information
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Authentication & Demo Keys */}
+            <div style={{marginBottom: '32px'}}>
+              <h3>🔐 Authentication & Demo Access</h3>
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+                gap: '20px',
+                marginTop: '16px'
+              }}>
                 <div style={{
                   background: '#f0f9ff',
-                  color: '#0c4a6e',
-                  padding: '16px',
-                  borderRadius: '8px',
-                  textAlign: 'center'
+                  border: '1px solid #0ea5e9',
+                  padding: '20px',
+                  borderRadius: '12px'
                 }}>
-                  <div style={{fontSize: '1.5em', marginBottom: '8px'}}>🔑</div>
-                  <div style={{fontWeight: '600'}}>Demo Key</div>
-                  <div style={{fontSize: '0.8em', marginTop: '4px', fontFamily: 'monospace'}}>
+                  <div style={{display: 'flex', alignItems: 'center', marginBottom: '12px'}}>
+                    <span style={{fontSize: '1.5em', marginRight: '8px'}}>🔑</span>
+                    <h4 style={{margin: '0', color: '#0c4a6e'}}>Demo API Key</h4>
+                  </div>
+                  <div style={{
+                    background: '#e0f2fe',
+                    padding: '12px',
+                    borderRadius: '6px',
+                    fontFamily: 'monospace',
+                    fontSize: '0.9em',
+                    marginBottom: '12px',
+                    wordBreak: 'break-all'
+                  }}>
                     {config.API_KEY}
+                  </div>
+                  <div style={{fontSize: '0.9em', color: '#0c4a6e'}}>
+                    <strong>Tier:</strong> Professional (1,000 requests)<br/>
+                    <strong>Usage:</strong> Testing and development<br/>
+                    <strong>Rate Limit:</strong> 100 requests per 15 minutes
+                  </div>
+                </div>
+
+                <div style={{
+                  background: '#f9fafb',
+                  border: '1px solid #9ca3af',
+                  padding: '20px',
+                  borderRadius: '12px'
+                }}>
+                  <div style={{display: 'flex', alignItems: 'center', marginBottom: '12px'}}>
+                    <span style={{fontSize: '1.5em', marginRight: '8px'}}>🔐</span>
+                    <h4 style={{margin: '0', color: '#374151'}}>Admin Access</h4>
+                  </div>
+                  <div style={{
+                    background: '#f3f4f6',
+                    padding: '12px',
+                    borderRadius: '6px',
+                    fontFamily: 'monospace',
+                    fontSize: '0.9em',
+                    marginBottom: '12px',
+                    wordBreak: 'break-all'
+                  }}>
+                    {config.ADMIN_API_KEY}
+                  </div>
+                  <div style={{fontSize: '0.9em', color: '#374151'}}>
+                    <strong>Tier:</strong> Enterprise (Unlimited)<br/>
+                    <strong>Usage:</strong> Full analytics access<br/>
+                    <strong>Features:</strong> All endpoints + admin panel
                   </div>
                 </div>
               </div>
 
-              <h3 style={{marginTop: '32px'}}>🛠️ Available Endpoints</h3>
-              <div style={{marginTop: '16px'}}>
-                {[
-                  { method: 'POST', endpoint: '/api/calculate', description: 'Calculate ROI for business scenarios' },
-                  { method: 'GET', endpoint: '/api/scenarios', description: 'Get all available scenarios' },
-                  { method: 'POST', endpoint: '/api/leads', description: 'Submit lead information' },
-                  { method: 'GET', endpoint: '/api/analytics', description: 'Get usage analytics (admin only)' },
-                  { method: 'GET', endpoint: '/api/health', description: 'Check API health status' }
-                ].map((endpoint, index) => (
-                  <div key={index} style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    padding: '12px',
-                    marginBottom: '8px',
-                    background: '#f8fafc',
-                    borderRadius: '8px',
-                    border: '1px solid #e2e8f0'
-                  }}>
-                    <span style={{
-                      background: endpoint.method === 'GET' ? '#10b981' : '#3b82f6',
-                      color: 'white',
-                      padding: '4px 8px',
-                      borderRadius: '4px',
-                      fontSize: '0.75em',
-                      fontWeight: '600',
-                      minWidth: '50px',
-                      textAlign: 'center'
-                    }}>
-                      {endpoint.method}
-                    </span>
-                    <code style={{
-                      margin: '0 12px',
-                      padding: '4px 8px',
-                      background: '#e2e8f0',
-                      borderRadius: '4px',
-                      fontFamily: 'monospace',
-                      fontSize: '0.9em'
-                    }}>
-                      {endpoint.endpoint}
-                    </code>
-                    <span style={{color: '#64748b', fontSize: '0.9em'}}>
-                      {endpoint.description}
-                    </span>
-                  </div>
-                ))}
-              </div>
-
-              <h3 style={{marginTop: '32px'}}>💼 Enterprise Features</h3>
               <div style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-                gap: '16px',
+                background: '#fef3c7',
+                border: '1px solid #f59e0b',
+                padding: '16px',
+                borderRadius: '8px',
                 marginTop: '16px'
               }}>
+                <div style={{display: 'flex', alignItems: 'center', color: '#92400e'}}>
+                  <span style={{fontSize: '1.2em', marginRight: '8px'}}>💡</span>
+                  <div>
+                    <strong>How to use:</strong> Include your API key in the request header as <code style={{background: '#fde68a', padding: '2px 6px', borderRadius: '4px'}}>X-API-Key: your-key-here</code>
+                    <br/>
+                    <strong>Security:</strong> API keys are hashed and secured. Rate limiting prevents abuse.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Enterprise Features */}
+            <div style={{marginBottom: '32px'}}>
+              <h3>💼 Enterprise Features</h3>
+              <p>Professional-grade features designed for business integration and white-label solutions.</p>
+              
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+                gap: '20px',
+                marginTop: '20px'
+              }}>
                 {[
-                  { icon: '🔐', title: 'API Authentication', desc: 'Secure API key management' },
-                  { icon: '📊', title: 'Usage Analytics', desc: 'Detailed API usage tracking' },
-                  { icon: '🎨', title: 'White-label Options', desc: 'Customizable branding' },
-                  { icon: '⚡', title: 'High Performance', desc: 'Fast response times' }
+                  { 
+                    icon: '🔐', 
+                    title: 'API Authentication', 
+                    desc: 'Secure API key management with tiered access levels and usage tracking',
+                    features: ['Hashed API keys', 'Usage analytics', 'Rate limiting', 'Access control']
+                  },
+                  { 
+                    icon: '📊', 
+                    title: 'Business Intelligence', 
+                    desc: 'Comprehensive analytics and reporting for usage patterns and trends',
+                    features: ['Usage metrics', 'Popular scenarios', 'Conversion tracking', 'Performance insights']
+                  },
+                  { 
+                    icon: '🎨', 
+                    title: 'White-label Ready', 
+                    desc: 'Customizable branding and embedding options for your applications',
+                    features: ['Custom branding', 'Domain flexibility', 'Embedded widgets', 'Theme customization']
+                  },
+                  { 
+                    icon: '⚡', 
+                    title: 'High Performance', 
+                    desc: 'Optimized for speed with caching, compression, and global availability',
+                    features: ['Fast response times', 'Auto-scaling', 'Database optimization', 'CDN ready']
+                  },
+                  { 
+                    icon: '🛡️', 
+                    title: 'Enterprise Security', 
+                    desc: 'Production-grade security with headers, validation, and monitoring',
+                    features: ['Helmet.js security', 'Input validation', 'SQL injection protection', 'Request logging']
+                  },
+                  { 
+                    icon: '🔄', 
+                    title: 'Real-time Sync', 
+                    desc: 'Live data synchronization and webhook support for integrations',
+                    features: ['Webhook notifications', 'Real-time updates', 'Event streaming', 'Integration APIs']
+                  }
                 ].map((feature, index) => (
                   <div key={index} style={{
-                    background: '#f8fafc',
-                    padding: '20px',
-                    borderRadius: '8px',
+                    background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
                     border: '1px solid #e2e8f0',
-                    textAlign: 'center'
+                    padding: '24px',
+                    borderRadius: '12px',
+                    transition: 'transform 0.2s ease, box-shadow 0.2s ease'
                   }}>
-                    <div style={{fontSize: '2em', marginBottom: '8px'}}>{feature.icon}</div>
-                    <h4 style={{marginBottom: '8px', color: '#1e293b'}}>{feature.title}</h4>
-                    <p style={{color: '#64748b', fontSize: '0.9em'}}>{feature.desc}</p>
+                    <div style={{fontSize: '2.5em', marginBottom: '12px', textAlign: 'center'}}>{feature.icon}</div>
+                    <h4 style={{marginBottom: '8px', color: '#1e293b', textAlign: 'center'}}>{feature.title}</h4>
+                    <p style={{color: '#64748b', fontSize: '0.9em', marginBottom: '16px', textAlign: 'center'}}>{feature.desc}</p>
+                    <div style={{fontSize: '0.85em'}}>
+                      {feature.features.map((item, idx) => (
+                        <div key={idx} style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          marginBottom: '6px',
+                          color: '#4b5563'
+                        }}>
+                          <span style={{color: '#10b981', marginRight: '8px', fontSize: '0.9em'}}>✓</span>
+                          {item}
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 ))}
               </div>
+            </div>
 
-              <div style={{
-                marginTop: '32px',
-                padding: '20px',
-                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                color: 'white',
-                borderRadius: '12px',
-                textAlign: 'center'
-              }}>
-                <h3>Ready to integrate Catalyst API?</h3>
-                <p style={{opacity: '0.9', marginBottom: '16px'}}>
-                  Start building with our professional ROI calculation engine
-                </p>
+            {/* Call to Action */}
+            <div style={{
+              marginTop: '40px',
+              padding: '32px',
+              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              color: 'white',
+              borderRadius: '16px',
+              textAlign: 'center'
+            }}>
+              <h3 style={{marginBottom: '16px'}}>Ready to integrate Catalyst ROI API?</h3>
+              <p style={{opacity: '0.9', marginBottom: '24px', fontSize: '1.1em'}}>
+                Start building with our professional ROI calculation engine. From simple calculations 
+                to enterprise integrations, we've got you covered.
+              </p>
+              <div style={{display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap'}}>
                 <button 
                   className="btn"
                   onClick={() => window.open(`${config.API_BASE_URL}/api/info`, '_blank')}
@@ -1230,12 +1546,28 @@ function App() {
                     background: 'white',
                     color: '#667eea',
                     border: 'none',
-                    padding: '12px 24px',
-                    borderRadius: '6px',
-                    fontWeight: '600'
+                    padding: '14px 28px',
+                    borderRadius: '8px',
+                    fontWeight: '600',
+                    fontSize: '1em'
                   }}
                 >
-                  View Full API Documentation →
+                  📚 Full API Documentation
+                </button>
+                <button 
+                  className="btn"
+                  onClick={() => setCurrentPage('calculator')}
+                  style={{
+                    background: 'rgba(255,255,255,0.2)',
+                    color: 'white',
+                    border: '2px solid rgba(255,255,255,0.3)',
+                    padding: '14px 28px',
+                    borderRadius: '8px',
+                    fontWeight: '600',
+                    fontSize: '1em'
+                  }}
+                >
+                  🧮 Try Live Calculator
                 </button>
               </div>
             </div>
