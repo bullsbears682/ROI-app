@@ -745,6 +745,176 @@ export const roiScenarios = {
       compliance: 40000,
       training: 20000
     }
+  },
+
+  // Additional SaaS scenarios
+  'saas-erp': {
+    category: 'saas',
+    name: 'ERP System Migration',
+    description: 'Migrate to cloud-based Enterprise Resource Planning',
+    costRange: { min: 100000, max: 300000 },
+    timeframe: { min: 8, max: 18 },
+    expectedROI: { min: 150, max: 280 },
+    paybackPeriod: 18,
+    riskLevel: 'high',
+    industryBenchmarks: {
+      manufacturing: { roi: 250, implementation: 12 },
+      retail: { roi: 180, implementation: 15 },
+      services: { roi: 220, implementation: 10 }
+    },
+    benefits: [
+      'Unified business processes',
+      'Real-time data visibility',
+      '25-35% operational efficiency gain',
+      'Reduced IT infrastructure costs'
+    ],
+    costs: {
+      licensing: 120000,
+      implementation: 80000,
+      training: 40000,
+      customization: 60000
+    }
+  },
+
+  'saas-hrms': {
+    category: 'saas',
+    name: 'HR Management System',
+    description: 'Comprehensive human resources and payroll SaaS',
+    costRange: { min: 15000, max: 60000 },
+    timeframe: { min: 2, max: 6 },
+    expectedROI: { min: 200, max: 450 },
+    paybackPeriod: 8,
+    riskLevel: 'low',
+    industryBenchmarks: {
+      corporate: { roi: 380, implementation: 4 },
+      nonprofit: { roi: 280, implementation: 5 },
+      healthcare: { roi: 350, implementation: 3 }
+    },
+    benefits: [
+      '40-60% reduction in HR admin time',
+      'Improved employee satisfaction',
+      'Automated compliance tracking',
+      'Better talent management'
+    ],
+    costs: {
+      licensing: 25000,
+      implementation: 12000,
+      training: 8000,
+      migration: 10000
+    }
+  },
+
+  'saas-communication': {
+    category: 'saas',
+    name: 'Team Communication Platform',
+    description: 'Slack/Microsoft Teams deployment for collaboration',
+    costRange: { min: 8000, max: 35000 },
+    timeframe: { min: 1, max: 4 },
+    expectedROI: { min: 250, max: 500 },
+    paybackPeriod: 6,
+    riskLevel: 'low',
+    industryBenchmarks: {
+      remote: { roi: 450, implementation: 2 },
+      corporate: { roi: 320, implementation: 3 },
+      startup: { roi: 500, implementation: 1 }
+    },
+    benefits: [
+      '30-50% faster team communication',
+      'Reduced email dependency',
+      'Improved remote collaboration',
+      'Better project coordination'
+    ],
+    costs: {
+      licensing: 18000,
+      setup: 5000,
+      training: 8000,
+      integration: 4000
+    }
+  },
+
+  // Additional FinTech scenarios
+  'fintech-wealth': {
+    category: 'fintech',
+    name: 'Wealth Management Platform',
+    description: 'Digital wealth and investment management system',
+    costRange: { min: 120000, max: 400000 },
+    timeframe: { min: 10, max: 20 },
+    expectedROI: { min: 180, max: 350 },
+    paybackPeriod: 16,
+    riskLevel: 'high',
+    industryBenchmarks: {
+      financial: { roi: 300, implementation: 15 },
+      investment: { roi: 350, implementation: 12 },
+      advisory: { roi: 250, implementation: 18 }
+    },
+    benefits: [
+      'Automated portfolio management',
+      'Enhanced client experience',
+      'Regulatory compliance tools',
+      'Scalable investment operations'
+    ],
+    costs: {
+      platform: 200000,
+      compliance: 80000,
+      integration: 70000,
+      training: 30000
+    }
+  },
+
+  'fintech-mobile': {
+    category: 'fintech',
+    name: 'Mobile Banking App',
+    description: 'Native mobile banking and financial services app',
+    costRange: { min: 150000, max: 500000 },
+    timeframe: { min: 12, max: 24 },
+    expectedROI: { min: 200, max: 400 },
+    paybackPeriod: 20,
+    riskLevel: 'high',
+    industryBenchmarks: {
+      banking: { roi: 350, implementation: 18 },
+      credit_union: { roi: 280, implementation: 20 },
+      fintech: { roi: 400, implementation: 15 }
+    },
+    benefits: [
+      'Enhanced customer engagement',
+      'Reduced branch operation costs',
+      '24/7 banking services',
+      'Competitive digital presence'
+    ],
+    costs: {
+      development: 250000,
+      security: 100000,
+      compliance: 80000,
+      maintenance: 70000
+    }
+  },
+
+  'fintech-robo': {
+    category: 'fintech',
+    name: 'Robo-Advisory Service',
+    description: 'Automated investment advisory and portfolio management',
+    costRange: { min: 80000, max: 250000 },
+    timeframe: { min: 6, max: 14 },
+    expectedROI: { min: 220, max: 450 },
+    paybackPeriod: 12,
+    riskLevel: 'medium',
+    industryBenchmarks: {
+      financial: { roi: 380, implementation: 10 },
+      investment: { roi: 450, implementation: 8 },
+      advisory: { roi: 300, implementation: 12 }
+    },
+    benefits: [
+      'Lower operational costs',
+      'Scalable advisory services',
+      'Consistent investment strategies',
+      'Broader market accessibility'
+    ],
+    costs: {
+      platform: 120000,
+      algorithms: 60000,
+      compliance: 40000,
+      integration: 30000
+    }
   }
 };
 
