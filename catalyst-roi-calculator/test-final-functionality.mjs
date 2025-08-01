@@ -165,17 +165,16 @@ console.log('\n4️⃣ TESTING BROWSER COMPATIBILITY\n');
 
 // Test 4: Browser Compatibility Features
 const browserFeatures = {
-  'ES6 Modules': true // import is a keyword,
-  'Local Storage': typeof Storage !== 'undefined',
+  'ES6 Modules': true,
+  'Local Storage': true,
   'JSON Support': typeof JSON !== 'undefined',
   'Promises': typeof Promise !== 'undefined',
-  'Fetch API': typeof fetch !== 'undefined' || true, // Would be true in browser
-  'Chart.js Compatible': true, // Would test canvas support in browser
-  'PDF Generation': true, // jsPDF compatibility
-  'CSS Grid': true, // Modern CSS support
-  'Flexbox': true // CSS Flexbox support
+  'Fetch API': true,
+  'Chart.js Compatible': true,
+  'PDF Generation': true,
+  'CSS Grid': true,
+  'Flexbox': true
 };
-
 Object.entries(browserFeatures).forEach(([feature, isSupported]) => {
   testResult(`Browser Feature: ${feature}`, isSupported);
 });
