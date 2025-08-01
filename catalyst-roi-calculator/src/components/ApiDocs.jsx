@@ -217,7 +217,7 @@ const ApiDocs = () => {
         budget_max: 100000,
         risk_level: 'medium',
         company_size: 'medium',
-        current_tools: ['hubspot', 'salesforce'],
+        current_tools: ['salesforce', 'pipedrive'],
         goals: ['increase_revenue', 'reduce_costs'],
         ai_recommend: true
       },
@@ -236,7 +236,7 @@ const ApiDocs = () => {
             riskLevel: 'medium',
             industry: ['saas', 'retail', 'financial'],
             matchScore: 0.94,
-            reasoning: 'High compatibility with current HubSpot integration'
+            reasoning: 'High compatibility with current CRM integrations'
           }
         ],
         ml_insights: {
@@ -268,7 +268,7 @@ const ApiDocs = () => {
           investment: 50000
         },
         source: 'api_integration',
-        utm_campaign: 'hubspot_trial'
+        utm_campaign: 'enterprise_trial'
       },
       response: {
         success: true,
@@ -282,8 +282,8 @@ const ApiDocs = () => {
           'Connect with enterprise success team'
         ],
         crm_sync: {
-          hubspot_contact_id: 'hs_12345',
           salesforce_lead_id: 'sf_67890',
+          pipedrive_person_id: 'pd_12345',
           sync_status: 'completed'
         },
         ai_insights: {
@@ -349,29 +349,29 @@ const ApiDocs = () => {
       reliability: '99.99%',
       avgResponseTime: '67ms',
       request: {
-        client: 'hubspot',
+        client: 'enterprise',
         environment: 'production'
       },
       response: {
         success: true,
         branding: {
-          name: 'HubSpot ROI Calculator',
-          logo: 'https://cdn.brandfetch.io/hubspot.com/w/400/h/400/theme/dark/icon.jpeg?k=bfHSJFAPEG',
-          favicon: 'https://www.hubspot.com/favicon.ico',
+          name: 'Enterprise ROI Calculator',
+          logo: 'https://via.placeholder.com/400x400/667eea/ffffff?text=ROI',
+          favicon: '/favicon.ico',
           colors: {
-            primary: '#ff5c35',
-            secondary: '#0091ae',
+            primary: '#667eea',
+            secondary: '#764ba2',
             background: '#ffffff',
             text: '#2d3748',
-            accent: '#f56500'
+            accent: '#4f46e5'
           },
           fonts: {
-            primary: 'Lexend, sans-serif',
-            secondary: 'Inter, sans-serif'
+            primary: 'Inter, sans-serif',
+            secondary: 'system-ui, sans-serif'
           },
-          domain: 'roi.hubspot.com',
+          domain: 'roi.enterprise.com',
           subdomain: 'calculator',
-          customScenarios: ['inbound-marketing', 'sales-automation', 'customer-success'],
+          customScenarios: ['ai-automation', 'digital-transformation', 'process-optimization'],
           features: {
             leadCapture: true,
             analytics: true,
@@ -379,9 +379,9 @@ const ApiDocs = () => {
             apiAccess: true
           },
           integrations: {
-            crm: 'hubspot',
-            analytics: 'hubspot_analytics',
-            webhooks: 'https://api.hubspot.com/webhooks/roi-events'
+            crm: 'custom_crm',
+            analytics: 'enterprise_analytics',
+            webhooks: 'https://api.enterprise.com/webhooks/roi-events'
           }
         }
       }
@@ -394,7 +394,7 @@ const ApiDocs = () => {
       reliability: '99.96%',
       avgResponseTime: '45ms',
       request: {
-        url: 'https://api.hubspot.com/webhooks/roi-events',
+        url: 'https://api.enterprise.com/webhooks/roi-events',
         events: ['calculation.completed', 'lead.created', 'lead.qualified'],
         secret: 'webhook_secret_key',
         retry_policy: {
@@ -482,7 +482,7 @@ async def process_roi_batch(scenarios):
 @client.webhook_handler(['lead.created', 'calculation.completed'])
 async def handle_events(event_type, data):
     if event_type == 'lead.created':
-        await sync_to_hubspot(data)
+        await sync_to_salesforce(data)
     elif event_type == 'calculation.completed':
         await update_analytics_dashboard(data)
 
@@ -513,7 +513,7 @@ curl -X POST ${API_BASE_URL}/api/roi/calculate \\
         "support_volume": 1200
       }
     },
-    "webhook_url": "https://api.hubspot.com/webhooks/roi-results",
+    "webhook_url": "https://api.enterprise.com/webhooks/roi-results",
     "callback_events": ["calculation.completed", "insights.generated"]
   }'`,
 
@@ -960,7 +960,7 @@ query AdvancedROIAnalysis($input: ROICalculationInput!) {
                 <p>Advanced domain control with subdomain wildcards and SSL verification</p>
                 <pre className="code-block">
                   {authExamples.domain}
-                  {'\n'}Allowed Domains: *.hubspot.com, app.hubspot.com, roi.hubspot.com
+                  {'\n'}Allowed Domains: *.enterprise.com, app.enterprise.com, roi.enterprise.com
                   {'\n'}SSL Verification: Required
                   {'\n'}Subdomain Wildcards: Supported
                 </pre>
@@ -1176,11 +1176,11 @@ query AdvancedROIAnalysis($input: ROICalculationInput!) {
                 <div className="feature-demo">
                   <div className="demo-browser">
                     <div className="browser-bar">
-                      <span>🔒 https://roi.hubspot.com</span>
+                      <span>🔒 https://roi.enterprise.com</span>
                     </div>
-                    <div className="demo-content hubspot-theme">
+                    <div className="demo-content enterprise-theme">
                       <div className="demo-header">
-                        <div className="demo-logo">HubSpot</div>
+                        <div className="demo-logo">Enterprise</div>
                         <div className="demo-nav">ROI Calculator</div>
                       </div>
                       <div className="demo-calculator">
@@ -1207,7 +1207,7 @@ query AdvancedROIAnalysis($input: ROICalculationInput!) {
                   </div>
                   <div className="ai-recommendation">
                     <span className="ai-badge">ML Recommendation</span>
-                    <p>"Consider Marketing Automation next - 87% compatibility with your current HubSpot setup."</p>
+                    <p>"Consider Marketing Automation next - 87% compatibility with your current CRM setup."</p>
                   </div>
                 </div>
                 <ul>
@@ -1253,12 +1253,12 @@ query AdvancedROIAnalysis($input: ROICalculationInput!) {
                   <div className="flow-arrow">→</div>
                   <div className="flow-step">Lead Score</div>
                   <div className="flow-arrow">→</div>
-                  <div className="flow-step">HubSpot CRM</div>
+                  <div className="flow-step">Salesforce CRM</div>
                   <div className="flow-arrow">→</div>
                   <div className="flow-step">Sales Team</div>
                 </div>
                 <ul>
-                  <li>Native HubSpot integration</li>
+                                      <li>Native Salesforce integration</li>
                   <li>Automatic contact creation</li>
                   <li>Custom property mapping</li>
                   <li>Workflow triggers</li>
@@ -1359,7 +1359,7 @@ query AdvancedROIAnalysis($input: ROICalculationInput!) {
                   <li>✅ Basic white-label options</li>
                   <li>✅ Webhook integrations</li>
                   <li>✅ ML-powered insights</li>
-                  <li>✅ CRM integrations (HubSpot, SF)</li>
+                  <li>✅ CRM integrations (Salesforce, Pipedrive)</li>
                   <li>✅ Custom reporting</li>
                   <li>❌ Source code access</li>
                 </ul>
@@ -1488,7 +1488,7 @@ query AdvancedROIAnalysis($input: ROICalculationInput!) {
                   </div>
                   <p>Complete CRM integration with custom workflows and training</p>
                   <div className="addon-features">
-                    <span>✓ HubSpot/Salesforce setup</span>
+                    <span>✓ Salesforce/Pipedrive setup</span>
                     <span>✓ Custom field mapping</span>
                     <span>✓ Workflow automation</span>
                     <span>✓ Team training included</span>
@@ -1540,7 +1540,7 @@ query AdvancedROIAnalysis($input: ROICalculationInput!) {
               <li><a href="#calculator">Try ROI Calculator</a></li>
               <li><a href="#scenarios">Browse 85 Scenarios</a></li>
               <li><a href="#admin">View Admin Dashboard</a></li>
-              <li><a href="#integration">HubSpot Integration</a></li>
+              <li><a href="#integration">CRM Integration</a></li>
               <li><a href="#pricing">Enterprise Pricing</a></li>
               <li><a href="#trial">Start Free Trial</a></li>
             </ul>

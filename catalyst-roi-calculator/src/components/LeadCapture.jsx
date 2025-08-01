@@ -28,7 +28,7 @@ const LeadCapture = ({ isOpen, onClose, onSubmit, calculationData }) => {
     setIsSubmitting(true);
 
     try {
-      // Simulate API call - in real implementation, this would go to HubSpot CRM
+      // Simulate API call - in real implementation, this would go to CRM system
       const leadData = {
         ...formData,
         source: 'Catalyst ROI Calculator',
