@@ -763,6 +763,118 @@ export const roiScenarios = {
     }
   },
 
+  'cloud-database': {
+    category: 'cloud',
+    name: 'Database Cloud Migration',
+    description: 'Move databases to cloud infrastructure',
+    costRange: { min: 30000, max: 150000 },
+    timeframe: { min: 4, max: 10 },
+    expectedROI: { min: 180, max: 350 },
+    paybackPeriod: 12,
+    riskLevel: 'medium',
+    industryBenchmarks: {
+      enterprise: { roi: 300, implementation: 7 },
+      saas: { roi: 320, implementation: 6 },
+      ecommerce: { roi: 280, implementation: 8 }
+    },
+    benefits: [
+      'Better disaster recovery',
+      'Improved performance',
+      'Reduced maintenance costs',
+      'Enhanced security'
+    ],
+    costs: {
+      migration: 70000,
+      setup: 40000,
+      training: 20000,
+      ongoing: 25000
+    }
+  },
+
+  'cloud-backup': {
+    category: 'cloud',
+    name: 'Cloud Backup & Recovery',
+    description: 'Comprehensive cloud-based backup solution',
+    costRange: { min: 10000, max: 50000 },
+    timeframe: { min: 2, max: 6 },
+    expectedROI: { min: 250, max: 600 },
+    paybackPeriod: 6,
+    riskLevel: 'low',
+    industryBenchmarks: {
+      small_business: { roi: 500, implementation: 3 },
+      enterprise: { roi: 400, implementation: 4 },
+      healthcare: { roi: 550, implementation: 2 }
+    },
+    benefits: [
+      'Data protection assurance',
+      'Faster recovery times',
+      'Reduced hardware costs',
+      'Compliance requirements met'
+    ],
+    costs: {
+      setup: 15000,
+      monthly: 2000,
+      training: 8000,
+      testing: 5000
+    }
+  },
+
+  'cloud-hybrid': {
+    category: 'cloud',
+    name: 'Hybrid Cloud Strategy',
+    description: 'Integrated on-premise and cloud infrastructure',
+    costRange: { min: 80000, max: 300000 },
+    timeframe: { min: 8, max: 18 },
+    expectedROI: { min: 160, max: 320 },
+    paybackPeriod: 15,
+    riskLevel: 'high',
+    industryBenchmarks: {
+      enterprise: { roi: 280, implementation: 12 },
+      financial: { roi: 250, implementation: 15 },
+      manufacturing: { roi: 300, implementation: 10 }
+    },
+    benefits: [
+      'Optimal cost-performance balance',
+      'Enhanced data control',
+      'Improved flexibility',
+      'Better compliance management'
+    ],
+    costs: {
+      infrastructure: 150000,
+      integration: 80000,
+      training: 35000,
+      management: 40000
+    }
+  },
+
+  'cloud-devops': {
+    category: 'cloud',
+    name: 'DevOps Cloud Platform',
+    description: 'Cloud-based development and deployment pipeline',
+    costRange: { min: 25000, max: 100000 },
+    timeframe: { min: 3, max: 9 },
+    expectedROI: { min: 200, max: 500 },
+    paybackPeriod: 9,
+    riskLevel: 'medium',
+    industryBenchmarks: {
+      technology: { roi: 450, implementation: 5 },
+      startup: { roi: 400, implementation: 4 },
+      enterprise: { roi: 320, implementation: 7 }
+    },
+    benefits: [
+      '50-70% faster deployment cycles',
+      'Improved code quality',
+      'Better collaboration',
+      'Reduced operational overhead'
+    ],
+    costs: {
+      platform: 45000,
+      setup: 25000,
+      training: 20000,
+      tools: 15000
+    }
+  },
+
   // Cybersecurity scenarios
   'security-software': {
     category: 'security',
@@ -810,6 +922,121 @@ export const roiScenarios = {
     }
   },
 
+  'security-identity': {
+    category: 'security',
+    name: 'Identity & Access Management',
+    description: 'Advanced user authentication and access control',
+    costRange: { min: 25000, max: 100000 },
+    timeframe: { min: 3, max: 8 },
+    expectedROI: { min: 300, max: 700 },
+    paybackPeriod: 8,
+    riskLevel: 'medium',
+    benefits: [
+      'Reduced unauthorized access',
+      'Better compliance',
+      'Improved user experience',
+      'Centralized access control'
+    ],
+    costs: {
+      platform: 45000,
+      implementation: 30000,
+      training: 15000,
+      ongoing: 12000
+    }
+  },
+
+  'security-soc': {
+    category: 'security',
+    name: 'Security Operations Center',
+    description: '24/7 security monitoring and incident response',
+    costRange: { min: 80000, max: 300000 },
+    timeframe: { min: 6, max: 12 },
+    expectedROI: { min: 250, max: 600 },
+    paybackPeriod: 12,
+    riskLevel: 'medium',
+    benefits: [
+      'Real-time threat detection',
+      'Faster incident response',
+      'Reduced security breaches',
+      'Better forensic capabilities'
+    ],
+    costs: {
+      setup: 120000,
+      tools: 80000,
+      staffing: 150000,
+      training: 25000
+    }
+  },
+
+  'security-endpoint': {
+    category: 'security',
+    name: 'Endpoint Protection Platform',
+    description: 'Advanced endpoint detection and response',
+    costRange: { min: 20000, max: 80000 },
+    timeframe: { min: 2, max: 6 },
+    expectedROI: { min: 350, max: 800 },
+    paybackPeriod: 7,
+    riskLevel: 'low',
+    benefits: [
+      'Advanced malware protection',
+      'Better device visibility',
+      'Automated threat response',
+      'Reduced IT workload'
+    ],
+    costs: {
+      licensing: 35000,
+      deployment: 20000,
+      training: 12000,
+      management: 8000
+    }
+  },
+
+  'security-compliance': {
+    category: 'security',
+    name: 'Compliance Management System',
+    description: 'Automated compliance monitoring and reporting',
+    costRange: { min: 30000, max: 120000 },
+    timeframe: { min: 4, max: 10 },
+    expectedROI: { min: 200, max: 500 },
+    paybackPeriod: 10,
+    riskLevel: 'medium',
+    benefits: [
+      'Simplified audit processes',
+      'Reduced compliance risks',
+      'Automated reporting',
+      'Better documentation'
+    ],
+    costs: {
+      platform: 55000,
+      implementation: 35000,
+      training: 20000,
+      ongoing: 15000
+    }
+  },
+
+  'security-backup': {
+    category: 'security',
+    name: 'Secure Backup & Recovery',
+    description: 'Encrypted backup with disaster recovery',
+    costRange: { min: 15000, max: 70000 },
+    timeframe: { min: 2, max: 8 },
+    expectedROI: { min: 300, max: 800 },
+    paybackPeriod: 6,
+    riskLevel: 'low',
+    benefits: [
+      'Data protection assurance',
+      'Faster recovery times',
+      'Ransomware protection',
+      'Business continuity'
+    ],
+    costs: {
+      infrastructure: 30000,
+      software: 20000,
+      implementation: 15000,
+      testing: 8000
+    }
+  },
+
   // Process Automation scenarios
   'automation-manufacturing': {
     category: 'automation',
@@ -854,6 +1081,98 @@ export const roiScenarios = {
       monthly: 1500,
       training: 12000,
       customization: 18000
+    }
+  },
+
+  'automation-accounting': {
+    category: 'automation',
+    name: 'Financial Process Automation',
+    description: 'Automated invoicing, reconciliation, and reporting',
+    costRange: { min: 20000, max: 90000 },
+    timeframe: { min: 3, max: 9 },
+    expectedROI: { min: 200, max: 450 },
+    paybackPeriod: 9,
+    riskLevel: 'medium',
+    benefits: [
+      '60-80% faster financial processing',
+      'Reduced accounting errors',
+      'Improved cash flow management',
+      'Better financial visibility'
+    ],
+    costs: {
+      software: 40000,
+      implementation: 25000,
+      training: 15000,
+      integration: 12000
+    }
+  },
+
+  'automation-hr': {
+    category: 'automation',
+    name: 'HR Process Automation',
+    description: 'Automated recruitment, onboarding, and payroll',
+    costRange: { min: 25000, max: 100000 },
+    timeframe: { min: 4, max: 10 },
+    expectedROI: { min: 180, max: 400 },
+    paybackPeriod: 10,
+    riskLevel: 'medium',
+    benefits: [
+      'Faster hiring processes',
+      'Reduced administrative overhead',
+      'Better employee experience',
+      'Improved compliance tracking'
+    ],
+    costs: {
+      platform: 50000,
+      implementation: 30000,
+      training: 12000,
+      customization: 18000
+    }
+  },
+
+  'automation-customer': {
+    category: 'automation',
+    name: 'Customer Service Automation',
+    description: 'Automated ticketing and customer support workflows',
+    costRange: { min: 18000, max: 70000 },
+    timeframe: { min: 2, max: 7 },
+    expectedROI: { min: 220, max: 500 },
+    paybackPeriod: 7,
+    riskLevel: 'low',
+    benefits: [
+      '40-60% faster response times',
+      'Improved customer satisfaction',
+      'Reduced support costs',
+      'Better issue tracking'
+    ],
+    costs: {
+      platform: 30000,
+      setup: 18000,
+      training: 12000,
+      integration: 8000
+    }
+  },
+
+  'automation-supply': {
+    category: 'automation',
+    name: 'Supply Chain Automation',
+    description: 'Automated procurement and inventory management',
+    costRange: { min: 40000, max: 180000 },
+    timeframe: { min: 5, max: 12 },
+    expectedROI: { min: 170, max: 380 },
+    paybackPeriod: 12,
+    riskLevel: 'medium',
+    benefits: [
+      'Optimized inventory levels',
+      'Reduced procurement costs',
+      'Better supplier management',
+      'Improved demand forecasting'
+    ],
+    costs: {
+      software: 80000,
+      implementation: 60000,
+      training: 25000,
+      integration: 35000
     }
   },
 
@@ -1532,6 +1851,513 @@ export const roiScenarios = {
       equipment: 15000,
       editing: 12000,
       distribution: 8000
+    }
+  },
+
+  // Customer Experience scenarios
+  'experience-journey': {
+    category: 'experience',
+    name: 'Customer Journey Mapping',
+    description: 'Comprehensive customer experience optimization',
+    costRange: { min: 15000, max: 75000 },
+    timeframe: { min: 3, max: 8 },
+    expectedROI: { min: 200, max: 450 },
+    paybackPeriod: 8,
+    riskLevel: 'medium',
+    industryBenchmarks: {
+      retail: { roi: 380, implementation: 5 },
+      hospitality: { roi: 420, implementation: 4 },
+      b2b: { roi: 320, implementation: 6 }
+    },
+    benefits: [
+      '20-35% improvement in customer satisfaction',
+      'Reduced customer churn',
+      'Higher customer lifetime value',
+      'Better brand loyalty'
+    ],
+    costs: {
+      research: 25000,
+      implementation: 30000,
+      training: 12000,
+      tools: 8000
+    }
+  },
+
+  'experience-loyalty': {
+    category: 'experience',
+    name: 'Customer Loyalty Program',
+    description: 'Rewards and retention program implementation',
+    costRange: { min: 20000, max: 100000 },
+    timeframe: { min: 4, max: 10 },
+    expectedROI: { min: 180, max: 400 },
+    paybackPeriod: 10,
+    riskLevel: 'medium',
+    industryBenchmarks: {
+      retail: { roi: 350, implementation: 6 },
+      ecommerce: { roi: 400, implementation: 5 },
+      hospitality: { roi: 380, implementation: 7 }
+    },
+    benefits: [
+      '15-30% increase in repeat purchases',
+      'Higher average order value',
+      'Better customer data insights',
+      'Reduced acquisition costs'
+    ],
+    costs: {
+      platform: 45000,
+      rewards: 30000,
+      marketing: 15000,
+      management: 10000
+    }
+  },
+
+  'experience-support': {
+    category: 'experience',
+    name: 'Customer Support Enhancement',
+    description: 'Advanced customer service and support systems',
+    costRange: { min: 25000, max: 120000 },
+    timeframe: { min: 3, max: 9 },
+    expectedROI: { min: 200, max: 500 },
+    paybackPeriod: 9,
+    riskLevel: 'medium',
+    industryBenchmarks: {
+      saas: { roi: 450, implementation: 5 },
+      ecommerce: { roi: 380, implementation: 6 },
+      telecom: { roi: 320, implementation: 8 }
+    },
+    benefits: [
+      '40-60% faster issue resolution',
+      'Improved customer satisfaction scores',
+      'Reduced support costs',
+      'Better agent productivity'
+    ],
+    costs: {
+      platform: 55000,
+      training: 25000,
+      integration: 20000,
+      ongoing: 15000
+    }
+  },
+
+  'experience-personalization': {
+    category: 'experience',
+    name: 'Personalization Engine',
+    description: 'AI-driven personalized customer experiences',
+    costRange: { min: 30000, max: 150000 },
+    timeframe: { min: 4, max: 12 },
+    expectedROI: { min: 220, max: 550 },
+    paybackPeriod: 11,
+    riskLevel: 'high',
+    industryBenchmarks: {
+      ecommerce: { roi: 480, implementation: 8 },
+      media: { roi: 520, implementation: 6 },
+      financial: { roi: 380, implementation: 10 }
+    },
+    benefits: [
+      '25-45% increase in engagement',
+      'Higher conversion rates',
+      'Better customer segmentation',
+      'Improved product recommendations'
+    ],
+    costs: {
+      platform: 80000,
+      implementation: 40000,
+      training: 20000,
+      optimization: 25000
+    }
+  },
+
+  'experience-feedback': {
+    category: 'experience',
+    name: 'Customer Feedback System',
+    description: 'Comprehensive feedback collection and analysis',
+    costRange: { min: 8000, max: 40000 },
+    timeframe: { min: 2, max: 6 },
+    expectedROI: { min: 250, max: 500 },
+    paybackPeriod: 6,
+    riskLevel: 'low',
+    industryBenchmarks: {
+      services: { roi: 420, implementation: 4 },
+      retail: { roi: 380, implementation: 3 },
+      hospitality: { roi: 450, implementation: 3 }
+    },
+    benefits: [
+      'Better customer insights',
+      'Improved service quality',
+      'Faster issue identification',
+      'Enhanced product development'
+    ],
+    costs: {
+      platform: 18000,
+      implementation: 10000,
+      training: 8000,
+      analysis: 6000
+    }
+  },
+
+  'experience-omnichannel': {
+    category: 'experience',
+    name: 'Omnichannel Experience',
+    description: 'Integrated multi-channel customer experience',
+    costRange: { min: 40000, max: 200000 },
+    timeframe: { min: 6, max: 15 },
+    expectedROI: { min: 180, max: 380 },
+    paybackPeriod: 14,
+    riskLevel: 'high',
+    industryBenchmarks: {
+      retail: { roi: 320, implementation: 10 },
+      financial: { roi: 280, implementation: 12 },
+      telecom: { roi: 350, implementation: 9 }
+    },
+    benefits: [
+      'Seamless customer experience',
+      'Better customer data integration',
+      'Improved conversion rates',
+      'Enhanced brand consistency'
+    ],
+    costs: {
+      integration: 90000,
+      platform: 70000,
+      training: 25000,
+      optimization: 35000
+    }
+  },
+
+  // Data & Analytics scenarios
+  'analytics-warehouse': {
+    category: 'analytics',
+    name: 'Data Warehouse Implementation',
+    description: 'Centralized data storage and analytics infrastructure',
+    costRange: { min: 50000, max: 250000 },
+    timeframe: { min: 6, max: 15 },
+    expectedROI: { min: 150, max: 350 },
+    paybackPeriod: 15,
+    riskLevel: 'high',
+    industryBenchmarks: {
+      enterprise: { roi: 300, implementation: 12 },
+      retail: { roi: 280, implementation: 10 },
+      financial: { roi: 320, implementation: 14 }
+    },
+    benefits: [
+      'Centralized data management',
+      'Better reporting capabilities',
+      'Improved decision making',
+      'Enhanced data quality'
+    ],
+    costs: {
+      infrastructure: 120000,
+      implementation: 70000,
+      training: 30000,
+      maintenance: 35000
+    }
+  },
+
+  'analytics-bi': {
+    category: 'analytics',
+    name: 'Business Intelligence Platform',
+    description: 'Advanced analytics and reporting dashboard',
+    costRange: { min: 25000, max: 120000 },
+    timeframe: { min: 4, max: 10 },
+    expectedROI: { min: 200, max: 450 },
+    paybackPeriod: 10,
+    riskLevel: 'medium',
+    industryBenchmarks: {
+      corporate: { roi: 380, implementation: 7 },
+      manufacturing: { roi: 320, implementation: 8 },
+      services: { roi: 350, implementation: 6 }
+    },
+    benefits: [
+      'Real-time business insights',
+      'Faster decision making',
+      'Better performance tracking',
+      'Improved operational efficiency'
+    ],
+    costs: {
+      platform: 60000,
+      implementation: 35000,
+      training: 15000,
+      customization: 20000
+    }
+  },
+
+  'analytics-predictive': {
+    category: 'analytics',
+    name: 'Predictive Analytics Suite',
+    description: 'Machine learning for forecasting and insights',
+    costRange: { min: 40000, max: 180000 },
+    timeframe: { min: 5, max: 12 },
+    expectedROI: { min: 220, max: 500 },
+    paybackPeriod: 12,
+    riskLevel: 'high',
+    industryBenchmarks: {
+      retail: { roi: 420, implementation: 9 },
+      manufacturing: { roi: 380, implementation: 10 },
+      financial: { roi: 460, implementation: 8 }
+    },
+    benefits: [
+      'Better demand forecasting',
+      'Risk prediction and mitigation',
+      'Optimized resource allocation',
+      'Improved customer insights'
+    ],
+    costs: {
+      platform: 85000,
+      implementation: 50000,
+      training: 25000,
+      modeling: 30000
+    }
+  },
+
+  'analytics-realtime': {
+    category: 'analytics',
+    name: 'Real-time Analytics Dashboard',
+    description: 'Live data monitoring and alerting system',
+    costRange: { min: 20000, max: 80000 },
+    timeframe: { min: 3, max: 8 },
+    expectedROI: { min: 250, max: 450 },
+    paybackPeriod: 8,
+    riskLevel: 'medium',
+    industryBenchmarks: {
+      ecommerce: { roi: 400, implementation: 5 },
+      saas: { roi: 420, implementation: 4 },
+      operations: { roi: 350, implementation: 6 }
+    },
+    benefits: [
+      'Immediate problem detection',
+      'Faster response times',
+      'Better operational monitoring',
+      'Improved customer experience'
+    ],
+    costs: {
+      platform: 40000,
+      setup: 20000,
+      integration: 15000,
+      training: 10000
+    }
+  },
+
+  'analytics-customer': {
+    category: 'analytics',
+    name: 'Customer Analytics Platform',
+    description: 'Advanced customer behavior and lifecycle analysis',
+    costRange: { min: 30000, max: 120000 },
+    timeframe: { min: 4, max: 9 },
+    expectedROI: { min: 200, max: 480 },
+    paybackPeriod: 9,
+    riskLevel: 'medium',
+    industryBenchmarks: {
+      retail: { roi: 420, implementation: 6 },
+      ecommerce: { roi: 460, implementation: 5 },
+      subscription: { roi: 380, implementation: 7 }
+    },
+    benefits: [
+      'Better customer segmentation',
+      'Improved retention strategies',
+      'Higher lifetime value',
+      'Personalized experiences'
+    ],
+    costs: {
+      platform: 55000,
+      implementation: 30000,
+      integration: 20000,
+      training: 15000
+    }
+  },
+
+  'analytics-performance': {
+    category: 'analytics',
+    name: 'Performance Analytics Suite',
+    description: 'Comprehensive business performance measurement',
+    costRange: { min: 15000, max: 70000 },
+    timeframe: { min: 3, max: 7 },
+    expectedROI: { min: 230, max: 420 },
+    paybackPeriod: 7,
+    riskLevel: 'low',
+    industryBenchmarks: {
+      corporate: { roi: 380, implementation: 5 },
+      startup: { roi: 350, implementation: 4 },
+      nonprofit: { roi: 280, implementation: 6 }
+    },
+    benefits: [
+      'Clear KPI tracking',
+      'Better goal alignment',
+      'Improved accountability',
+      'Data-driven decisions'
+    ],
+    costs: {
+      platform: 35000,
+      setup: 15000,
+      training: 12000,
+      customization: 8000
+    }
+  },
+
+  // Sustainability scenarios
+  'sustainability-energy': {
+    category: 'sustainability',
+    name: 'Renewable Energy Transition',
+    description: 'Solar, wind, and green energy infrastructure',
+    costRange: { min: 100000, max: 500000 },
+    timeframe: { min: 12, max: 36 },
+    expectedROI: { min: 150, max: 300 },
+    paybackPeriod: 24,
+    riskLevel: 'medium',
+    industryBenchmarks: {
+      manufacturing: { roi: 250, implementation: 18 },
+      commercial: { roi: 200, implementation: 24 },
+      retail: { roi: 180, implementation: 30 }
+    },
+    benefits: [
+      '40-70% reduction in energy costs',
+      'Carbon footprint reduction',
+      'Energy independence',
+      'Government incentives and tax credits'
+    ],
+    costs: {
+      equipment: 250000,
+      installation: 150000,
+      permits: 30000,
+      maintenance: 70000
+    }
+  },
+
+  'sustainability-waste': {
+    category: 'sustainability',
+    name: 'Waste Reduction Program',
+    description: 'Comprehensive waste management and recycling',
+    costRange: { min: 20000, max: 100000 },
+    timeframe: { min: 6, max: 18 },
+    expectedROI: { min: 180, max: 400 },
+    paybackPeriod: 15,
+    riskLevel: 'low',
+    industryBenchmarks: {
+      manufacturing: { roi: 350, implementation: 12 },
+      retail: { roi: 280, implementation: 9 },
+      hospitality: { roi: 320, implementation: 6 }
+    },
+    benefits: [
+      '30-50% reduction in waste costs',
+      'Improved brand reputation',
+      'Regulatory compliance',
+      'Resource optimization'
+    ],
+    costs: {
+      equipment: 40000,
+      training: 15000,
+      implementation: 25000,
+      ongoing: 20000
+    }
+  },
+
+  'sustainability-carbon': {
+    category: 'sustainability',
+    name: 'Carbon Footprint Reduction',
+    description: 'Comprehensive carbon management and offsetting',
+    costRange: { min: 30000, max: 150000 },
+    timeframe: { min: 8, max: 24 },
+    expectedROI: { min: 160, max: 350 },
+    paybackPeriod: 18,
+    riskLevel: 'medium',
+    industryBenchmarks: {
+      corporate: { roi: 280, implementation: 15 },
+      logistics: { roi: 320, implementation: 12 },
+      energy: { roi: 250, implementation: 18 }
+    },
+    benefits: [
+      'Carbon neutrality achievement',
+      'ESG compliance improvement',
+      'Brand value enhancement',
+      'Cost savings from efficiency'
+    ],
+    costs: {
+      assessment: 25000,
+      implementation: 60000,
+      offsetting: 35000,
+      monitoring: 30000
+    }
+  },
+
+  'sustainability-building': {
+    category: 'sustainability',
+    name: 'Green Building Certification',
+    description: 'LEED/BREEAM sustainable building upgrades',
+    costRange: { min: 80000, max: 400000 },
+    timeframe: { min: 10, max: 30 },
+    expectedROI: { min: 140, max: 280 },
+    paybackPeriod: 20,
+    riskLevel: 'medium',
+    industryBenchmarks: {
+      commercial_real_estate: { roi: 240, implementation: 18 },
+      office: { roi: 200, implementation: 24 },
+      retail: { roi: 180, implementation: 20 }
+    },
+    benefits: [
+      '20-40% reduction in operating costs',
+      'Higher property values',
+      'Better employee productivity',
+      'Tax incentives and rebates'
+    ],
+    costs: {
+      upgrades: 200000,
+      certification: 50000,
+      consulting: 80000,
+      ongoing: 70000
+    }
+  },
+
+  'sustainability-supply': {
+    category: 'sustainability',
+    name: 'Sustainable Supply Chain',
+    description: 'Green supplier network and logistics optimization',
+    costRange: { min: 40000, max: 200000 },
+    timeframe: { min: 8, max: 20 },
+    expectedROI: { min: 170, max: 380 },
+    paybackPeriod: 16,
+    riskLevel: 'medium',
+    industryBenchmarks: {
+      manufacturing: { roi: 320, implementation: 12 },
+      retail: { roi: 280, implementation: 15 },
+      logistics: { roi: 350, implementation: 10 }
+    },
+    benefits: [
+      'Reduced transportation costs',
+      'Better supplier relationships',
+      'Risk mitigation',
+      'Brand reputation improvement'
+    ],
+    costs: {
+      assessment: 30000,
+      implementation: 80000,
+      training: 40000,
+      monitoring: 50000
+    }
+  },
+
+  'sustainability-reporting': {
+    category: 'sustainability',
+    name: 'ESG Reporting System',
+    description: 'Environmental, Social, Governance tracking and reporting',
+    costRange: { min: 25000, max: 100000 },
+    timeframe: { min: 4, max: 12 },
+    expectedROI: { min: 200, max: 400 },
+    paybackPeriod: 12,
+    riskLevel: 'low',
+    industryBenchmarks: {
+      public_company: { roi: 350, implementation: 8 },
+      large_enterprise: { roi: 300, implementation: 10 },
+      financial: { roi: 380, implementation: 6 }
+    },
+    benefits: [
+      'Improved investor relations',
+      'Better regulatory compliance',
+      'Enhanced brand reputation',
+      'Access to ESG funding'
+    ],
+    costs: {
+      platform: 45000,
+      implementation: 25000,
+      training: 15000,
+      ongoing: 15000
     }
   }
 };
