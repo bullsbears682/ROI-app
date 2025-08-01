@@ -1982,64 +1982,8 @@ export const scenarioResearch = {
       paybackPeriod: "6-15 months"
     },
     methodology: "Workflow Automation ROI Study 2023 and RPA Implementation Performance Report"
-  },
-  'saas-analytics': {
-    sources: ['tableau', 'powerbi', 'looker'],
-    caseStudies: [
-      {
-        company: "Retail Chain",
-        industry: "Retail",
-        investment: 95000,
-        roi: 350,
-        timeframe: 10,
-        description: "Business intelligence platform, data-driven decision making and inventory optimization"
-      },
-      {
-        company: "Healthcare System",
-        industry: "Healthcare",
-        investment: 120000,
-        roi: 320,
-        timeframe: 12,
-        description: "Analytics dashboard implementation, improved patient outcomes and operational efficiency"
-      }
-    ],
-    benchmarks: {
-      averageROI: "250-400%",
-      implementationTime: "6-15 months",
-      paybackPeriod: "8-18 months"
-    },
-    methodology: "Business Intelligence Platform ROI Study 2023 and Analytics Implementation Report"
-  },
-  'fintech-lending': {
-    sources: ['plaid', 'stripe', 'lending'],
-    caseStudies: [
-      {
-        company: "Community Bank",
-        industry: "Banking",
-        investment: 180000,
-        roi: 320,
-        timeframe: 12,
-        description: "Digital lending platform, 50% faster loan processing and reduced operational costs"
-      },
-      {
-        company: "Credit Union",
-        industry: "Financial Services",
-        investment: 220000,
-        roi: 280,
-        timeframe: 15,
-        description: "Automated underwriting system, improved risk assessment and customer experience"
-      }
-    ],
-    benchmarks: {
-      averageROI: "250-400%",
-      implementationTime: "8-18 months",
-      paybackPeriod: "10-20 months"
-    },
-    methodology: "Digital Lending Platform ROI Study 2023 and FinTech Implementation Analysis"
   }
 };
-
-
 
 
 
