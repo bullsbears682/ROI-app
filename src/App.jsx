@@ -313,324 +313,852 @@ function App() {
   }
 
   return (
-    <div className="app">
-      {/* Professional Header */}
-      <header className="header">
-        <div className="header-content">
-          <div className="logo">
-            <svg width="32" height="32" viewBox="0 0 32 32">
-              <circle cx="16" cy="16" r="15" fill="url(#grad1)" stroke="none"/>
-              <text x="16" y="21" textAnchor="middle" fill="white" fontFamily="Arial" fontSize="12" fontWeight="bold">C</text>
+    <>
+      <style>{`
+        /* Mobile-First App Styles with Native Feel */
+        * {
+          box-sizing: border-box;
+        }
+
+        body {
+          margin: 0;
+          padding: 0;
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+          background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+          min-height: 100vh;
+          overflow-x: hidden;
+        }
+
+        .app {
+          min-height: 100vh;
+          display: flex;
+          flex-direction: column;
+        }
+
+        /* Loading Animation */
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        /* Touch-friendly Interactive Elements */
+        button, select, input {
+          -webkit-tap-highlight-color: transparent;
+          touch-action: manipulation;
+        }
+
+        /* iOS Safari Fixes */
+        input[type="number"] {
+          -webkit-appearance: none;
+          -moz-appearance: textfield;
+        }
+
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+          -webkit-appearance: none;
+          margin: 0;
+        }
+
+        select {
+          -webkit-appearance: none;
+          -moz-appearance: none;
+          appearance: none;
+          background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+          background-repeat: no-repeat;
+          background-position: right 12px center;
+          background-size: 16px;
+          padding-right: 40px;
+        }
+
+        /* Native App Scrolling */
+        main {
+          -webkit-overflow-scrolling: touch;
+          scroll-behavior: smooth;
+        }
+
+        /* Safe Area Support for iPhone X+ */
+        @supports (padding: max(0px)) {
+          header {
+            padding-left: max(16px, env(safe-area-inset-left));
+            padding-right: max(16px, env(safe-area-inset-right));
+            padding-top: max(12px, env(safe-area-inset-top));
+          }
+          
+          main {
+            padding-left: max(16px, env(safe-area-inset-left));
+            padding-right: max(16px, env(safe-area-inset-right));
+            padding-bottom: max(20px, env(safe-area-inset-bottom));
+          }
+        }
+
+        /* Reduced motion support */
+        @media (prefers-reduced-motion: reduce) {
+          * {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+          }
+        }
+      `}</style>
+      <div className="app">
+        {/* Enhanced App-like Header with Mobile Optimization */}
+      <header style={{
+        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        color: 'white',
+        padding: window.innerWidth <= 768 ? '12px 16px' : '20px 40px',
+        boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
+        position: 'sticky',
+        top: '0',
+        zIndex: '1000',
+        backdropFilter: 'blur(10px)'
+      }}>
+        <div style={{
+          maxWidth: '1200px',
+          margin: '0 auto',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          flexWrap: window.innerWidth <= 768 ? 'wrap' : 'nowrap'
+        }}>
+          {/* Logo Section - Mobile Optimized */}
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            fontSize: window.innerWidth <= 768 ? '1.3em' : '1.5em',
+            fontWeight: '700',
+            marginBottom: window.innerWidth <= 768 ? '12px' : '0',
+            width: window.innerWidth <= 768 ? '100%' : 'auto',
+            justifyContent: window.innerWidth <= 768 ? 'center' : 'flex-start'
+          }}>
+            <svg width={window.innerWidth <= 768 ? "28" : "32"} height={window.innerWidth <= 768 ? "28" : "32"} viewBox="0 0 100 100" style={{marginRight: '12px'}}>
               <defs>
-                <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#667eea"/>
-                  <stop offset="100%" stopColor="#764ba2"/>
+                <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" style={{stopColor: '#fbbf24'}} />
+                  <stop offset="100%" style={{stopColor: '#f59e0b'}} />
                 </linearGradient>
               </defs>
+              <circle cx="50" cy="50" r="45" fill="url(#logoGradient)" stroke="white" strokeWidth="3"/>
+              <path d="M30 35 L45 50 L70 25" stroke="white" strokeWidth="4" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M30 65 L50 65 L70 65" stroke="white" strokeWidth="4" fill="none" strokeLinecap="round"/>
             </svg>
-            <div>
-              <h1>Catalyst</h1>
-              <span className="logo-tagline">Professional ROI Calculator</span>
-              {/* API Status Indicator */}
-              {config.FEATURES.API_INTEGRATION && (
-                <div style={{fontSize: '10px', marginTop: '2px'}}>
-                  <span style={{
-                    color: apiStatus === 'connected' ? '#10b981' : 
-                          apiStatus === 'disconnected' ? '#ef4444' : 
-                          apiStatus === 'disabled' ? '#9ca3af' : '#f59e0b',
-                    fontWeight: '600'
-                  }}>
-                    {apiStatus === 'connected' ? '🟢 API Connected' : 
-                     apiStatus === 'disconnected' ? '🔴 API Offline' : 
-                     apiStatus === 'disabled' ? '⚪ Local Mode' : '🟡 Checking API'}
-                  </span>
-                </div>
-              )}
-            </div>
+            Catalyst
           </div>
-          
-          <nav className="nav">
-            <button 
-              className={`nav-link ${currentPage === 'calculator' ? 'active' : ''}`}
-              onClick={() => setCurrentPage('calculator')}
-            >
-              Calculator
-            </button>
-            <button 
-              className={`nav-link ${currentPage === 'scenarios' ? 'active' : ''}`}
-              onClick={() => {
-                setCurrentPage('scenarios')
-                setScenarioViewCategory(null)
+
+          {/* API Status Indicator - Mobile Optimized */}
+          <div style={{
+            fontSize: window.innerWidth <= 768 ? '0.8em' : '0.9em',
+            opacity: '0.9',
+            background: 'rgba(255,255,255,0.15)',
+            padding: window.innerWidth <= 768 ? '6px 12px' : '8px 16px',
+            borderRadius: '20px',
+            display: 'flex',
+            alignItems: 'center',
+            backdropFilter: 'blur(5px)',
+            border: '1px solid rgba(255,255,255,0.2)',
+            order: window.innerWidth <= 768 ? '-1' : '0',
+            position: window.innerWidth <= 768 ? 'absolute' : 'static',
+            top: window.innerWidth <= 768 ? '12px' : 'auto',
+            right: window.innerWidth <= 768 ? '16px' : 'auto'
+          }}>
+            {config.FEATURES.API_INTEGRATION && (
+              apiStatus === 'connected' ? '🟢 API Connected' :
+              apiStatus === 'disconnected' ? '🔴 API Offline' :
+              apiStatus === 'checking' ? '🟡 Checking API' :
+              '⚪ Local Mode'
+            )}
+          </div>
+        </div>
+
+        {/* Mobile-First Navigation */}
+        <nav style={{
+          display: 'flex',
+          justifyContent: window.innerWidth <= 768 ? 'space-around' : 'center',
+          gap: window.innerWidth <= 768 ? '8px' : '24px',
+          marginTop: window.innerWidth <= 768 ? '16px' : '20px',
+          flexWrap: 'wrap',
+          padding: window.innerWidth <= 768 ? '0' : '0 20px'
+        }}>
+          {[
+            { key: 'calculator', label: '🧮 Calculator', icon: '🧮' },
+            { key: 'scenarios', label: '📊 Scenarios', icon: '📊' },
+            ...(config.FEATURES.API_INTEGRATION ? [{ key: 'api', label: '🔗 API', icon: '🔗' }] : []),
+            { key: 'about', label: '💡 About', icon: '💡' }
+          ].map(nav => (
+            <button
+              key={nav.key}
+              onClick={() => setCurrentPage(nav.key)}
+              style={{
+                background: currentPage === nav.key 
+                  ? 'rgba(255,255,255,0.25)' 
+                  : 'rgba(255,255,255,0.1)',
+                color: 'white',
+                border: currentPage === nav.key 
+                  ? '2px solid rgba(255,255,255,0.4)' 
+                  : '2px solid transparent',
+                padding: window.innerWidth <= 768 ? '10px 16px' : '12px 24px',
+                borderRadius: '25px',
+                cursor: 'pointer',
+                fontSize: window.innerWidth <= 768 ? '0.85em' : '0.95em',
+                fontWeight: '600',
+                transition: 'all 0.3s ease',
+                backdropFilter: 'blur(5px)',
+                minWidth: window.innerWidth <= 768 ? '80px' : '120px',
+                textAlign: 'center',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: window.innerWidth <= 768 ? '4px' : '8px',
+                boxShadow: currentPage === nav.key 
+                  ? '0 4px 15px rgba(255,255,255,0.2)' 
+                  : 'none',
+                transform: currentPage === nav.key ? 'translateY(-2px)' : 'translateY(0)',
+                // Mobile touch optimization
+                WebkitTapHighlightColor: 'transparent',
+                touchAction: 'manipulation'
+              }}
+              onMouseEnter={(e) => {
+                if (currentPage !== nav.key) {
+                  e.target.style.background = 'rgba(255,255,255,0.2)'
+                  e.target.style.transform = 'translateY(-1px)'
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (currentPage !== nav.key) {
+                  e.target.style.background = 'rgba(255,255,255,0.1)'
+                  e.target.style.transform = 'translateY(0)'
+                }
               }}
             >
-              Scenarios
+              {window.innerWidth <= 480 ? nav.icon : nav.label}
             </button>
-            <button 
-              className={`nav-link ${currentPage === 'about' ? 'active' : ''}`}
-              onClick={() => setCurrentPage('about')}
-            >
-              About
-            </button>
-            {config.FEATURES.API_INTEGRATION && (
-              <button 
-                className={`nav-link ${currentPage === 'api' ? 'active' : ''}`}
-                onClick={() => setCurrentPage('api')}
-              >
-                API
-              </button>
-            )}
-          </nav>
-        </div>
+          ))}
+        </nav>
       </header>
 
-      <main className="main-content">
-        {currentPage === 'calculator' && (
-          <>
-            {/* Enhanced Calculator Section */}
-            <div className="calculator-section">
-              <div className="card">
-                <h2>🚀 Professional ROI Calculator</h2>
-                <p>Calculate returns across 85+ business scenarios with real market data</p>
-                
-                {/* Business Category */}
-                <div className="form-group">
-                  <label className="form-label">📊 Business Category</label>
-                  <select 
-                    className="form-select"
-                    value={selectedCategory}
-                    onChange={(e) => handleCategoryChange(e.target.value)}
-                  >
-                    {Object.values(roiCategories).map(category => (
-                      <option key={category.id} value={category.id}>
-                        {category.icon} {category.name}
-                      </option>
-                    ))}
-                  </select>
-                  <small className="form-hint">
-                    {getCategoryScenarios().length} scenarios available in this category
-                  </small>
-                </div>
+      {/* App-like Main Container with Mobile Optimization */}
+      <main style={{
+        maxWidth: '1200px',
+        margin: '0 auto',
+        padding: window.innerWidth <= 768 ? '16px' : '40px',
+        minHeight: 'calc(100vh - 200px)',
+        background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)',
+        position: 'relative'
+      }}>
 
-                {/* Scenario Selection */}
-                <div className="form-group">
-                  <label className="form-label">🎯 Specific Scenario</label>
-                  <select 
-                    className="form-select"
+        {/* Mobile-Optimized Calculator Page */}
+        {currentPage === 'calculator' && (
+          <div className="card" style={{
+            background: 'rgba(255,255,255,0.95)',
+            backdropFilter: 'blur(20px)',
+            border: '1px solid rgba(255,255,255,0.2)',
+            borderRadius: window.innerWidth <= 768 ? '16px' : '20px',
+            padding: window.innerWidth <= 768 ? '20px' : '40px',
+            boxShadow: '0 20px 40px rgba(0,0,0,0.1)',
+            margin: window.innerWidth <= 768 ? '0' : '0 auto'
+          }}>
+            <div style={{textAlign: 'center', marginBottom: window.innerWidth <= 768 ? '24px' : '32px'}}>
+              <h1 style={{
+                fontSize: window.innerWidth <= 768 ? '1.8em' : '2.5em',
+                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                marginBottom: '12px',
+                fontWeight: '700'
+              }}>
+                Professional ROI Calculator
+              </h1>
+              <p style={{
+                color: '#64748b',
+                fontSize: window.innerWidth <= 768 ? '1em' : '1.1em',
+                maxWidth: '600px',
+                margin: '0 auto',
+                lineHeight: '1.6'
+              }}>
+                Calculate investment returns with professional-grade analysis and industry benchmarks
+              </p>
+            </div>
+
+            {/* Mobile-First Form Layout */}
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: window.innerWidth <= 768 ? '1fr' : 'repeat(auto-fit, minmax(300px, 1fr))',
+              gap: window.innerWidth <= 768 ? '20px' : '32px',
+              marginBottom: '32px'
+            }}>
+              
+              {/* Investment Amount - Mobile Optimized */}
+              <div>
+                <label style={{
+                  display: 'block',
+                  marginBottom: '8px',
+                  fontWeight: '600',
+                  color: '#374151',
+                  fontSize: window.innerWidth <= 768 ? '0.95em' : '1em'
+                }}>
+                  💰 Investment Amount ({currency})
+                </label>
+                <input
+                  type="number"
+                  value={investment}
+                  onChange={(e) => setInvestment(e.target.value)}
+                  placeholder="Enter amount"
+                  style={{
+                    width: '100%',
+                    padding: window.innerWidth <= 768 ? '14px 16px' : '16px 20px',
+                    border: '2px solid #e2e8f0',
+                    borderRadius: '12px',
+                    fontSize: window.innerWidth <= 768 ? '16px' : '18px', // Prevents zoom on iOS
+                    background: 'rgba(255,255,255,0.8)',
+                    transition: 'all 0.3s ease',
+                    boxSizing: 'border-box',
+                    // Mobile touch optimization
+                    WebkitAppearance: 'none',
+                    touchAction: 'manipulation'
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = '#667eea'
+                    e.target.style.boxShadow = '0 0 0 3px rgba(102, 126, 234, 0.1)'
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = '#e2e8f0'
+                    e.target.style.boxShadow = 'none'
+                  }}
+                />
+              </div>
+
+              {/* Business Category - Mobile Optimized */}
+              <div>
+                <label style={{
+                  display: 'block',
+                  marginBottom: '8px',
+                  fontWeight: '600',
+                  color: '#374151',
+                  fontSize: window.innerWidth <= 768 ? '0.95em' : '1em'
+                }}>
+                  🏢 Business Category
+                </label>
+                <select
+                  value={selectedCategory}
+                  onChange={(e) => {
+                    setSelectedCategory(e.target.value)
+                    setSelectedScenario('')
+                  }}
+                  style={{
+                    width: '100%',
+                    padding: window.innerWidth <= 768 ? '14px 16px' : '16px 20px',
+                    border: '2px solid #e2e8f0',
+                    borderRadius: '12px',
+                    fontSize: window.innerWidth <= 768 ? '16px' : '18px',
+                    background: 'rgba(255,255,255,0.8)',
+                    cursor: 'pointer',
+                    transition: 'all 0.3s ease',
+                    boxSizing: 'border-box',
+                    WebkitAppearance: 'none',
+                    appearance: 'none'
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = '#667eea'
+                    e.target.style.boxShadow = '0 0 0 3px rgba(102, 126, 234, 0.1)'
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = '#e2e8f0'
+                    e.target.style.boxShadow = 'none'
+                  }}
+                >
+                  <option value="">Select a category</option>
+                  {Object.entries(roiCategories).map(([key, category]) => (
+                    <option key={key} value={key}>{category.name}</option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Specific Scenario - Mobile Optimized */}
+              {selectedCategory && (
+                <div>
+                  <label style={{
+                    display: 'block',
+                    marginBottom: '8px',
+                    fontWeight: '600',
+                    color: '#374151',
+                    fontSize: window.innerWidth <= 768 ? '0.95em' : '1em'
+                  }}>
+                    🎯 Specific Scenario
+                  </label>
+                  <select
                     value={selectedScenario}
                     onChange={(e) => setSelectedScenario(e.target.value)}
+                    style={{
+                      width: '100%',
+                      padding: window.innerWidth <= 768 ? '14px 16px' : '16px 20px',
+                      border: '2px solid #e2e8f0',
+                      borderRadius: '12px',
+                      fontSize: window.innerWidth <= 768 ? '16px' : '18px',
+                      background: 'rgba(255,255,255,0.8)',
+                      cursor: 'pointer',
+                      transition: 'all 0.3s ease',
+                      boxSizing: 'border-box',
+                      WebkitAppearance: 'none',
+                      appearance: 'none'
+                    }}
+                    onFocus={(e) => {
+                      e.target.style.borderColor = '#667eea'
+                      e.target.style.boxShadow = '0 0 0 3px rgba(102, 126, 234, 0.1)'
+                    }}
+                    onBlur={(e) => {
+                      e.target.style.borderColor = '#e2e8f0'
+                      e.target.style.boxShadow = 'none'
+                    }}
                   >
-                    {getCategoryScenarios().map(scenario => (
+                    <option value="">Select a scenario</option>
+                    {roiCategories[selectedCategory]?.scenarios.map((scenario, index) => (
                       <option key={scenario.id} value={scenario.id}>
                         {scenario.description}
                       </option>
                     ))}
                   </select>
                 </div>
+              )}
 
-                {/* Investment Amount */}
-                <div className="form-group">
-                  <label className="form-label">💰 Investment Amount</label>
-                  <div style={{display: 'flex', gap: '10px'}}>
-                    <input 
-                      type="number"
-                      className="form-input"
-                      value={investment}
-                      onChange={(e) => setInvestment(Number(e.target.value))}
-                      placeholder="25000"
-                      min="1000"
-                      style={{flex: 1}}
-                    />
-                    <select 
-                      className="form-select"
-                      value={currency}
-                      onChange={(e) => setCurrency(e.target.value)}
-                      style={{maxWidth: '100px'}}
-                    >
-                      <option value="USD">USD</option>
-                      <option value="EUR">EUR</option>
-                      <option value="GBP">GBP</option>
-                      <option value="CAD">CAD</option>
-                      <option value="AUD">AUD</option>
-                    </select>
-                  </div>
-                </div>
-
-                {/* Timeframe */}
-                <div className="form-group">
-                  <label className="form-label">⏱️ Implementation Timeframe</label>
-                  <input 
-                    type="number"
-                    className="form-input"
-                    value={timeframe}
-                    onChange={(e) => setTimeframe(Number(e.target.value))}
-                    min="1"
-                    max="60"
-                  />
-                  <small className="form-hint">Months for full implementation and ROI realization</small>
-                </div>
-
+              {/* Additional Parameters - Mobile Grid */}
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: window.innerWidth <= 768 ? '1fr' : 'repeat(3, 1fr)',
+                gap: window.innerWidth <= 768 ? '16px' : '20px',
+                gridColumn: window.innerWidth <= 768 ? '1' : '1 / -1'
+              }}>
+                
                 {/* Industry */}
-                <div className="form-group">
-                  <label className="form-label">🏢 Industry Sector</label>
-                  <select 
-                    className="form-select"
+                <div>
+                  <label style={{
+                    display: 'block',
+                    marginBottom: '6px',
+                    fontWeight: '600',
+                    color: '#374151',
+                    fontSize: '0.9em'
+                  }}>
+                    🏭 Industry
+                  </label>
+                  <select
                     value={industry}
                     onChange={(e) => setIndustry(e.target.value)}
+                    style={{
+                      width: '100%',
+                      padding: '12px 14px',
+                      border: '2px solid #e2e8f0',
+                      borderRadius: '10px',
+                      fontSize: '14px',
+                      background: 'rgba(255,255,255,0.8)',
+                      cursor: 'pointer'
+                    }}
                   >
-                    <option value="technology">Technology & Software</option>
-                    <option value="healthcare">Healthcare & Medical</option>
-                    <option value="finance">Financial Services</option>
-                    <option value="retail">Retail & E-commerce</option>
+                    <option value="technology">Technology</option>
+                    <option value="healthcare">Healthcare</option>
+                    <option value="finance">Finance</option>
+                    <option value="retail">Retail</option>
                     <option value="manufacturing">Manufacturing</option>
-                    <option value="education">Education</option>
-                    <option value="real-estate">Real Estate</option>
-                    <option value="professional-services">Professional Services</option>
-                    <option value="hospitality">Hospitality & Tourism</option>
-                    <option value="transportation">Transportation & Logistics</option>
+                    <option value="services">Services</option>
                   </select>
                 </div>
 
                 {/* Company Size */}
-                <div className="form-group">
-                  <label className="form-label">👥 Organization Size</label>
-                  <select 
-                    className="form-select"
+                <div>
+                  <label style={{
+                    display: 'block',
+                    marginBottom: '6px',
+                    fontWeight: '600',
+                    color: '#374151',
+                    fontSize: '0.9em'
+                  }}>
+                    🏢 Company Size
+                  </label>
+                  <select
                     value={companySize}
                     onChange={(e) => setCompanySize(e.target.value)}
+                    style={{
+                      width: '100%',
+                      padding: '12px 14px',
+                      border: '2px solid #e2e8f0',
+                      borderRadius: '10px',
+                      fontSize: '14px',
+                      background: 'rgba(255,255,255,0.8)',
+                      cursor: 'pointer'
+                    }}
                   >
-                    <option value="startup">Startup (1-10 employees)</option>
-                    <option value="small">Small Business (11-50 employees)</option>
-                    <option value="medium">Medium Business (51-200 employees)</option>
-                    <option value="large">Large Enterprise (201-1000 employees)</option>
-                    <option value="enterprise">Enterprise (1000+ employees)</option>
+                    <option value="small">Small (1-50)</option>
+                    <option value="medium">Medium (51-500)</option>
+                    <option value="large">Large (500+)</option>
                   </select>
                 </div>
 
-                {/* Rich Scenario Preview */}
-                {roiScenarios[selectedScenario] && (
-                  <div style={{
-                    background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)',
-                    border: '1px solid #cbd5e0',
-                    borderRadius: '12px',
-                    padding: '24px',
-                    margin: '24px 0'
-                  }}>
-                    <h4>📋 Scenario Analysis</h4>
-                    
-                    <div style={{marginBottom: '16px'}}>
-                      <strong>Description:</strong> {roiScenarios[selectedScenario].description}
-                    </div>
-
-                    <div style={{
-                      display: 'grid',
-                      gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
-                      gap: '16px',
-                      marginBottom: '16px'
-                    }}>
-                      <div>
-                        <strong>Expected ROI Range:</strong><br/>
-                        <span style={{color: '#059669', fontWeight: '600', fontSize: '1.1em'}}>
-                          {roiScenarios[selectedScenario].expectedROI.min}% - {roiScenarios[selectedScenario].expectedROI.max}%
-                        </span>
-                      </div>
-                      
-                      <div>
-                        <strong>Risk Assessment:</strong><br/>
-                        <span style={{
-                          background: roiScenarios[selectedScenario].riskLevel === 'low' ? '#d1fae5' : 
-                                     roiScenarios[selectedScenario].riskLevel === 'medium' ? '#fef3c7' : '#fee2e2',
-                          color: roiScenarios[selectedScenario].riskLevel === 'low' ? '#065f46' : 
-                                 roiScenarios[selectedScenario].riskLevel === 'medium' ? '#92400e' : '#991b1b',
-                          padding: '4px 12px',
-                          borderRadius: '6px',
-                          fontSize: '0.9em',
-                          fontWeight: '600',
-                          textTransform: 'uppercase'
-                        }}>
-                          {roiScenarios[selectedScenario].riskLevel} RISK
-                        </span>
-                      </div>
-
-                      <div>
-                        <strong>Investment Range:</strong><br/>
-                        <span style={{color: '#1e40af', fontWeight: '600'}}>
-                          {formatCurrency(roiScenarios[selectedScenario].costRange?.min || Math.round(investment * 0.8))} - {formatCurrency(roiScenarios[selectedScenario].costRange?.max || Math.round(investment * 1.2))}
-                        </span>
-                      </div>
-                    </div>
-
-                    {roiScenarios[selectedScenario].benefits && roiScenarios[selectedScenario].benefits.length > 0 && (
-                      <div>
-                        <strong>Key Strategic Benefits:</strong>
-                        <div style={{
-                          display: 'grid',
-                          gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-                          gap: '8px',
-                          marginTop: '8px'
-                        }}>
-                          {roiScenarios[selectedScenario].benefits.slice(0, 6).map((benefit, index) => (
-                            <div key={index} style={{
-                              background: '#e0f2fe',
-                              color: '#0c4a6e',
-                              padding: '8px 12px',
-                              borderRadius: '6px',
-                              fontSize: '0.9em',
-                              display: 'flex',
-                              alignItems: 'center',
-                              gap: '6px'
-                            }}>
-                              <span style={{color: '#059669'}}>✓</span>
-                              {benefit}
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                )}
-
-                {/* Enhanced Calculate Button */}
-                <button 
-                  className="btn btn-primary"
-                  onClick={calculateROI}
-                  disabled={!investment || investment < 1000 || isCalculating}
-                  style={{
-                    width: '100%',
-                    padding: '16px',
-                    fontSize: '1.1em',
+                {/* Timeframe */}
+                <div>
+                  <label style={{
+                    display: 'block',
+                    marginBottom: '6px',
                     fontWeight: '600',
-                    marginTop: '24px',
-                    opacity: (!investment || investment < 1000 || isCalculating) ? 0.6 : 1,
-                    cursor: (!investment || investment < 1000 || isCalculating) ? 'not-allowed' : 'pointer'
-                  }}
-                >
-                  {isCalculating ? (
-                    <>⏳ Calculating Professional Analysis...</>
-                  ) : (!investment || investment < 1000) ? (
-                    <>🚫 Calculate ROI (Minimum $1,000 required)</>
-                  ) : (
-                    <>🧮 Calculate Professional ROI Analysis</>
-                  )}
-                </button>
-
-                {/* Data Source Indicator */}
-                <div style={{textAlign: 'center', marginTop: '12px', fontSize: '0.85em', color: '#64748b'}}>
-                  {config.FEATURES.API_INTEGRATION ? (
-                    apiStatus === 'connected' ? (
-                      <span>🔗 Using professional API calculations</span>
-                    ) : apiStatus === 'disconnected' ? (
-                      <span>💻 Using local calculation engine (API offline)</span>
-                    ) : apiStatus === 'disabled' ? (
-                      <span>💻 Using local calculation engine</span>
-                    ) : (
-                      <span>⏳ Checking API connection...</span>
-                    )
-                  ) : (
-                    <span>💻 Using local calculation engine</span>
-                  )}
+                    color: '#374151',
+                    fontSize: '0.9em'
+                  }}>
+                    ⏱️ Timeframe (months)
+                  </label>
+                  <select
+                    value={timeframe}
+                    onChange={(e) => setTimeframe(parseInt(e.target.value))}
+                    style={{
+                      width: '100%',
+                      padding: '12px 14px',
+                      border: '2px solid #e2e8f0',
+                      borderRadius: '10px',
+                      fontSize: '14px',
+                      background: 'rgba(255,255,255,0.8)',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    <option value={6}>6 months</option>
+                    <option value={12}>12 months</option>
+                    <option value={18}>18 months</option>
+                    <option value={24}>24 months</option>
+                    <option value={36}>36 months</option>
+                  </select>
                 </div>
               </div>
             </div>
+
+            {/* Mobile-Optimized Calculate Button */}
+            <div style={{textAlign: 'center', marginBottom: '24px'}}>
+              <button
+                onClick={calculateROI}
+                disabled={!investment || !selectedScenario || isCalculating}
+                className="btn"
+                style={{
+                  background: (!investment || !selectedScenario || isCalculating) 
+                    ? '#9ca3af' 
+                    : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                  color: 'white',
+                  border: 'none',
+                  padding: window.innerWidth <= 768 ? '16px 32px' : '20px 48px',
+                  borderRadius: '50px',
+                  fontSize: window.innerWidth <= 768 ? '1.1em' : '1.3em',
+                  fontWeight: '700',
+                  cursor: (!investment || !selectedScenario || isCalculating) ? 'not-allowed' : 'pointer',
+                  transition: 'all 0.3s ease',
+                  boxShadow: (!investment || !selectedScenario || isCalculating) 
+                    ? 'none' 
+                    : '0 10px 30px rgba(102, 126, 234, 0.3)',
+                  transform: (!investment || !selectedScenario || isCalculating) 
+                    ? 'none' 
+                    : 'translateY(-2px)',
+                  minWidth: window.innerWidth <= 768 ? '200px' : '250px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '12px',
+                  margin: '0 auto',
+                  // Mobile touch optimization
+                  WebkitTapHighlightColor: 'transparent',
+                  touchAction: 'manipulation'
+                }}
+                onMouseEnter={(e) => {
+                  if (!(!investment || !selectedScenario || isCalculating)) {
+                    e.target.style.transform = 'translateY(-4px)'
+                    e.target.style.boxShadow = '0 15px 40px rgba(102, 126, 234, 0.4)'
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!(!investment || !selectedScenario || isCalculating)) {
+                    e.target.style.transform = 'translateY(-2px)'
+                    e.target.style.boxShadow = '0 10px 30px rgba(102, 126, 234, 0.3)'
+                  }
+                }}
+              >
+                {isCalculating ? (
+                  <>
+                    <div style={{
+                      width: '20px',
+                      height: '20px',
+                      border: '2px solid rgba(255,255,255,0.3)',
+                      borderTop: '2px solid white',
+                      borderRadius: '50%',
+                      animation: 'spin 1s linear infinite'
+                    }}></div>
+                    Calculating...
+                  </>
+                ) : (
+                  <>
+                    🧮 Calculate ROI
+                  </>
+                )}
+              </button>
+
+                             {/* Data Source Indicator - Mobile Optimized */}
+               <div style={{
+                 marginTop: '16px',
+                 fontSize: window.innerWidth <= 768 ? '0.8em' : '0.9em',
+                 color: '#64748b',
+                 background: 'rgba(102, 126, 234, 0.1)',
+                 padding: '8px 16px',
+                 borderRadius: '20px',
+                 display: 'inline-block'
+               }}>
+                 {config.FEATURES.API_INTEGRATION && apiStatus === 'connected' 
+                   ? '🔗 API-Powered Analysis' 
+                   : '💻 Local Calculation Engine'}
+               </div>
+             </div>
+
+             {/* Mobile-Optimized Results Display */}
+             {results && (
+               <div style={{
+                 background: 'rgba(255,255,255,0.95)',
+                 backdropFilter: 'blur(20px)',
+                 borderRadius: window.innerWidth <= 768 ? '16px' : '20px',
+                 padding: window.innerWidth <= 768 ? '20px' : '32px',
+                 marginTop: '24px',
+                 border: '1px solid rgba(255,255,255,0.2)',
+                 boxShadow: '0 20px 40px rgba(0,0,0,0.1)',
+                 animation: 'fadeInUp 0.6s ease-out'
+               }}>
+                 
+                 {/* Results Header - Mobile Optimized */}
+                 <div style={{
+                   textAlign: 'center',
+                   marginBottom: window.innerWidth <= 768 ? '20px' : '24px',
+                   borderBottom: '1px solid #e2e8f0',
+                   paddingBottom: window.innerWidth <= 768 ? '16px' : '20px'
+                 }}>
+                   <h2 style={{
+                     fontSize: window.innerWidth <= 768 ? '1.4em' : '1.8em',
+                     background: 'linear-gradient(135deg, #059669 0%, #10b981 100%)',
+                     WebkitBackgroundClip: 'text',
+                     WebkitTextFillColor: 'transparent',
+                     marginBottom: '8px',
+                     fontWeight: '700'
+                   }}>
+                     📊 ROI Analysis Results
+                   </h2>
+                   <p style={{
+                     color: '#64748b',
+                     fontSize: window.innerWidth <= 768 ? '0.9em' : '1em',
+                     margin: '0'
+                   }}>
+                     Professional analysis for {results.scenarioName}
+                   </p>
+                   
+                   {/* API Tag for Mobile */}
+                   {results.marketData?.apiSource && (
+                     <div style={{
+                       display: 'inline-block',
+                       background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)',
+                       color: 'white',
+                       padding: '4px 12px',
+                       borderRadius: '12px',
+                       fontSize: '0.8em',
+                       fontWeight: '600',
+                       marginTop: '8px'
+                     }}>
+                       🔗 API Powered • ID: {results.marketData.calculationId?.slice(0, 8)}
+                     </div>
+                   )}
+                 </div>
+
+                 {/* Key Metrics Grid - Mobile First */}
+                 <div style={{
+                   display: 'grid',
+                   gridTemplateColumns: window.innerWidth <= 480 
+                     ? '1fr' 
+                     : window.innerWidth <= 768 
+                       ? 'repeat(2, 1fr)' 
+                       : 'repeat(auto-fit, minmax(200px, 1fr))',
+                   gap: window.innerWidth <= 768 ? '12px' : '20px',
+                   marginBottom: '24px'
+                 }}>
+                   
+                   {/* Total ROI */}
+                   <div style={{
+                     background: 'linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%)',
+                     border: '1px solid #10b981',
+                     borderRadius: '12px',
+                     padding: window.innerWidth <= 768 ? '16px' : '20px',
+                     textAlign: 'center'
+                   }}>
+                     <div style={{
+                       fontSize: window.innerWidth <= 768 ? '1.8em' : '2.2em',
+                       fontWeight: '700',
+                       color: '#059669',
+                       marginBottom: '4px'
+                     }}>
+                       {results.roiPercentage}%
+                     </div>
+                     <div style={{
+                       fontSize: window.innerWidth <= 768 ? '0.85em' : '0.9em',
+                       color: '#065f46',
+                       fontWeight: '600'
+                     }}>
+                       Total ROI
+                     </div>
+                   </div>
+
+                   {/* Expected Returns */}
+                   <div style={{
+                     background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
+                     border: '1px solid #e2e8f0',
+                     borderRadius: '12px',
+                     padding: window.innerWidth <= 768 ? '16px' : '20px',
+                     textAlign: 'center'
+                   }}>
+                     <div style={{
+                       fontSize: window.innerWidth <= 768 ? '1.5em' : '1.8em',
+                       fontWeight: '700',
+                       color: '#1e40af',
+                       marginBottom: '4px'
+                     }}>
+                       {formatCurrency(results.expectedReturns)}
+                     </div>
+                     <div style={{
+                       fontSize: window.innerWidth <= 768 ? '0.85em' : '0.9em',
+                       color: '#64748b',
+                       fontWeight: '600'
+                     }}>
+                       Expected Returns
+                     </div>
+                   </div>
+
+                   {/* Payback Period */}
+                   <div style={{
+                     background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
+                     border: '1px solid #e2e8f0',
+                     borderRadius: '12px',
+                     padding: window.innerWidth <= 768 ? '16px' : '20px',
+                     textAlign: 'center'
+                   }}>
+                     <div style={{
+                       fontSize: window.innerWidth <= 768 ? '1.5em' : '1.8em',
+                       fontWeight: '700',
+                       color: '#7c3aed',
+                       marginBottom: '4px'
+                     }}>
+                       {results.paybackPeriod} mo
+                     </div>
+                     <div style={{
+                       fontSize: window.innerWidth <= 768 ? '0.85em' : '0.9em',
+                       color: '#64748b',
+                       fontWeight: '600'
+                     }}>
+                       Payback Period
+                     </div>
+                   </div>
+
+                   {/* Success Rate */}
+                   <div style={{
+                     background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
+                     border: '1px solid #e2e8f0',
+                     borderRadius: '12px',
+                     padding: window.innerWidth <= 768 ? '16px' : '20px',
+                     textAlign: 'center'
+                   }}>
+                     <div style={{
+                       fontSize: window.innerWidth <= 768 ? '1.5em' : '1.8em',
+                       fontWeight: '700',
+                       color: '#dc2626',
+                       marginBottom: '4px'
+                     }}>
+                       {results.successRate}%
+                     </div>
+                     <div style={{
+                       fontSize: window.innerWidth <= 768 ? '0.85em' : '0.9em',
+                       color: '#64748b',
+                       fontWeight: '600'
+                     }}>
+                       Success Rate
+                     </div>
+                   </div>
+                 </div>
+
+                 {/* Mobile Action Buttons */}
+                 <div style={{
+                   display: 'flex',
+                   flexDirection: window.innerWidth <= 768 ? 'column' : 'row',
+                   gap: window.innerWidth <= 768 ? '12px' : '16px',
+                   justifyContent: 'center',
+                   marginTop: '24px'
+                 }}>
+                   <button
+                     onClick={exportToPDF}
+                     style={{
+                       background: 'linear-gradient(135deg, #dc2626 0%, #b91c1c 100%)',
+                       color: 'white',
+                       border: 'none',
+                       padding: window.innerWidth <= 768 ? '14px 24px' : '12px 24px',
+                       borderRadius: '25px',
+                       fontSize: window.innerWidth <= 768 ? '1em' : '0.95em',
+                       fontWeight: '600',
+                       cursor: 'pointer',
+                       transition: 'all 0.3s ease',
+                       display: 'flex',
+                       alignItems: 'center',
+                       justifyContent: 'center',
+                       gap: '8px',
+                       boxShadow: '0 4px 15px rgba(220, 38, 38, 0.3)',
+                       order: window.innerWidth <= 768 ? '1' : '0'
+                     }}
+                     onMouseEnter={(e) => {
+                       e.target.style.transform = 'translateY(-2px)'
+                       e.target.style.boxShadow = '0 6px 20px rgba(220, 38, 38, 0.4)'
+                     }}
+                     onMouseLeave={(e) => {
+                       e.target.style.transform = 'translateY(0)'
+                       e.target.style.boxShadow = '0 4px 15px rgba(220, 38, 38, 0.3)'
+                     }}
+                   >
+                     📄 Export to PDF
+                   </button>
+
+                   <button
+                     onClick={() => setShowLeadCapture(true)}
+                     style={{
+                       background: 'linear-gradient(135deg, #059669 0%, #047857 100%)',
+                       color: 'white',
+                       border: 'none',
+                       padding: window.innerWidth <= 768 ? '14px 24px' : '12px 24px',
+                       borderRadius: '25px',
+                       fontSize: window.innerWidth <= 768 ? '1em' : '0.95em',
+                       fontWeight: '600',
+                       cursor: 'pointer',
+                       transition: 'all 0.3s ease',
+                       display: 'flex',
+                       alignItems: 'center',
+                       justifyContent: 'center',
+                       gap: '8px',
+                       boxShadow: '0 4px 15px rgba(5, 150, 105, 0.3)',
+                       order: window.innerWidth <= 768 ? '2' : '0'
+                     }}
+                     onMouseEnter={(e) => {
+                       e.target.style.transform = 'translateY(-2px)'
+                       e.target.style.boxShadow = '0 6px 20px rgba(5, 150, 105, 0.4)'
+                     }}
+                     onMouseLeave={(e) => {
+                       e.target.style.transform = 'translateY(0)'
+                       e.target.style.boxShadow = '0 4px 15px rgba(5, 150, 105, 0.3)'
+                     }}
+                   >
+                     📧 Get Detailed Report
+                   </button>
+                 </div>
+               </div>
+             )}
 
             {/* Enhanced Results Section */}
             <div className="results-section">
@@ -887,7 +1415,7 @@ function App() {
                 </div>
               )}
             </div>
-          </>
+          </div>
         )}
 
         {/* Enhanced Scenarios Page */}
@@ -1671,7 +2199,8 @@ function App() {
           </div>
         )}
       </main>
-    </div>
+      </div>
+    </>
   )
 }
 
