@@ -565,13 +565,13 @@ function App() {
                   <div className="cta-buttons">
                     <button 
                       className="btn btn-primary btn-large"
-                      onClick={() => window.location.href = '/#/calculator'}
+                      onClick={() => handleNavigation('calculator')}
                     >
                       Try It Now
                     </button>
                     <button 
                       className="btn btn-secondary btn-large"
-                      onClick={() => window.location.href = '/#/api'}
+                      onClick={() => handleNavigation('api')}
                     >
                       See The API
                     </button>
