@@ -6,7 +6,7 @@ const AdminLogin = ({ onLogin }) => {
   const [error, setError] = useState('');
 
   // Admin password (in production, this would be handled server-side)
-  const ADMIN_PASSWORD = 'CatalystROI2024';
+  const ADMIN_PASSWORD = 'CatalystROI2025';
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -85,10 +85,10 @@ const AdminLogin = ({ onLogin }) => {
         </form>
 
                  <div className="admin-login-footer">
-           <p>
-             <strong>For Demo/Testing:</strong><br/>
-             Password: <code>CatalystROI2024</code>
-           </p>
+                        <p>
+               <strong>For Demo/Testing:</strong><br/>
+               Password: <code>CatalystROI2025</code>
+             </p>
           <div className="security-note">
             <small>🔒 In production, this would use secure server-side authentication</small>
           </div>
