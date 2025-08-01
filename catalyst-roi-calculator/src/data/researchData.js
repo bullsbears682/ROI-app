@@ -298,6 +298,120 @@ export const scenarioResearch = {
       paybackPeriod: "10-15 months"
     },
     methodology: "Gartner Fraud Detection Study 2023 and McKinsey Financial Crime Prevention Report"
+  },
+  'saas-erp': {
+    sources: ['gartner', 'forrester', 'oracle'],
+    caseStudies: [
+      {
+        company: "Manufacturing Corporation",
+        industry: "Manufacturing",
+        investment: 180000,
+        roi: 250,
+        timeframe: 12,
+        description: "30% operational efficiency improvement, unified business processes"
+      }
+    ],
+    benchmarks: {
+      averageROI: "150-280%",
+      implementationTime: "8-18 months",
+      paybackPeriod: "15-24 months"
+    },
+    methodology: "Gartner ERP Market Research 2023 and Forrester Cloud ERP Study"
+  },
+  'saas-hrms': {
+    sources: ['workday', 'gartner', 'forrester'],
+    caseStudies: [
+      {
+        company: "Mid-size Corporation",
+        industry: "Professional Services",
+        investment: 35000,
+        roi: 380,
+        timeframe: 4,
+        description: "50% reduction in HR admin time, improved employee satisfaction"
+      }
+    ],
+    benchmarks: {
+      averageROI: "200-450%",
+      implementationTime: "2-6 months",
+      paybackPeriod: "6-10 months"
+    },
+    methodology: "Workday HR Technology Impact Study 2023 and Gartner HR Technology Research"
+  },
+  'saas-communication': {
+    sources: ['slack', 'microsoft', 'forrester'],
+    caseStudies: [
+      {
+        company: "Remote-First Company",
+        industry: "Technology",
+        investment: 22000,
+        roi: 450,
+        timeframe: 2,
+        description: "40% faster team communication, improved remote collaboration"
+      }
+    ],
+    benchmarks: {
+      averageROI: "250-500%",
+      implementationTime: "1-4 months",
+      paybackPeriod: "4-8 months"
+    },
+    methodology: "Slack Future of Work Study 2023 and Microsoft Teams Collaboration Research"
+  },
+  'fintech-wealth': {
+    sources: ['mckinsey', 'pwc', 'aws'],
+    caseStudies: [
+      {
+        company: "Investment Advisory Firm",
+        industry: "Financial Services",
+        investment: 260000,
+        roi: 300,
+        timeframe: 15,
+        description: "Automated portfolio management, 50% operational cost reduction"
+      }
+    ],
+    benchmarks: {
+      averageROI: "180-350%",
+      implementationTime: "10-20 months",
+      paybackPeriod: "14-20 months"
+    },
+    methodology: "McKinsey Wealth Management Technology Report 2023 and PwC Digital Wealth Study"
+  },
+  'fintech-mobile': {
+    sources: ['mckinsey', 'accenture', 'aws'],
+    caseStudies: [
+      {
+        company: "Community Bank",
+        industry: "Banking",
+        investment: 320000,
+        roi: 350,
+        timeframe: 18,
+        description: "60% increase in digital engagement, reduced branch operation costs"
+      }
+    ],
+    benchmarks: {
+      averageROI: "200-400%",
+      implementationTime: "12-24 months",
+      paybackPeriod: "18-24 months"
+    },
+    methodology: "McKinsey Digital Banking Trends 2023 and Accenture Mobile Banking Study"
+  },
+  'fintech-robo': {
+    sources: ['bcg', 'mckinsey', 'pwc'],
+    caseStudies: [
+      {
+        company: "Wealth Management Firm",
+        industry: "Financial Services",
+        investment: 165000,
+        roi: 380,
+        timeframe: 10,
+        description: "Scalable advisory services, 40% lower operational costs"
+      }
+    ],
+    benchmarks: {
+      averageROI: "220-450%",
+      implementationTime: "6-14 months",
+      paybackPeriod: "10-16 months"
+    },
+    methodology: "BCG Robo-Advisory Market Research 2023 and McKinsey Automated Investment Study"
   }
 };
 
