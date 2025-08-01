@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { roiCategories, roiScenarios } from './data/roiScenarios'
+import config from './config'
 import './styles/index.css'
 
 function App() {
@@ -17,24 +18,33 @@ function App() {
   const [isCalculating, setIsCalculating] = useState(false)
   const [apiStatus, setApiStatus] = useState('checking')
 
-  // API Configuration
-  const API_BASE_URL = 'http://localhost:3001'
-  const API_KEY = 'demo-key-2025'
-
   // Check API health on component mount
   useEffect(() => {
-    checkApiHealth()
+    if (config.FEATURES.API_INTEGRATION) {
+      checkApiHealth()
+    } else {
+      setApiStatus('disabled')
+    }
   }, [])
 
   const checkApiHealth = async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/health`)
+      const controller = new AbortController()
+      const timeoutId = setTimeout(() => controller.abort(), config.API_TIMEOUT)
+      
+      const response = await fetch(`${config.API_BASE_URL}/api/health`, {
+        signal: controller.signal
+      })
+      
+      clearTimeout(timeoutId)
+      
       if (response.ok) {
         setApiStatus('connected')
       } else {
         setApiStatus('disconnected')
       }
     } catch (error) {
+      console.warn('API health check failed:', error.message)
       setApiStatus('disconnected')
     }
   }
@@ -69,13 +79,16 @@ function App() {
 
       // Try API first, fallback to local calculation
       let apiResult = null
-      if (apiStatus === 'connected') {
+      if (config.FEATURES.API_INTEGRATION && apiStatus === 'connected') {
         try {
-          const response = await fetch(`${API_BASE_URL}/api/calculate`, {
+          const controller = new AbortController()
+          const timeoutId = setTimeout(() => controller.abort(), config.API_TIMEOUT)
+          
+          const response = await fetch(`${config.API_BASE_URL}/api/calculate`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
-              'X-API-Key': API_KEY
+              'X-API-Key': config.API_KEY
             },
             body: JSON.stringify({
               investment,
@@ -84,14 +97,19 @@ function App() {
               companySize,
               timeframe,
               currency
-            })
+            }),
+            signal: controller.signal
           })
+
+          clearTimeout(timeoutId)
 
           if (response.ok) {
             apiResult = await response.json()
+          } else {
+            console.warn('API calculation failed with status:', response.status)
           }
         } catch (error) {
-          console.warn('API calculation failed, using local fallback:', error)
+          console.warn('API calculation failed, using local fallback:', error.message)
         }
       }
 
@@ -120,7 +138,7 @@ function App() {
           implementationWeeks: apiResult.metrics.implementationWeeks,
           benefits: scenario.benefits || [
             'Improved operational efficiency',
-            'Enhanced customer satisfaction',
+            'Enhanced customer satisfaction', 
             'Reduced operational costs',
             'Better decision making',
             'Competitive advantage'
@@ -314,16 +332,20 @@ function App() {
               <h1>Catalyst</h1>
               <span className="logo-tagline">Professional ROI Calculator</span>
               {/* API Status Indicator */}
-              <div style={{fontSize: '10px', marginTop: '2px'}}>
-                <span style={{
-                  color: apiStatus === 'connected' ? '#10b981' : 
-                        apiStatus === 'disconnected' ? '#ef4444' : '#f59e0b',
-                  fontWeight: '600'
-                }}>
-                  {apiStatus === 'connected' ? '🟢 API Connected' : 
-                   apiStatus === 'disconnected' ? '🔴 API Offline' : '🟡 Checking API'}
-                </span>
-              </div>
+              {config.FEATURES.API_INTEGRATION && (
+                <div style={{fontSize: '10px', marginTop: '2px'}}>
+                  <span style={{
+                    color: apiStatus === 'connected' ? '#10b981' : 
+                          apiStatus === 'disconnected' ? '#ef4444' : 
+                          apiStatus === 'disabled' ? '#9ca3af' : '#f59e0b',
+                    fontWeight: '600'
+                  }}>
+                    {apiStatus === 'connected' ? '🟢 API Connected' : 
+                     apiStatus === 'disconnected' ? '🔴 API Offline' : 
+                     apiStatus === 'disabled' ? '⚪ Local Mode' : '🟡 Checking API'}
+                  </span>
+                </div>
+              )}
             </div>
           </div>
           
@@ -349,12 +371,14 @@ function App() {
             >
               About
             </button>
-            <button 
-              className={`nav-link ${currentPage === 'api' ? 'active' : ''}`}
-              onClick={() => setCurrentPage('api')}
-            >
-              API
-            </button>
+            {config.FEATURES.API_INTEGRATION && (
+              <button 
+                className={`nav-link ${currentPage === 'api' ? 'active' : ''}`}
+                onClick={() => setCurrentPage('api')}
+              >
+                API
+              </button>
+            )}
           </nav>
         </div>
       </header>
@@ -591,8 +615,16 @@ function App() {
 
                 {/* Data Source Indicator */}
                 <div style={{textAlign: 'center', marginTop: '12px', fontSize: '0.85em', color: '#64748b'}}>
-                  {apiStatus === 'connected' ? (
-                    <span>🔗 Using professional API calculations</span>
+                  {config.FEATURES.API_INTEGRATION ? (
+                    apiStatus === 'connected' ? (
+                      <span>🔗 Using professional API calculations</span>
+                    ) : apiStatus === 'disconnected' ? (
+                      <span>💻 Using local calculation engine (API offline)</span>
+                    ) : apiStatus === 'disabled' ? (
+                      <span>💻 Using local calculation engine</span>
+                    ) : (
+                      <span>⏳ Checking API connection...</span>
+                    )
                   ) : (
                     <span>💻 Using local calculation engine</span>
                   )}
@@ -1035,7 +1067,7 @@ function App() {
         )}
 
         {/* API Documentation Page */}
-        {currentPage === 'api' && (
+        {config.FEATURES.API_INTEGRATION && currentPage === 'api' && (
           <div className="card">
             <h2>🔗 Catalyst ROI API</h2>
             <p>Professional ROI calculation API for developers and businesses</p>
@@ -1053,9 +1085,9 @@ function App() {
                 fontSize: '0.9em'
               }}>
                 <div style={{color: '#10b981', marginBottom: '8px'}}>// Calculate ROI via API</div>
-                <div>curl -X POST {API_BASE_URL}/api/calculate \</div>
+                <div>curl -X POST {config.API_BASE_URL}/api/calculate \</div>
                 <div>  -H "Content-Type: application/json" \</div>
-                <div>  -H "X-API-Key: {API_KEY}" \</div>
+                <div>  -H "X-API-Key: {config.API_KEY}" \</div>
                 <div>  -d '{JSON.stringify({
                   investment: 50000,
                   scenario: "automation-crm",
@@ -1100,7 +1132,7 @@ function App() {
                   <div style={{fontSize: '1.5em', marginBottom: '8px'}}>🔑</div>
                   <div style={{fontWeight: '600'}}>Demo Key</div>
                   <div style={{fontSize: '0.8em', marginTop: '4px', fontFamily: 'monospace'}}>
-                    {API_KEY}
+                    {config.API_KEY}
                   </div>
                 </div>
               </div>
@@ -1193,7 +1225,7 @@ function App() {
                 </p>
                 <button 
                   className="btn"
-                  onClick={() => window.open(`${API_BASE_URL}/api/info`, '_blank')}
+                  onClick={() => window.open(`${config.API_BASE_URL}/api/info`, '_blank')}
                   style={{
                     background: 'white',
                     color: '#667eea',
@@ -1287,13 +1319,15 @@ function App() {
                 >
                   See The Scenarios
                 </button>
-                <button 
-                  className="btn btn-secondary"
-                  onClick={() => setCurrentPage('api')}
-                  style={{padding: '12px 24px', fontSize: '1.1em'}}
-                >
-                  Explore API
-                </button>
+                {config.FEATURES.API_INTEGRATION && (
+                  <button 
+                    className="btn btn-secondary"
+                    onClick={() => setCurrentPage('api')}
+                    style={{padding: '12px 24px', fontSize: '1.1em'}}
+                  >
+                    Explore API
+                  </button>
+                )}
               </div>
             </div>
           </div>
