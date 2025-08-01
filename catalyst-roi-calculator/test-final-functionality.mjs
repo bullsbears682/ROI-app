@@ -165,7 +165,7 @@ console.log('\n4️⃣ TESTING BROWSER COMPATIBILITY\n');
 
 // Test 4: Browser Compatibility Features
 const browserFeatures = {
-  'ES6 Modules': typeof import !== 'undefined',
+  'ES6 Modules': true // import is a keyword,
   'Local Storage': typeof Storage !== 'undefined',
   'JSON Support': typeof JSON !== 'undefined',
   'Promises': typeof Promise !== 'undefined',
