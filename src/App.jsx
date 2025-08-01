@@ -135,113 +135,81 @@ function App() {
     }
   }, [selectedCategory]);
 
-  // Calculate ROI using real market data from API
-  const calculateROI = async () => {
+  // Helper functions for ROI calculation
+  const getIndustryMultiplier = (industry) => {
+    const multipliers = {
+      'technology': 1.2,
+      'healthcare': 1.1,
+      'finance': 1.0,
+      'retail': 0.9,
+      'manufacturing': 0.8,
+      'education': 0.7,
+      'real-estate': 1.0,
+      'professional-services': 1.1,
+      'hospitality': 0.8,
+      'transportation': 0.9
+    };
+    return multipliers[industry] || 1.0;
+  };
+
+  const getCompanySizeMultiplier = (size) => {
+    const multipliers = {
+      'startup': 0.8,
+      'small': 0.9,
+      'medium': 1.0,
+      'large': 1.1,
+      'enterprise': 1.2
+    };
+    return multipliers[size] || 1.0;
+  };
+
+  // Calculate ROI with local calculations
+  const calculateROI = () => {
     const scenario = roiScenarios[selectedScenario];
-    if (!scenario) return;
+    if (!scenario) {
+      alert('Please select a valid scenario');
+      return;
+    }
 
     const { investment, timeframe } = calculationInputs;
-    setIsLoading(true);
-
-    try {
-      // Try to use the real API first
-      const apiResponse = await fetch('http://localhost:3001/api/roi/calculate', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-API-Key': 'demo_key_enterprise_trial'
-        },
-        body: JSON.stringify({
-          scenario: selectedScenario,
-          investment,
-          timeframe,
-          industry: calculationInputs.industry || 'technology',
-          companySize: calculationInputs.companySize || 'medium',
-          currency
-        })
-      });
-
-      if (apiResponse.ok) {
-        const apiData = await apiResponse.json();
-        
-        // Use real API data with market-based calculations
-        const results = {
-          investment: investment,
-          expectedReturns: apiData.results.projectedRevenue - investment,
-          totalReturns: apiData.results.projectedRevenue,
-          roiPercentage: apiData.results.roiPercentage,
-          annualizedROI: (apiData.results.roiPercentage / timeframe) * 12,
-          paybackMonths: apiData.results.paybackPeriod,
-          successRate: apiData.results.successRate,
-          riskLevel: apiData.results.riskLevel,
-          confidence: apiData.results.confidence * 100,
-          monthlyReturn: (apiData.results.projectedRevenue - investment) / timeframe,
-          
-          // Enhanced data from real market sources
-          marketData: apiData.marketData,
-          industryBenchmarks: apiData.benchmarks,
-          dataQuality: apiData.marketData?.dataQuality || 'Real market data',
-          
-          // Original scenario data for reference
-          scenarioName: scenario.description,
-          timeframe,
-          currency
-        };
-
-        setResults(results);
-        console.log('✅ Using real market data from API:', results);
-        return;
-      }
-    } catch (error) {
-      console.warn('⚠️ API unavailable, using fallback calculations:', error.message);
+    if (!investment || investment < 1000) {
+      alert('Please enter an investment amount of at least $1,000');
+      return;
     }
 
-    // Fallback to local calculations if API is unavailable
-    const investmentUSD = convertToUSD(investment, currency);
-    const industryData = scenario.industryBenchmarks?.[calculationInputs.industry];
-    const baseROI = industryData?.roi || (scenario.expectedROI.min + scenario.expectedROI.max) / 2;
+    // Local ROI calculation
+    const baseROI = (scenario.expectedROI.min + scenario.expectedROI.max) / 2;
+    const industryMultiplier = getIndustryMultiplier(calculationInputs.industry);
+    const sizeMultiplier = getCompanySizeMultiplier(calculationInputs.companySize);
     
-    const expectedReturnsUSD = investmentUSD * (baseROI / 100);
-    const totalReturnsUSD = investmentUSD + expectedReturnsUSD;
-    const monthlyReturnUSD = expectedReturnsUSD / timeframe;
-    const paybackMonths = investmentUSD / monthlyReturnUSD;
-
-    let riskMultiplier = 1;
-    switch (scenario.riskLevel) {
-      case 'low': riskMultiplier = 0.9; break;
-      case 'medium': riskMultiplier = 1.0; break;
-      case 'high': riskMultiplier = 1.1; break;
-    }
-
-    const adjustedReturnsUSD = expectedReturnsUSD * riskMultiplier;
-    const roiPercentage = (adjustedReturnsUSD / investmentUSD) * 100;
-    const annualizedROI = (roiPercentage / timeframe) * 12;
+    // Calculate returns
+    const adjustedROI = baseROI * industryMultiplier * sizeMultiplier;
+    const expectedReturns = investment * (adjustedROI / 100);
+    const totalReturns = investment + expectedReturns;
+    const monthlyReturn = expectedReturns / timeframe;
+    const paybackMonths = Math.ceil(investment / monthlyReturn);
+    const annualizedROI = (adjustedROI / timeframe) * 12;
 
     // Calculate success rate
     const successRate = calculateSuccessRate(scenario.riskLevel, calculationInputs.industry, calculationInputs.companySize);
 
     const calculatedResults = {
       investment: investment,
-      expectedReturns: adjustedReturnsUSD,
-      totalReturns: investmentUSD + adjustedReturnsUSD,
-      roiPercentage: roiPercentage,
+      expectedReturns: expectedReturns,
+      totalReturns: totalReturns,
+      roiPercentage: adjustedROI,
       annualizedROI: annualizedROI,
       paybackMonths: paybackMonths,
       successRate: successRate,
       riskLevel: scenario.riskLevel,
-      confidence: 85, // Default confidence for fallback
-      monthlyReturn: adjustedReturnsUSD / timeframe,
-      
-      // Indicate this is fallback data
-      dataQuality: 'Estimated from scenario models',
+      confidence: 85,
+      monthlyReturn: monthlyReturn,
+      dataQuality: 'Calculated from scenario models',
       scenarioName: scenario.description,
       timeframe,
       currency,
-      
-      // Legacy fields for compatibility
       scenario: scenario,
-      inputs: calculationInputs,
-      investmentUSD: investmentUSD
+      inputs: calculationInputs
     };
 
     setResults(calculatedResults);
